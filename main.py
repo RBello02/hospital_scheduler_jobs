@@ -4,8 +4,6 @@ from instances.patient import Patient
 from instances.occupant import Occupant
 from instances.surgeon import Surgeon
 from instances.nurse import Nurse
-from instances.operating_theater import Operating_theater
-from instances.room import Room
 from solvers import *
 import json 
 import random
@@ -90,15 +88,29 @@ def main():
 
     weights = data['weights']
 
-    # modifying the gender using 0 and 1
 
-    rooms_id = [room_data['id'] for room_data in rooms_data]
+    rooms_id = [room_data['id'] for room_data in rooms_data]    
     occupants_id = [occupant_data['id'] for occupant_data in occupants_data]
     patients_id = [patient_data['id'] for patient_data in patients_data]
     surgeons_id = [surgeon_data['id'] for surgeon_data in surgeons_data]
     nurses_id = [nurse_data['id'] for nurse_data in nurses_data]
     theaters_id = [theater_data['id'] for theater_data in operating_theaters_data]
 
+    # modifying the id to be a list of integers
+
+    rooms_mapping = {room["id"]: i for i, room in enumerate(rooms_data)}   # map of the id
+
+    for i,room_data in enumerate(rooms_data):
+         room_data['id'] = rooms_mapping[room_data['id']]   # modifying the id 
+    
+    for i,occupant_data in enumerate(occupants_data):
+        occupant_data['id'] = i
+        occupant_data['room_id'] = rooms_mapping[occupant_data['room_id']]   # modifying the id
+
+    for i,patient_data in enumerate(patients_data):
+        patient_data['id'] = i
+
+    # modifying the gender using 0 and 1
 
     for occupant_data in occupants_data:
         if occupant_data['gender'] == 'A':
@@ -151,13 +163,15 @@ def main():
 
     nurses = [Nurse(nurse_data) for nurse_data in nurses_data]
 
-    # creating operating theaters
+    # adding the occupants to the hospital
 
-    theaters = [Operating_theater(theater_data) for theater_data in operating_theaters_data]
+    for occupant in occupants:
+        Hosp.add_occupant(occupant)
 
-    # creating rooms
+    print(Hosp.rooms_people_inside)
 
-    rooms = [Room(room_data) for room_data in rooms_data]
+    
+
 
 if __name__ == "__main__":
     main()
