@@ -137,8 +137,7 @@ def main():
 
     for patient_data in patients_data:
         patient_data['compatible_rooms_ids'] = [room_id for room_id in rooms_id if room_id not in patient_data['incompatible_room_ids']]
-
-
+        patient_data['compatible_rooms_ids'] = [rooms_mapping[c_room] for c_room in patient_data['compatible_rooms_ids']]
 
 
     ############################ CLASSES ########################################
@@ -168,7 +167,7 @@ def main():
     for occupant in occupants:
         Hosp.add_occupant(occupant)
 
-    print(Hosp.rooms_people_inside)
+    print(Hosp.rooms_count_people)
 
     
 
