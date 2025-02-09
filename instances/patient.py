@@ -19,7 +19,7 @@ class Patient():
         self.skill_level_required = patient_data['skill_level_required']
 
     def __str__(self):
-        return f"Patient ID: {self.id}, Age Group: {self.age_group}, Gender: {'Male' if self.gender == 1 else 'Female'}"
+        return f"Patient ID: {self.id}, Age Group: {self.age_group}, Gender: {self.gender}"
             
         
         
