@@ -1,5 +1,7 @@
 import numpy as np
-from instances.hospital import Hospital
+from instances.hospital import Times
+from instances.hospital import Rooms
+from instances.hospital import Theaters
 from instances.patient import Patient
 from instances.occupant import Occupant
 from instances.surgeon import Surgeon
@@ -9,7 +11,9 @@ from utils import *
 import json 
 import random
 
-random.seed(min(341965, 343316, 284817))
+random_seed = min(341965, 343316, 284817)
+
+random.seed(random_seed)
 
 
 def main():
@@ -52,13 +56,6 @@ def main():
 
     rooms_data = data['rooms']
 
-    # saving the weights
-
-    weights = data['weights']
-
-
-    rooms_id = [room_data['id'] for room_data in rooms_data]    
-
     # modifying the id to be a list of integers
 
     rooms_mapping = {room["id"]: i for i, room in enumerate(rooms_data)}   # map of the id
@@ -86,13 +83,17 @@ def main():
 
     shift_map = transformed_data['shift_mapping']
     age_map = transformed_data['age_mapping']
+    weights = transformed_data['weights']
+    shifts = transformed_data['shifts']
 
 
     ############################ CLASSES ########################################
 
     # creating the hospital
 
-    Hosp = Hospital(t_rooms, t_theaters, time)
+    times = Times(time, shifts)
+    rooms = Rooms(t_rooms)
+    theaters = Theaters(t_theaters)    
 
     # creating the patients
 
@@ -110,6 +111,7 @@ def main():
 
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
+    
 
     
 

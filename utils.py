@@ -10,6 +10,8 @@ def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeo
 
     shift_to_number = {shift: i for i, shift in enumerate(total_shifts)} 
 
+    shifts = [shift_to_number[shift] for shift in total_shifts]
+
      # create a dic for occupants
 
     occupants_data = data['occupants']
@@ -80,4 +82,4 @@ def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeo
 
 
 
-    return {'T': total_days, 'age_mapping': age_to_number,'shift_mapping': shift_to_number ,'occupants': occupants_data, 'patients':patients_data, 'surgeons': surgeons_data, 'nurses': nurses_data ,'rooms': rooms_data, 'theaters': operating_theaters_data }
+    return {'T': total_days,'shifts': shifts ,'age_mapping': age_to_number,'shift_mapping': shift_to_number ,'occupants': occupants_data, 'patients':patients_data, 'surgeons': surgeons_data, 'nurses': nurses_data ,'rooms': rooms_data, 'theaters': operating_theaters_data, 'weights': data['weights'] }
