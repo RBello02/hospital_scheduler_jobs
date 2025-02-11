@@ -6,11 +6,11 @@ import numpy as np
 
 class Solution():
 
-    def __init__(self, Time, occupants, patients, surgeons, nurses):
+    def __init__(self, Tempo, occupants, patients, surgeons, nurses):
 
         # matrix patient x room x arriving time
 
-        T = Time.T
+        T = Tempo.T
 
         self.patient_schedule = [{'patient': patient,
                                   'room': None,
@@ -28,7 +28,7 @@ class Solution():
 
         # matrix nurses x occupants x rooms  x shift x time
 
-        shifts = Time.shifts
+        shifts = Tempo.shifts
 
         self.nurses_schedule_occupant = [[[[{'nurse': nurse,
                                           'occupant': None,
