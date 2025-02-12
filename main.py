@@ -111,7 +111,19 @@ def main():
 
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
-    
+
+    # add the occupants:
+
+    for occupant in occupants:
+        rooms.add_occupant(occupant)
+
+    print(rooms.rooms_count_people)
+    print(rooms.rooms_gender)
+
+    for occupant in occupants:
+        rooms.remove_occupant(occupant)
+
+    print(rooms.rooms_count_people)
 
     
 

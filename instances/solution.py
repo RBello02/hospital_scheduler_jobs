@@ -14,7 +14,7 @@ class Solution():
 
         self.patient_schedule = [{'patient': patient,
                                   'room': None,
-                                  'Time': None} for patient in patients]
+                                  'day': None} for patient in patients]
 
 
         # matrix surgeons x patients x theater

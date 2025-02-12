@@ -13,26 +13,39 @@ class Times():
         # For the shifts
         self.shifts = shifts
 
+
+        
+
 class Rooms():
 
     def __init__(self, rooms):
 
         self.rooms_id = [room['id'] for room in rooms]  # Save the id of the room 
         self.n_rooms = len(rooms)
-        self.rooms_capacity = [room['capacity'] for room in rooms]  # Maps the capacity of a single room
-        self.rooms_count_people =[0 for room in range(self.n_rooms)]  # Tracks people inside a room for each day
-        self.rooms_gender = [None for _ in range(self.n_rooms)] # Gender in rooms for each day
+        self.rooms_capacity = {room['id']: room['capacity'] for room in rooms} # Maps the capacity of a single room
+        self.rooms_count_people ={room['id']:0  for room in rooms} # Tracks people inside a room for each day
+        self.rooms_gender = {room['id']:None for room in rooms} # Gender in rooms for each day
 
-    def add_patient(self, room_index, start_day, patient):   # add a patient in time t
-        for t in range(start_day, start_day + patient.length_of_stay):
-            self.rooms_count_people[t][room_index] +=1 
+    def add_patient(self, room_index, patient):   # add a patient in time t
+        if self.rooms_count_people[room_index] == 0:       #if the room is empty add the gender
+            self.rooms_gender[room_index] = patient.gender
+        self.rooms_count_people[room_index] +=1 
 
+    def remove_patient(self, room_index):
+        self.rooms_count_people[room_index] -=1 
 
     def add_occupant(self, occupant):        # add an occupant in a room at time t
-        exit = occupant.length_of_stay
         room_index = self.rooms_id.index(occupant.room_id)
-        for t in range(exit):
-            self.rooms_count_people[t][room_index] +=1 
+        if self.rooms_count_people[room_index] == 0:       #if the room is empty add the gender
+            self.rooms_gender[room_index] = occupant.gender
+        self.rooms_count_people[room_index] +=1 
+
+    def remove_occupant(self, occupant):
+        room_index = self.rooms_id.index(occupant.room_id)
+        self.rooms_count_people[room_index] -=1 
+
+    
+
         
 class Theaters():
 
