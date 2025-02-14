@@ -45,9 +45,9 @@ class Theaters():
 
     def __init__(self, theaters):
         # For theaters
-        self.theaters_id = [i for i, theater in enumerate(theaters)]  # Save the id of the theater as a number
+        self.theaters_id = [theater['id'] for theater in theaters]  # Save the id of the theater as a number
         self.n_theaters = len(theaters)
-        self.theaters_capacity = [theater['availability'] for theater in theaters]  # Tracks the capacity of a single theater
+        self.theaters_capacity = {theater['id']:theater['availability'] for theater in theaters} # Tracks the capacity of a single theater
 
         
 

@@ -93,7 +93,7 @@ def main():
 
     times = Times(time, shifts)
     rooms = Rooms(t_rooms)
-    theaters = Theaters(t_theaters)    
+    theaters = [Theaters(t_theater) for t_theater in t_theaters]    
 
     # creating the patients
 
