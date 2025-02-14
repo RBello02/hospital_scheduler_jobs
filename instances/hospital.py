@@ -18,32 +18,26 @@ class Times():
 
 class Rooms():
 
-    def __init__(self, rooms):
+    def __init__(self, rooms, tempo):
 
         self.rooms_id = [room['id'] for room in rooms]  # Save the id of the room 
         self.n_rooms = len(rooms)
-        self.rooms_capacity = {room['id']: room['capacity'] for room in rooms} # Maps the capacity of a single room
-        self.rooms_count_people ={room['id']:0  for room in rooms} # Tracks people inside a room for each day
-        self.rooms_gender = {room['id']:None for room in rooms} # Gender in rooms for each day
+        self.rooms_capacity = [{room['id']: room['capacity'] for room in rooms} for t in tempo] # Maps the capacity of a single room
+        self.rooms_count_people =[{room['id']:0  for room in rooms} for t in tempo] # Tracks people inside a room for each day
+        self.rooms_gender = [{room['id']:None for room in rooms} for t in tempo] # Gender in rooms for each day
 
-    def add_patient(self, room_index, patient):   # add a patient in time t
-        if self.rooms_count_people[room_index] == 0:       #if the room is empty add the gender
-            self.rooms_gender[room_index] = patient.gender
-        self.rooms_count_people[room_index] +=1 
-
-    def remove_patient(self, room_index):
-        self.rooms_count_people[room_index] -=1 
+    def add_patient(self, room_index, patient, starting_time):   # add a patient in time t
+        for t in range(starting_time, starting_time + patient.length_of_stay):
+            if self.rooms_count_people[t][room_index] == 0:       #if the room is empty add the gender
+                self.rooms_gender[t][room_index] = patient.gender
+            self.rooms_count_people[t][room_index] +=1 
 
     def add_occupant(self, occupant):        # add an occupant in a room at time t
         room_index = self.rooms_id.index(occupant.room_id)
-        if self.rooms_count_people[room_index] == 0:       #if the room is empty add the gender
-            self.rooms_gender[room_index] = occupant.gender
-        self.rooms_count_people[room_index] +=1 
-
-    def remove_occupant(self, occupant):
-        room_index = self.rooms_id.index(occupant.room_id)
-        self.rooms_count_people[room_index] -=1 
-
+        for t in range(occupant.length_of_stay):
+            if self.rooms_count_people[t][room_index] == 0:       #if the room is empty add the gender
+                self.rooms_gender[t][room_index] = occupant.gender
+            self.rooms_count_people[t][room_index] +=1 
     
 
         
