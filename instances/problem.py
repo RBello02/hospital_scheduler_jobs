@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from colorama import Fore
 import random
 
 class Problem ():
@@ -28,8 +29,13 @@ class Problem ():
 
     def constraints(self, solution, occupants, patients, surgeons, nurses, rooms, theaters, T, shifts):
 
+        # boolean variable that tells us if all the constraints are ok
+
+        check = True
+
         # H1: no gender mix in the rooms
 
+        counter = 0
         for room_id in rooms.rooms_id:
             for t in range(T):
                 patients_in_room_at_time_t = [entry['patient'] for entry in solution.patient_schedule
@@ -42,14 +48,17 @@ class Problem ():
                 if room_gender is not None:
                     for patient in patients_in_room_at_time_t:
                         if patient.gender != room_gender:
-                            raise ValueError( f"H1 FAILED: Gender mix in room {room_id} at time {t}: "
+                            counter +=1 
+                            print(Fore.YELLOW + f"H1 FAILED: Gender mix in room {room_id} at time {t}: "
                                               f"Patient {patient.id} has gender {patient.gender}, "
                                               f"while the room is assigned to {room_gender}." )
+        if counter != 0 : 
+            check = False
                         
 
         # H2 : every patient must stay in their compatible rooms, we'll check also that everyone stay in one and only one room
 
-        
+        counter = 0
         for patient in patients:
             room_for_patient = set ()  # set where is stored the rooms of the patient during the period
             compatible_rooms_for_patient = set(patient.compatible_room_ids)
@@ -59,13 +68,19 @@ class Problem ():
                 room_for_patient.update(room_at_t)
 
             if not room_for_patient:  # if the patient has no room assigned ( in python an empty set is a boolean False )
-                raise ValueError(f"H2 FAILED: Patient {patient.id} has no assigned room")
+                print(Fore.YELLOW + f"H2 FAILED: Patient {patient.id} has no assigned room")
+                counter +=1
             
             if len(room_for_patient) != 1: # if he changes rooms 
-                raise ValueError( f"H2 FAILED: The patient {patient.id} changes rooms during his stay" )
+                print(Fore.YELLOW + f"H2 FAILED: The patient {patient.id} changes rooms during his stay" )
+                counter +=1 
             
             if not room_for_patient.issubset(compatible_rooms_for_patient): # if he stays in rooms were he can't stay
-                raise ValueError( f"H2 FAILED: The patient {patient.id} is assigned to incompatible rooms" )
+                print(Fore.YELLOW +  f"H2 FAILED: The patient {patient.id} is assigned to incompatible rooms" )
+                counter +=1
+        
+        if counter != 0:
+            check = False
             
             
         # H7: the patient in one room must not exceed the maximal capacity
@@ -73,15 +88,21 @@ class Problem ():
         capacity = rooms.rooms_capacity
         number_of_patients = rooms.rooms_count_people
 
+        counter = 0
         for room_id in rooms.rooms_id:
             for t in range(T):
                 if number_of_patients[t][room_id] > capacity[t][room_id]:
-                    raise ValueError( f"H7 FAILED: Exceed maximal capacity of the room {room_id} at time {t}" )
+                    counter += 1
+                    print(Fore.YELLOW +  f"H7 FAILED: Exceed maximal capacity of the room {room_id} at time {t}" )
+        
+        if counter != 0:
+            check = False
                 
 
         # H3: do not exceed the daily maximal time of a surgeon
             # remember that the arriving day is also the operation day
 
+        counter = 0
         for surgeon in surgeons:
             operated_patients_by_surgeon = [entry['patient'] for row in solution.surgeons_operations 
                                             for entry in row if entry['surgeon'].id == surgeon.id 
@@ -96,15 +117,20 @@ class Problem ():
                     if t == arrival_times.get(operated_patient_by_surgeon):
                         total_time_of_operation += operated_patient_by_surgeon.surgery_duration
                 if total_time_of_operation > surgeon.max_surgery_time[t]:
-                    raise ValueError( f"H3 FAILED: Exceed maximal operation capacity for surgeon {surgeon.id} at time {t}, requested: {total_time_of_operation} | maximal: {surgeon.max_surgery_time[t]}" )
+                    print(Fore.YELLOW + f"H3 FAILED: Exceed maximal operation capacity for surgeon {surgeon.id} at time {t}, requested: {total_time_of_operation} | maximal: {surgeon.max_surgery_time[t]}" )
+                    counter += 1
+            
+        if counter != 0:
+            check = False
 
 
 
         # H4: the duration of all the surgery at time t must not exceed the maximal daily capacity of the theater
 
-        theaters_usage = {t: {theater_id: 0 for theater_id in theaters.theaters_id} for t in T}    # time of daily operations
+        theaters_usage = {t: {theater_id: 0 for theater_id in theaters.theaters_id} for t in range(T)}    # time of daily operations
 
-        for t in T:
+        counter = 0
+        for t in range(T):
             for row in solution.surgeons_operations:
                 for entry in row:
                     if entry['patient'] is not None and entry['theater'] is not None:
@@ -121,7 +147,48 @@ class Problem ():
         for t in range(T):
             for theater_id in theaters.theaters_id:
                 if theaters_usage[t][theater_id] > theaters.theaters_capacity[theater_id]:
-                    raise ValueError( f"H4 FAILED: Exceed maximal operation capacity for the theater {theater_id} at time {t}, requested: {theaters_usage[t][theater_id]} | maximal: {theaters.theaters_capacity[theater_id]}" )
+                    counter += 1
+                    print(Fore.YELLOW +  f"H4 FAILED: Exceed maximal operation capacity for the theater {theater_id} at time {t}, requested: {theaters_usage[t][theater_id]} | maximal: {theaters.theaters_capacity[theater_id]}" )
+                
+        if counter != 0:
+            check = False
+
+        # H5: All the mandatory patients must be admitted 
+        # H6: They must be admitted in their schedule period
+
+        counter = 0
+        for row in solution.patient_schedule:
+            patient = row['patient']
+            day = row['day']
+            if day is None:
+                if patient.mandatory:
+                    print(Fore.YELLOW + f"H5 FAILED: Patient {patient.id} is mandatory and must be admitted into the hospital.")
+                    counter += 1
+                continue  # If the patient is optional and not admitted, it's fine
+
+            # H6: Check that mandatory patients are admitted within their allowed period
+            if patient.mandatory and (day < patient.surgery_release_day or day > patient.surgery_due_day):
+                counter += 1
+                print(Fore.YELLOW + f"H6 FAILED: Patient {patient.id} is mandatory and must be admitted within the scheduling period.")
+
+            # General rule: No patient can be admitted before their release day
+            if day < patient.surgery_release_day:
+                counter += 1
+                print(Fore.YELLOW + f"Patient {patient.id} has an admission day ({day}) that is earlier than their release day ({patient.surgery_release_day}).")
+
+            if check != 0:
+                check = False
+
+
+        return check  # end value
+    
+
+    
+                
+
+
+
+
 
                     
 
