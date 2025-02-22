@@ -183,11 +183,39 @@ class Problem ():
         return check  # end value
     
 
-    
+    def objective_function(self, age_map, solution, occupants, patients, surgeons, nurses, rooms, theaters, T, shifts):
+
+        # firstly we are gonna extract all the parte that should be minimize, each part is defined by S soft constraints
+
+
+        # S1: minimize the age difference in each room for each time 
+
+        key_max = max(age_map, key=age_map.get) # firstly we are gonna extract the minimum age end the maximum age
+        max_age = age_map[key_max]
+
+        key_min = min(age_map, key=age_map.get) 
+        min_age = age_map[key_min]
+
+        S1 = 0     # it represents a part of the objective function the we should minimize
+
+        for t in range(T):
+            for room_id in rooms.rooms_id:
+                patients_in_room_in_day = [entry['patient'] for entry in solution.patient_schedule
+                                            if entry['room'] == room_id and entry['day'] == t]
                 
+                max_room_day = min_age  # i just shifted the name for the if cases
+                min_room_day = max_age
 
+                for occupant in occupants:   # just remember the occupants in the room
+                    if occupant.room_id == room_id and occupant.length_of_stay > t:
+                        max_room_day = max(max_room_day, occupant.age_group)
+                        min_room_day = min(min_room_day, occupant.age_group)
 
+                for patient in patients_in_room_in_day:
+                    max_room_day = max(max_room_day, patient.age_group)
+                    min_room_day = min(min_room_day, patient.age_group)
 
+                S1 += max_room_day-min_room_day     # add the difference into the variable S1
 
 
                     
