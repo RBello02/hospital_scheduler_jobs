@@ -6,7 +6,7 @@ import numpy as np
 
 class Solution():
 
-    def __init__(self, Tempo, occupants, patients, surgeons, nurses):
+    def __init__(self, Tempo, rooms, patients, surgeons, nurses):
 
         # matrix patient x room x arriving time
 
@@ -24,23 +24,21 @@ class Solution():
                                      'patient': None} for surgeon in surgeons] for patient in patients]
 
 
-        # for the nurses we are going to create two variables, one for the occupants and the other for the patients 
+        # each nurse can work on a room in a shift in a particular day, notice that a during a particular day and a particular shift the nurse can stay in different rooms
 
-        # matrix nurses x occupants x rooms  x shift x time
+        # matrix nurses x  rooms  x shift x time
 
-        shifts = Tempo.shifts
+        shifts = Tempo.shifts    
 
-        self.nurses_schedule_occupant = [[[[{'nurse': nurse,
-                                          'occupant': None,
-                                          'shift': None,
-                                          'day': None} for nurse in nurses] for occupant in occupants] for shift in shifts] for day in range(T)]
-        
-        self.nurses_schedule_patient = [[[[{'nurse': nurse,
-                                          'patient': None,
-                                          'shift': None,
-                                          'day': None} for nurse in nurses] for patient in patients] for shift in shifts] for day in range(T)]
-
-
-
+        self.nurses_schedule = [[[[] for _ in rooms.rooms_id] for _ in shifts] for _ in range(T)]        
+        for nurse in nurses:
+            for day in range(T):
+                for shift in shifts:
+                    if nurse.possible_turns[day][shift] == 1:     # check if it is a working day/shift for the nurse
+                        for room_id in rooms.rooms_id:
+                            self.nurses_schedule[day][shift][room_id].append({'nurse': nurse,
+                                                                               'room': None})
+                                                                    
+                                                   
 
 

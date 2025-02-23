@@ -92,16 +92,16 @@ def main():
     # creating the hospital
 
     times = Times(time, shifts)
-    rooms = Rooms(t_rooms)
-    theaters = [Theaters(t_theater) for t_theater in t_theaters]    
+    rooms = Rooms(t_rooms, times)
+    theaters = Theaters(t_theaters)
 
     # creating the patients
 
-    patients = [Patient(t_patient) for t_patient in t_patients]
+    patients = [Patient(t_patient,times) for t_patient in t_patients]
 
     # creating the occupants 
 
-    occupants = [Occupant(t_occupant) for t_occupant in t_occupants]
+    occupants = [Occupant(t_occupant,times) for t_occupant in t_occupants]
 
     # creating the surgeons
 
@@ -112,18 +112,7 @@ def main():
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
 
-    # add the occupants:
-
-    for occupant in occupants:
-        rooms.add_occupant(occupant)
-
-    print(rooms.rooms_count_people)
-    print(rooms.rooms_gender)
-
-    for occupant in occupants:
-        rooms.remove_occupant(occupant)
-
-    print(rooms.rooms_count_people)
+    
 
     
 

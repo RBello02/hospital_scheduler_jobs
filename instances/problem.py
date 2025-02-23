@@ -174,16 +174,33 @@ class Problem ():
             # General rule: No patient can be admitted before their release day
             if day < patient.surgery_release_day:
                 counter += 1
-                print(Fore.YELLOW + f"Patient {patient.id} has an admission day ({day}) that is earlier than their release day ({patient.surgery_release_day}).")
+                print(Fore.YELLOW + f"H6 FAILED: Patient {patient.id} has an admission day ({day}) that is earlier than their release day ({patient.surgery_release_day}).")
 
             if check != 0:
                 check = False
 
 
+        # H7: Added a new constraint, all the rooms should be viewed by a nurse 
+
+        for day in range(T):
+            for shift in shifts:
+                for room_id in rooms.rooms_id:
+                    counter = 0
+                    for nurse in solution.nurses_schedule[day][shift][room_id]:
+                        if nurse['room'] is not None:  
+                            counter += 1
+                    if counter == 0:
+                        print(Fore.YELLOW + f"H7 FAILED: Room {room_id} has no nurse in day {day} during the shift {shift}")
+                        check = False
+                    if counter > 1:
+                        print(Fore.YELLOW + f"H7 FAILED: more then one nurse in the room {room_id} in day {day} in shift {shift}")
+                        check = False
+
+
         return check  # end value
     
 
-    def objective_function(self, age_map, solution, occupants, patients, surgeons, nurses, rooms, theaters, T, shifts):
+    def objective_function(self, age_map, solution, occupants, patients, surgeons, nurses, rooms, theaters, T, shifts, weights):
 
         # firstly we are gonna extract all the parte that should be minimize, each part is defined by S soft constraints
 
@@ -216,6 +233,30 @@ class Problem ():
                     min_room_day = min(min_room_day, patient.age_group)
 
                 S1 += max_room_day-min_room_day     # add the difference into the variable S1
+
+        
+        # S2: we shouldn't have a nurse with a skill level X working in a room where there is a patient with a skill level Y with Y > X
+
+        S2 = 0         # the sum that we should minimize
+        for day in range(T):
+            for shift in shifts:
+                for room_id in rooms.rooms_id:
+                    nurse_working_in_room = solution.nurses_schedule[day][shift][room_id]['nurse']
+                    nurse_skill = nurse_working_in_room.skill_level    
+
+                    patients_in_room = [entry['patient'] for entry in solution.patient_schedule
+                                        if entry['room'] == room_id and entry['day'] == day]
+                    
+                    for patient in patients_in_room:       # delay for the patients
+                        if patient.skill_level_required[day][shift] > nurse_skill:
+                            S2 += patient.skill_level_required[day][shift] - nurse_skill
+                        
+                    for occupant in occupants:    # delay for the occupants
+                        if occupant.room_id == room_id:    # check if the occupant is in the room
+                            if occupant.skill_level_required[day][shift] > nurse_skill:
+                                S2 += occupant.skill_level_required[day][shift] - nurse_skill
+
+
 
 
                     

@@ -22,9 +22,9 @@ class Rooms():
 
         self.rooms_id = [room['id'] for room in rooms]  # Save the id of the room 
         self.n_rooms = len(rooms)
-        self.rooms_capacity = [{room['id']: room['capacity'] for room in rooms} for t in tempo] # Maps the capacity of a single room
-        self.rooms_count_people =[{room['id']:0  for room in rooms} for t in tempo] # Tracks people inside a room for each day
-        self.rooms_gender = [{room['id']:None for room in rooms} for t in tempo] # Gender in rooms for each day
+        self.rooms_capacity = [{room['id']: room['capacity'] for room in rooms} for t in range(tempo.T)] # Maps the capacity of a single room
+        self.rooms_count_people =[{room['id']:0  for room in rooms} for t in range(tempo.T)] # Tracks people inside a room for each day
+        self.rooms_gender = [{room['id']:None for room in rooms} for t in range(tempo.T)] # Gender in rooms for each day
 
     def add_patient(self, room_index, patient, starting_time):   # add a patient in time t
         for t in range(starting_time, starting_time + patient.length_of_stay):
