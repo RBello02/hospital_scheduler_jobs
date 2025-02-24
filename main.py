@@ -111,7 +111,9 @@ def main():
 
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
-
+    for nurse in nurses:
+        print(nurse.possible_turns)
+        break
     
 
     

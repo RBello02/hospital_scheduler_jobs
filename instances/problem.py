@@ -267,10 +267,10 @@ class Problem ():
                     total_nurses.add(nurse)
             S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
 
-        for patient_schedule in solution.patient_schedule:  # for the patient
-            room_id = patient_schedule['room']
-            arriving_time = patient_schedule['day']
-            exit_time = patient_schedule['patient'].length_of_stay + arriving_time
+        for patient_s in solution.patient_schedule:  # for the patient
+            room_id = patient_s['room']      # this is not a patient object but a dic
+            arriving_time = patient_s['day']
+            exit_time = patient_s['patient'].length_of_stay + arriving_time
             total_nurses = set()   # create a set where store all the nurses that take care of the patient
             for day in range(arriving_time, exit_time + 1):    # +1 because range does'nt take the last element
                 for shift in shifts:
@@ -278,8 +278,36 @@ class Problem ():
                     total_nurses.add(nurse)    # update the set with nurse
             S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
 
+        
+        # S4: for all the shifts, the workload of all the patient in a room can't exceed the workload of the nurse in that turn
 
-    
+        S4 = 0
+
+        for day in range(T):
+            for shift in shifts:
+                for room_id in rooms.rooms_id:
+                    nurse = solution.nurse_schedule[day][shift][room_id]    # get the nurse that work in that time
+                    max_load = nurse.possible_turns[day][shift]
+                    room_load = 0
+                    for patient_s in solution.patient_schedule:     # it is not a patient object but a dic
+                        if patient_s['room'] == room_id:   # check if it is in the room
+                            patient = patient_s['patient']
+                            arriving_time = patient_s['day']
+                            exit_time = patient_s['patient'].length_of_stay + arriving_time  # the next check is not essential because workload = 0 if the patient is not in the Hospital
+                            if arriving_time <= day and exit_time >= day: # check if the patient is in the hospital in that day
+                                room_load += patient.workload_produced[day][shift]    
+                    
+                    for occupant in occupants: # just remember that there's also the occupants in the room
+                        if occupant.room_id == room_id:  # if he/she is in the room
+                            arriving_time = 0
+                            exit_time = occupant.length_of_stay + arriving_time
+                            if arriving_time <= day and exit_time >= day: # check if the occupant is in the hospital in that day
+                                room_load += occupant.workload_produced[day][shift]  
+
+                    if max_load < room_load:   # check if the load of a nurse is not sufficient for the room
+                        S4 += room_load-max_load
+                    
+
                 
 
 
