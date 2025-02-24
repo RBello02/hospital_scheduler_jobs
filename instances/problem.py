@@ -60,24 +60,17 @@ class Problem ():
 
         counter = 0
         for patient in patients:
-            room_for_patient = set ()  # set where is stored the rooms of the patient during the period
             compatible_rooms_for_patient = set(patient.compatible_room_ids)
-            for t in range(T):
-                room_at_t ={entry['room'] for entry in solution.patient_schedule
-                            if entry['patient'] == patient.id and entry['day']==t}
-                room_for_patient.update(room_at_t)
 
-            if not room_for_patient:  # if the patient has no room assigned ( in python an empty set is a boolean False )
+            assigned_room = next((entry['room'] for entry in solution.patient_schedule 
+                          if entry['patient'] == patient), None)
+
+            if assigned_room is None:  # if a patient has no room assigned 
                 print(Fore.YELLOW + f"H2 FAILED: Patient {patient.id} has no assigned room")
-                counter +=1
-            
-            if len(room_for_patient) != 1: # if he changes rooms 
-                print(Fore.YELLOW + f"H2 FAILED: The patient {patient.id} changes rooms during his stay" )
-                counter +=1 
-            
-            if not room_for_patient.issubset(compatible_rooms_for_patient): # if he stays in rooms were he can't stay
-                print(Fore.YELLOW +  f"H2 FAILED: The patient {patient.id} is assigned to incompatible rooms" )
-                counter +=1
+                counter += 1
+            elif assigned_room not in patient.compatible_room_ids:  # if the room is not compatible
+                print(Fore.YELLOW + f"H2 FAILED: The patient {patient.id} is assigned to an incompatible room")
+                counter += 1
         
         if counter != 0:
             check = False
@@ -108,8 +101,7 @@ class Problem ():
                                             for entry in row if entry['surgeon'].id == surgeon.id 
                                             and entry['patient'] is not None]
             
-            arrival_times = { patient: min(entry['day'] for entry in solution.patient_schedule if entry['patient'] == patient)
-                             for patient in operated_patients_by_surgeon}
+            arrival_times = {entry['patient']: entry['day'] for entry in solution.patient_schedule}
 
             for t in range(T):
                 total_time_of_operation = 0
@@ -255,6 +247,41 @@ class Problem ():
                         if occupant.room_id == room_id:    # check if the occupant is in the room
                             if occupant.skill_level_required[day][shift] > nurse_skill:
                                 S2 += occupant.skill_level_required[day][shift] - nurse_skill
+
+        
+        # S3: minimize the total number of nurses that provide a care to a single patient,
+        # we know each patient stays in only one room during their recovery (H2)
+
+        S3 = 0
+
+        # observe that each patient has at least 3 nurses, one for each shift 
+
+        for occupant in occupants: # for the occupants
+            room_id = occupant.room_id
+            arriving_time = 0
+            exit_time = occupant.length_of_stay
+            total_nurses = set()   # set with all the nurses for the occupant
+            for day in range(arriving_time, exit_time + 1):
+                for shift in shifts:
+                    nurse = solution.nurse_schedule[day][shift][room_id]
+                    total_nurses.add(nurse)
+            S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
+
+        for patient_schedule in solution.patient_schedule:  # for the patient
+            room_id = patient_schedule['room']
+            arriving_time = patient_schedule['day']
+            exit_time = patient_schedule['patient'].length_of_stay + arriving_time
+            total_nurses = set()   # create a set where store all the nurses that take care of the patient
+            for day in range(arriving_time, exit_time + 1):    # +1 because range does'nt take the last element
+                for shift in shifts:
+                    nurse = solution.nurse_schedule[day][shift][room_id]
+                    total_nurses.add(nurse)    # update the set with nurse
+            S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
+
+
+    
+                
+
 
 
 
