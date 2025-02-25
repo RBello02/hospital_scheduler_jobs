@@ -114,6 +114,8 @@ def main():
     for nurse in nurses:
         print(nurse.possible_turns)
         break
+
+    print(weights)
     
 
     

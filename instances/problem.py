@@ -153,13 +153,13 @@ class Problem ():
             patient = row['patient']
             day = row['day']
             if day is None:
-                if patient.mandatory:
+                if patient.mandatory == 1:
                     print(Fore.YELLOW + f"H5 FAILED: Patient {patient.id} is mandatory and must be admitted into the hospital.")
                     counter += 1
                 continue  # If the patient is optional and not admitted, it's fine
 
             # H6: Check that mandatory patients are admitted within their allowed period
-            if patient.mandatory and (day < patient.surgery_release_day or day > patient.surgery_due_day):
+            if patient.mandatory == 1 and (day < patient.surgery_release_day or day > patient.surgery_due_day):
                 counter += 1
                 print(Fore.YELLOW + f"H6 FAILED: Patient {patient.id} is mandatory and must be admitted within the scheduling period.")
 
@@ -306,9 +306,62 @@ class Problem ():
 
                     if max_load < room_load:   # check if the load of a nurse is not sufficient for the room
                         S4 += room_load-max_load
-                    
 
-                
+
+        # S5: the number of theaters opened per day should be minimized
+
+        S5 = 0
+
+        for day in range(T):
+            theaters_per_day = {op['theater'] for patient_ops in solution.surgeons_operations for op in patient_ops      # double for because of the structure of the class that is formed by two lists, one inside the other
+                                if op['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day] 
+                                and op['theater'] is not None}
+            S5 += len(theaters_per_day)
+
+        
+        # S6: the number of different theaters assigned to a surgeon per day should be minimize
+
+        S6 = 0
+
+        for day in range(T):
+            for surgeon in surgeons:
+                theaters_to_surgeon = {op['theater'] for patient_ops in solution.surgeons_operations for op in patient_ops
+                                       if op['surgeon'] == surgeon 
+                                       and op['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day]
+                                       and op['theater'] is not None}
+                S6 += len(theaters_to_surgeon)
+
+    
+        # S7: the number of days between the admission date and the release date should be minimize
+
+        S7 = 0
+
+        for p_schedule in solution.patient_schedule:
+            patient = p_schedule['patient']
+            release = patient.surgery_release_day   # it's the day in which the patient should arrive
+            admission = p_schedule['day']          # it's the day in which the patient arrives
+            S7 += admission - release
+
+
+        # S8: the number of optional patients that are not admitted should be minimize
+
+        S8 = 0
+
+        for p_schedule in solution.patient_schedule:
+            patient = p_schedule['patient']
+            if patient.mandatory == 0 and p_schedule['day'] is None:    # if a not mandatory patient doesn't enter in the Hospital
+                S8 += 1
+
+
+        # Now we can construct the objective function:
+
+        Objective_function_1 = weights['room_mixed_age']*S1 + weights['room_nurse_skill']*S2 + weights['continuity_of_care']*S3
+        Objective_function_2 = weights['nurse_eccessive_workload']*S4 + weights['open_operating_theater']*S5 + weights['surgeon_transfer']*S6
+        Objective_function_3 = weights['patient_delay']*S7 + weights['unscheduled_optional']*S8
+
+        return (Objective_function_1 + Objective_function_2 + Objective_function_3)
+
+
 
 
 
