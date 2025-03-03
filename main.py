@@ -6,7 +6,7 @@ from instances.patient import Patient
 from instances.occupant import Occupant
 from instances.surgeon import Surgeon
 from instances.nurse import Nurse
-from solvers import *
+from solvers.ALNS import ANLS
 from utils import *
 import json 
 import random
