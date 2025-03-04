@@ -22,7 +22,7 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
    # for NURSE_SCHEDULE we have to find the triad (ROOM, DAY, SHIFT) for EACH DAY, SHIFT and ROOM
 
 
-   ############################### PATIENT_SCHEDULE #######################################
+   ############################### PATIENT_SCHEDULE + SURGEONS_OPERATIONS #######################################
 
    mandatory_patients = []
    for patient in patients:
@@ -36,6 +36,14 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
                                     'delay': patient.surgery_due_day - patient.surgery_release_day})
          
    mandatory_patients.sort(key=lambda x: x['delay']) # sort over delay
+
+   # create a variable that stores the surgeons + the time that they invest during a day for an operation
+
+   surgeons_workload = [[0 for t in range(T)] for surgeon in surgeons]
+
+   # create a variable that stores the theaters + the time of the operation of the patient 
+
+   theaters_workload = [[0 for t in range(T)] for theater in theaters]
    
    for patient_dic in mandatory_patients:
       patient = patient_dic['patient']
@@ -46,29 +54,50 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
       # 2) of the same sex of the patient
       # 3) the there must be capacity for all his stay in the hospital
 
+      # also check that
+      # 4) there must be a surgeon for the patient in their admission date 
+      # 5) there must be a theater where the patient can be operated
+
       compatible_room_ids = patient.compatible_room_ids
       found_solution = False    
 
       for admission_day in range(patient.surgery_release_day, patient.surgery_due_day+1):   # selecting the admission date
-         for room_id in compatible_room_ids:
-            there_is_place = True
-            same_gender = True
-            for t in range(admission_day, admission_day+patient.length_of_stay):
-               room_gender = rooms.rooms_gender[t][room_id]
-               room_count_people = rooms.rooms_count_people[t][room_id]
-               if room_gender is not None and room_gender != patient.gender:    # room gender is None when a room is empty
-                  same_gender = False
-               if room_count_people >= rooms.rooms_capacity[room_id]:   # if there's no place during the schedule for a patient 
-                  there_is_place = False
-            if there_is_place and same_gender:        # if all the constraints are ok
-               solution.patient_schedule[patient] = {'patient': patient,
-                                                      'room': room_id,    
-                                                      'day': admission_day}    
-               found_solution = True
-               break   # close the for that is running over rooms_ids
-         if found_solution:
-            break # close the for that is running over the admission date
+
+         there_is_surgeon = False
+         there_is_theater = False
+
+         for idx,surgeon in enumerate(surgeons):
+            if surgeons_workload[idx][admission_day] + patient.surgery_duration <= surgeon.max_surgery_time:    # if a surgeon can operate in the admission date 
+               there_is_surgeon = True
+               break
          
+         for theater_id in theaters.theaters_id:
+            if theaters_workload[theater_id][admission_day] + patient.surgery_duration <= theaters.theaters_capacity[theater_id]: # if there is a theater in the admission date
+               there_is_theater = True
+               break
+
+         if there_is_surgeon and there_is_theater:  # i do all the for only if there is a theater and a surgeon
+            for room_id in compatible_room_ids:
+               there_is_place = True
+               same_gender = True
+               for t in range(admission_day, admission_day+patient.length_of_stay):
+                  room_gender = rooms.rooms_gender[t][room_id] 
+                  room_count_people = rooms.rooms_count_people[t][room_id]
+                  if room_gender is not None and room_gender != patient.gender:    # room gender is None when a room is empty
+                     same_gender = False
+                  if room_count_people >= rooms.rooms_capacity[room_id]:   # if there's no place during the schedule for a patient 
+                     there_is_place = False
+               if there_is_place and same_gender:        # if all the constraints are ok add the solution
+                  solution.patient_schedule[patient] = {'patient': patient,
+                                                         'room': room_id,    
+                                                         'day': admission_day}
+                  solution.surgeons_operations[patient][surgeon]  = {'surgeon': surgeon,
+                                                                     'theater': theater_id,
+                                                                     'patient': patient}
+                  found_solution = True
+                  break   # close the for that is running over rooms_ids
+            if found_solution:
+               break # close the for that is running over the admission date
          # now we add the patient to the hospital
       if found_solution:
          rooms.add_patient(room_id, patient, admission_day)
