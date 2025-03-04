@@ -22,7 +22,7 @@ class Rooms():
 
         self.rooms_id = [room['id'] for room in rooms]  # Save the id of the room 
         self.n_rooms = len(rooms)
-        self.rooms_capacity = [{room['id']: room['capacity'] for room in rooms} for t in range(tempo.T)] # Maps the capacity of a single room
+        self.rooms_capacity = {room['id']: room['capacity'] for room in rooms} # Maps the capacity of a single room
         self.rooms_count_people =[{room['id']:0  for room in rooms} for t in range(tempo.T)] # Tracks people inside a room for each day
         self.rooms_gender = [{room['id']:None for room in rooms} for t in range(tempo.T)] # Gender in rooms for each day
 

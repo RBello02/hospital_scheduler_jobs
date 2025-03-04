@@ -84,7 +84,7 @@ class Problem ():
         counter = 0
         for room_id in rooms.rooms_id:
             for t in range(T):
-                if number_of_patients[t][room_id] > capacity[t][room_id]:
+                if number_of_patients[t][room_id] > capacity[room_id]:
                     counter += 1
                     print(Fore.YELLOW +  f"H7 FAILED: Exceed maximal capacity of the room {room_id} at time {t}" )
         

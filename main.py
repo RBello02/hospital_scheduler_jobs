@@ -6,7 +6,6 @@ from instances.patient import Patient
 from instances.occupant import Occupant
 from instances.surgeon import Surgeon
 from instances.nurse import Nurse
-from solvers.ALNS import ANLS
 from utils import *
 import json 
 import random
@@ -87,6 +86,9 @@ def main():
     shifts = transformed_data['shifts']
 
 
+
+
+
     ############################ CLASSES ########################################
 
     # creating the hospital
@@ -111,12 +113,16 @@ def main():
 
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
-    for nurse in nurses:
-        print(nurse.possible_turns)
-        break
 
-    print(weights)
-    
+    print(rooms.rooms_count_people)
+
+
+
+
+    ############################### SOLVING PROBLEM ##################################
+
+
+
 
     
 
