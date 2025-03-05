@@ -18,11 +18,6 @@ class Problem ():
         self.shifts = shifts
         self.solution = solution
 
-        # first of all we have to add the occupants to the hospital
-
-        for occupant in occupants:
-            self.rooms.add_occupant(occupant)
-
 
 
     # creating a function for checking the Hard constraints
@@ -172,16 +167,16 @@ class Problem ():
                 check = False
 
 
-        # H7: Added a new constraint, all the rooms should be viewed by a nurse 
+        # H7: Added a new constraint, all the rooms that are not empty should be viewed by a nurse 
 
         for day in range(T):
             for shift in shifts:
                 for room_id in rooms.rooms_id:
                     counter = 0
-                    for nurse in solution.nurses_schedule[day][shift][room_id]:
+                    for nurse in solution.nurses_schedule[day][shift][room_id]:   # nurse is a dic
                         if nurse['room'] is not None:  
                             counter += 1
-                    if counter == 0:
+                    if counter == 0 and rooms.rooms_count_people[t][room_id]>0:   # if there is no nurse and the room is not empty
                         print(Fore.YELLOW + f"H7 FAILED: Room {room_id} has no nurse in day {day} during the shift {shift}")
                         check = False
                     if counter > 1:

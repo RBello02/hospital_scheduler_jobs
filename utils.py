@@ -80,6 +80,8 @@ def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeo
         patient_data['compatible_rooms_ids'] = [room_id for room_id in rooms_id if room_id not in patient_data['incompatible_room_ids']]
         patient_data['compatible_rooms_ids'] = [rooms_mapping[c_room] for c_room in patient_data['compatible_rooms_ids']]    # creating a feature with compatible rooms
 
+        
+
 
 
     return {'T': total_days,'shifts': shifts ,'age_mapping': age_to_number,'shift_mapping': shift_to_number ,'occupants': occupants_data, 'patients':patients_data, 'surgeons': surgeons_data, 'nurses': nurses_data ,'rooms': rooms_data, 'theaters': operating_theaters_data, 'weights': data['weights'] }

@@ -12,7 +12,7 @@ from instances.solution import Solution
 # the objective of this function is to find an initial solution to the scheduling problem.
 #  We have to generate a solution that is compatible with the hard constraints
 
-def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, theaters, T, shifts , weights):
+def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, theaters, T, shifts):
 
    # for PATIENT_SCHEDULE we have to find ROOM and DAY for EACH PATIENT
 
@@ -21,15 +21,22 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
 
    # for NURSE_SCHEDULE we have to find the triad (ROOM, DAY, SHIFT) for EACH DAY, SHIFT and ROOM
 
+   ############################### ADD THE OCCUPANTS ###################################################
+
+   # first of all we have to add the occupants to the hospital
+
+   for occupant in occupants:
+      rooms.add_occupant(occupant,T)
+
 
    ############################### PATIENT_SCHEDULE + SURGEONS_OPERATIONS #######################################
 
    mandatory_patients = []
    for patient in patients:
       if patient.mandatory == 0:   # for a first initial solution we kick off the not mandatory patients
-         solution.patient_schedule[patient] = {'patient': patient,
-                                                'room': None,     # no room
-                                                'day': None}      # no admission day
+         solution.patient_schedule[patient.id] = {'patient': patient,
+                                                  'room': None,     # no room
+                                                  'day': None}      # no admission day
       else:
          # the idea is to order by the delay between the release day and the due day 
          mandatory_patients.append({'patient': patient,
@@ -43,7 +50,7 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
 
    # create a variable that stores the theaters + the time of the operation of the patient 
 
-   theaters_workload = [[0 for t in range(T)] for theater in theaters]
+   theaters_workload = [[0 for t in range(T)] for theater_id in theaters.theaters_id]
    
    for patient_dic in mandatory_patients:
       patient = patient_dic['patient']
@@ -67,12 +74,12 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
          there_is_theater = False
 
          for idx,surgeon in enumerate(surgeons):
-            if surgeons_workload[idx][admission_day] + patient.surgery_duration <= surgeon.max_surgery_time:    # if a surgeon can operate in the admission date 
+            if surgeons_workload[idx][admission_day] + patient.surgery_duration <= surgeon.max_surgery_time[admission_day]:    # if a surgeon can operate in the admission date 
                there_is_surgeon = True
                break
          
          for theater_id in theaters.theaters_id:
-            if theaters_workload[theater_id][admission_day] + patient.surgery_duration <= theaters.theaters_capacity[theater_id]: # if there is a theater in the admission date
+            if theaters_workload[theater_id][admission_day] + patient.surgery_duration <= theaters.theaters_capacity[theater_id][admission_day]: # if there is a theater in the admission date
                there_is_theater = True
                break
 
@@ -80,7 +87,7 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
             for room_id in compatible_room_ids:
                there_is_place = True
                same_gender = True
-               for t in range(admission_day, admission_day+patient.length_of_stay):
+               for t in range(admission_day, min(admission_day+patient.length_of_stay, T)):    # I take the min, because the admis + length can go over T, and i don't want to know nothing after T
                   room_gender = rooms.rooms_gender[t][room_id] 
                   room_count_people = rooms.rooms_count_people[t][room_id]
                   if room_gender is not None and room_gender != patient.gender:    # room gender is None when a room is empty
@@ -88,10 +95,10 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
                   if room_count_people >= rooms.rooms_capacity[room_id]:   # if there's no place during the schedule for a patient 
                      there_is_place = False
                if there_is_place and same_gender:        # if all the constraints are ok add the solution
-                  solution.patient_schedule[patient] = {'patient': patient,
+                  solution.patient_schedule[patient.id] = {'patient': patient,
                                                          'room': room_id,    
                                                          'day': admission_day}
-                  solution.surgeons_operations[patient][surgeon]  = {'surgeon': surgeon,
+                  solution.surgeons_operations[patient.id][surgeon.id]  = {'surgeon': surgeon,
                                                                      'theater': theater_id,
                                                                      'patient': patient}
                   found_solution = True
@@ -100,5 +107,19 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
                break # close the for that is running over the admission date
          # now we add the patient to the hospital
       if found_solution:
-         rooms.add_patient(room_id, patient, admission_day)
+         rooms.add_patient(room_id, patient, admission_day, T)
 
+
+   #################################### NURSE SCHEDULE #######################################
+
+   # for the nurse we have to check that during each day and each shift there is almost a nurse in each room
+   # the idea is to assign for each day and shift a nurse to a room, he/she can work on that day and shift
+
+   for day in range(T):
+      for shift in shifts:
+         nurses_working = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]   # find the nurses that work on that shift and day, it must be not empty
+         for room_id in rooms.rooms_id: # assign that nurse to all the rooms, this is a first solution
+            solution.nurses_schedule[day][shift][room_id] = {'nurse': nurses_working[0],
+                                                             'room': room_id}
+            
+   return solution

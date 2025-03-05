@@ -6,7 +6,9 @@ from instances.patient import Patient
 from instances.occupant import Occupant
 from instances.surgeon import Surgeon
 from instances.nurse import Nurse
+from instances.solution import Solution
 from utils import *
+from solvers.initial_solution import initial_solution
 import json 
 import random
 
@@ -25,7 +27,7 @@ def main():
 
     #  reading
 
-    filename = 'test01.json'
+    filename = 'test02.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -114,12 +116,19 @@ def main():
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
 
-    print(rooms.rooms_count_people)
 
 
 
 
     ############################### SOLVING PROBLEM ##################################
+
+    # initial solution
+
+    solution = Solution(times, rooms, patients, surgeons, nurses)    # initializing the class solution
+
+    solution = initial_solution(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
+
+    print(solution.nurses_schedule)
 
 
 
