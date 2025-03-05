@@ -22,7 +22,7 @@ class Problem ():
 
     # creating a function for checking the Hard constraints
 
-    def constraints(self, solution, occupants, patients, surgeons, nurses, rooms, theaters, T, shifts):
+    def constraints(self, solution, patients, surgeons, rooms, theaters, T, shifts):      # THERE'S NO NURSES AND OCCUPANTS
 
         # boolean variable that tells us if all the constraints are ok
 
@@ -60,10 +60,10 @@ class Problem ():
             assigned_room = next((entry['room'] for entry in solution.patient_schedule 
                           if entry['patient'] == patient), None)
 
-            if assigned_room is None:  # if a patient has no room assigned 
+            if assigned_room is None and patient.mandatory == 1:  # if a patient that must be in the hospital has no room assigned 
                 print(Fore.YELLOW + f"H2 FAILED: Patient {patient.id} has no assigned room")
                 counter += 1
-            elif assigned_room not in patient.compatible_room_ids:  # if the room is not compatible
+            elif assigned_room not in patient.compatible_room_ids and patient.mandatory == 1:  # if the room is not compatible
                 print(Fore.YELLOW + f"H2 FAILED: The patient {patient.id} is assigned to an incompatible room")
                 counter += 1
         
@@ -133,9 +133,9 @@ class Problem ():
 
         for t in range(T):
             for theater_id in theaters.theaters_id:
-                if theaters_usage[t][theater_id] > theaters.theaters_capacity[theater_id]:
+                if theaters_usage[t][theater_id] > theaters.theaters_capacity[theater_id][t]:
                     counter += 1
-                    print(Fore.YELLOW +  f"H4 FAILED: Exceed maximal operation capacity for the theater {theater_id} at time {t}, requested: {theaters_usage[t][theater_id]} | maximal: {theaters.theaters_capacity[theater_id]}" )
+                    print(Fore.YELLOW +  f"H4 FAILED: Exceed maximal operation capacity for the theater {theater_id} at time {t}, requested: {theaters_usage[t][theater_id]} | maximal: {theaters.theaters_capacity[theater_id][t]}" )
                 
         if counter != 0:
             check = False
@@ -167,27 +167,40 @@ class Problem ():
                 check = False
 
 
-        # H7: Added a new constraint, all the rooms that are not empty should be viewed by a nurse 
+        # H7|A; added new constraint, for each day and shift, if a room is not empty a nurse must be there
+
+        for day in range(T):
+            for shift in shifts:
+                for room_id in rooms.rooms_id:
+                    if rooms.rooms_count_people[t][room_id] > 0 and len(solution.nurses_schedule[day][shift][room_id]) == 0: # if there somebody and there isn't a nurse
+                        check = False
+                        print(Fore.YELLOW + f"H7|A FAILED: room {room_id} during day ({day}) and shift ({shifts}) has no nurse assigned, also if there are ({rooms.rooms_count_people[t][room_id]}) people")
+
+
+        # H7|B: Added a new constraint, all the rooms that are not empty should be viewed by a nurse 
 
         for day in range(T):
             for shift in shifts:
                 for room_id in rooms.rooms_id:
                     counter = 0
-                    for nurse in solution.nurses_schedule[day][shift][room_id]:   # nurse is a dic
+                    for nurse in solution.nurses_schedule[day][shift][room_id]:   # nurse is a list dic
                         if nurse['room'] is not None:  
-                            counter += 1
+                            counter += 1     # count the number of nurses in the room
                     if counter == 0 and rooms.rooms_count_people[t][room_id]>0:   # if there is no nurse and the room is not empty
-                        print(Fore.YELLOW + f"H7 FAILED: Room {room_id} has no nurse in day {day} during the shift {shift}")
+                        print(Fore.YELLOW + f"H7|B FAILED: Room {room_id} has no nurse in day {day} during the shift {shift}")
                         check = False
                     if counter > 1:
-                        print(Fore.YELLOW + f"H7 FAILED: more then one nurse in the room {room_id} in day {day} in shift {shift}")
+                        print(Fore.YELLOW + f"H7|B FAILED: more then one nurse in the room {room_id} in day {day} in shift {shift}")
                         check = False
+
+
+                
 
 
         return check  # end value
     
 
-    def objective_function(self, age_map, solution, occupants, patients, surgeons, nurses, rooms, theaters, T, shifts, weights):
+    def objective_function(self, age_map, solution, occupants, surgeons, rooms, T, shifts, weights):   # THERE'S NO PATIENTS,NURSES AND THEATERS
 
         # firstly we are gonna extract all the parte that should be minimize, each part is defined by S soft constraints
 

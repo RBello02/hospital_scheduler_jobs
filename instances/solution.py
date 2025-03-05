@@ -31,13 +31,6 @@ class Solution():
         shifts = Tempo.shifts    
 
         self.nurses_schedule = [[[[] for _ in rooms.rooms_id] for _ in shifts] for _ in range(T)]        
-        for nurse in nurses:
-            for day in range(T):
-                for shift in shifts:
-                    if nurse.possible_turns[day][shift] != 0:     # check if it is a working day/shift for the nurse
-                        for room_id in rooms.rooms_id:
-                            self.nurses_schedule[day][shift][room_id].append({'nurse': nurse,
-                                                                               'room': None})
                                                                     
                                                    
 

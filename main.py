@@ -1,4 +1,7 @@
 import numpy as np
+import json 
+import random
+
 from instances.hospital import Times
 from instances.hospital import Rooms
 from instances.hospital import Theaters
@@ -6,11 +9,14 @@ from instances.patient import Patient
 from instances.occupant import Occupant
 from instances.surgeon import Surgeon
 from instances.nurse import Nurse
+from instances.problem import Problem
 from instances.solution import Solution
+
 from utils import *
+
 from solvers.initial_solution import initial_solution
-import json 
-import random
+
+
 
 random_seed = min(341965, 343316, 284817)
 
@@ -128,7 +134,11 @@ def main():
 
     solution = initial_solution(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
 
-    print(solution.nurses_schedule)
+    # initializing the problem
+
+    problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
+
+    problem.constraints(solution, patients, surgeons, rooms, theaters, time, shifts)
 
 
 
