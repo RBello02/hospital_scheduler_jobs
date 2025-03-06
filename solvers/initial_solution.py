@@ -101,13 +101,20 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
                   solution.surgeons_operations[patient.id][surgeon.id]  = {'surgeon': surgeon,
                                                                      'theater': theater_id,
                                                                      'patient': patient}
+                  
+                  # add the time to the surgeons and theaters
+
+                  surgeons_workload[idx][admission_day] += patient.surgery_duration
+                  theaters_workload[theater_id][admission_day] += patient.surgery_duration
+
                   found_solution = True
                   break   # close the for that is running over rooms_ids
             if found_solution:
                break # close the for that is running over the admission date
-         # now we add the patient to the hospital
+      # now we add the patient to the hospital
       if found_solution:
          rooms.add_patient(room_id, patient, admission_day, T)
+
 
 
    #################################### NURSE SCHEDULE #######################################

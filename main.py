@@ -136,6 +136,11 @@ def main():
 
     # initializing the problem
 
+    t = 10
+    for theater_id in theaters.theaters_id:
+        print(theaters.theaters_capacity[theater_id])
+        print(theaters.theaters_capacity[theater_id][t])
+
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
     problem.constraints(solution, patients, surgeons, rooms, theaters, time, shifts)
