@@ -114,6 +114,7 @@ class Problem ():
 
         # H4: the duration of all the surgery at time t must not exceed the maximal daily capacity of the theater
 
+        """
         theaters_usage = {t: {theater_id: 0 for theater_id in theaters.theaters_id} for t in range(T)}    # time of daily operations
 
         counter = 0
@@ -139,6 +140,26 @@ class Problem ():
                 
         if counter != 0:
             check = False
+        """
+        counter = 0
+        theaters_usage =  [ [0 for theater_id in theaters.theaters_id] for t in range(T)]    # time of daily operations
+
+        for t in range(T):
+            for patient in patients:
+                for surgeon in surgeons:
+                    if solution.surgeons_operations[patient.id][surgeon.id]['theater'] is not None:
+                        if solution.patient_schedule[patient.id]['day'] == t:    # if the patient is in the hospital
+                            theaters_usage[t][solution.surgeons_operations[patient.id][surgeon.id]['theater']] += patient.surgery_duration
+
+        for t in range(T):
+            for theater_id in theaters.theaters_id:
+                if theaters_usage[t][theater_id] > theaters.theaters_capacity[theater_id][t]:
+                    counter += 1
+                    print(Fore.YELLOW +  f"H4 FAILED: Exceed maximal operation capacity for the theater {theater_id} at time {t}, requested: {theaters_usage[t][theater_id]} | maximal: {theaters.theaters_capacity[theater_id][t]}" )  
+        if counter != 0:
+            check = False
+
+                    
 
         # H5: All the mandatory patients must be admitted 
         # H6: They must be admitted in their schedule period
@@ -163,8 +184,8 @@ class Problem ():
                 counter += 1
                 print(Fore.YELLOW + f"H6 FAILED: Patient {patient.id} has an admission day ({day}) that is earlier than their release day ({patient.surgery_release_day}).")
 
-            if check != 0:
-                check = False
+        if counter != 0:
+            check = False
 
 
         # H7|A; added new constraint, for each day and shift, if a room is not empty a nurse must be there
@@ -241,8 +262,11 @@ class Problem ():
         for day in range(T):
             for shift in shifts:
                 for room_id in rooms.rooms_id:
-                    nurse_working_in_room = solution.nurses_schedule[day][shift][room_id]['nurse']
-                    nurse_skill = nurse_working_in_room.skill_level    
+                    nurse_dic_working_in_room = solution.nurses_schedule[day][shift][room_id] # this is a list of dic
+
+                    list_skills = [nurse['nurse'].skill_level for nurse in nurse_dic_working_in_room]   # list of the skill level of the nurses in the room
+                    
+                    nurse_skill = max(list_skills)   # the skill level is maximum skill level in the rooms
 
                     patients_in_room = [entry['patient'] for entry in solution.patient_schedule
                                         if entry['room'] == room_id and entry['day'] == day]
@@ -271,20 +295,23 @@ class Problem ():
             total_nurses = set()   # set with all the nurses for the occupant
             for day in range(arriving_time, exit_time + 1):
                 for shift in shifts:
-                    nurse = solution.nurse_schedule[day][shift][room_id]
-                    total_nurses.add(nurse)
+                    nurses_in_the_room = solution.nurses_schedule[day][shift][room_id]
+                    for nurse in nurses_in_the_room:
+                        total_nurses.add(nurse['nurse'])   # this is a dic
             S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
 
         for patient_s in solution.patient_schedule:  # for the patient
             room_id = patient_s['room']      # this is not a patient object but a dic
             arriving_time = patient_s['day']
-            exit_time = patient_s['patient'].length_of_stay + arriving_time
-            total_nurses = set()   # create a set where store all the nurses that take care of the patient
-            for day in range(arriving_time, exit_time + 1):    # +1 because range does'nt take the last element
-                for shift in shifts:
-                    nurse = solution.nurse_schedule[day][shift][room_id]
-                    total_nurses.add(nurse)    # update the set with nurse
-            S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
+            if arriving_time is not None:  # it means that the patient is in the hospital
+                exit_time = patient_s['patient'].length_of_stay + arriving_time
+                total_nurses = set()   # create a set where store all the nurses that take care of the patient
+                for day in range(arriving_time, min(T,exit_time)):    # +1 because range does'nt take the last element
+                    for shift in shifts:
+                        nurses_in_the_room = solution.nurses_schedule[day][shift][room_id]
+                        for nurse in nurses_in_the_room:
+                            total_nurses.add(nurse['nurse'])    # update the set with nurse
+                S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
 
         
         # S4: for all the shifts, the workload of all the patient in a room can't exceed the workload of the nurse in that turn
@@ -294,26 +321,28 @@ class Problem ():
         for day in range(T):
             for shift in shifts:
                 for room_id in rooms.rooms_id:
-                    nurse = solution.nurse_schedule[day][shift][room_id]    # get the nurse that work in that time
-                    max_load = nurse.possible_turns[day][shift]
-                    room_load = 0
-                    for patient_s in solution.patient_schedule:     # it is not a patient object but a dic
-                        if patient_s['room'] == room_id:   # check if it is in the room
-                            patient = patient_s['patient']
-                            arriving_time = patient_s['day']
-                            exit_time = patient_s['patient'].length_of_stay + arriving_time  # the next check is not essential because workload = 0 if the patient is not in the Hospital
-                            if arriving_time <= day and exit_time >= day: # check if the patient is in the hospital in that day
-                                room_load += patient.workload_produced[day][shift]    
-                    
-                    for occupant in occupants: # just remember that there's also the occupants in the room
-                        if occupant.room_id == room_id:  # if he/she is in the room
-                            arriving_time = 0
-                            exit_time = occupant.length_of_stay + arriving_time
-                            if arriving_time <= day and exit_time >= day: # check if the occupant is in the hospital in that day
-                                room_load += occupant.workload_produced[day][shift]  
+                    nurses_list_of_dic = solution.nurses_schedule[day][shift][room_id]    # get the nurse that work in that time
+                    for nurse_dic in nurses_list_of_dic:
+                        nurse = nurse_dic['nurse']
+                        max_load = nurse.possible_turns[day][shift]
+                        room_load = 0
+                        for patient_s in solution.patient_schedule:     # it is not a patient object but a dic
+                            if patient_s['room'] == room_id:   # check if it is in the room
+                                patient = patient_s['patient']
+                                arriving_time = patient_s['day']
+                                exit_time = patient_s['patient'].length_of_stay + arriving_time  # the next check is not essential because workload = 0 if the patient is not in the Hospital
+                                if arriving_time <= day and exit_time >= day: # check if the patient is in the hospital in that day
+                                    room_load += patient.workload_produced[day][shift]    
+                        
+                        for occupant in occupants: # just remember that there's also the occupants in the room
+                            if occupant.room_id == room_id:  # if he/she is in the room
+                                arriving_time = 0
+                                exit_time = occupant.length_of_stay + arriving_time
+                                if arriving_time <= day and exit_time >= day: # check if the occupant is in the hospital in that day
+                                    room_load += occupant.workload_produced[day][shift]  
 
-                    if max_load < room_load:   # check if the load of a nurse is not sufficient for the room
-                        S4 += room_load-max_load
+                        if max_load < room_load:   # check if the load of a nurse is not sufficient for the room
+                            S4 += room_load-max_load
 
 
         # S5: the number of theaters opened per day should be minimized
@@ -348,7 +377,8 @@ class Problem ():
             patient = p_schedule['patient']
             release = patient.surgery_release_day   # it's the day in which the patient should arrive
             admission = p_schedule['day']          # it's the day in which the patient arrives
-            S7 += admission - release
+            if admission is not None:
+                S7 += admission - release
 
 
         # S8: the number of optional patients that are not admitted should be minimize

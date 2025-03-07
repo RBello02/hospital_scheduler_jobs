@@ -33,7 +33,7 @@ def main():
 
     #  reading
 
-    filename = 'test02.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -136,14 +136,20 @@ def main():
 
     # initializing the problem
 
-    t = 10
-    for theater_id in theaters.theaters_id:
-        print(theaters.theaters_capacity[theater_id])
-        print(theaters.theaters_capacity[theater_id][t])
+    """
+    for patient in patients:
+        arriving = solution.patient_schedule[patient.id]['day']
+        for surgeon in surgeons:
+            if solution.surgeons_operations[patient.id][surgeon.id]['theater'] is not None:
+                print('time', arriving,'surgeon', surgeon.id, 'patient', patient.id, 'duration', patient.surgery_duration, 'max duration for surgeon', surgeon.max_surgery_time[arriving] , 'theater', solution.surgeons_operations[patient.id][surgeon.id]['theater'], 'max duration for theater', theaters.theaters_capacity[solution.surgeons_operations[patient.id][surgeon.id]['theater']][arriving])
+    
+    """
 
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
-    problem.constraints(solution, patients, surgeons, rooms, theaters, time, shifts)
+    print(problem.constraints(solution, patients, surgeons, rooms, theaters, time, shifts))
+
+    print(problem.objective_function(age_map, solution, occupants, surgeons, rooms, time, shifts, weights))
 
 
 
