@@ -25,6 +25,10 @@ random.seed(random_seed)
 
 def main():
 
+
+
+
+
     ############################ PREPROCESSING ########################################
 
     # reading the json file from the test set
@@ -143,9 +147,14 @@ def main():
 
     print(problem.objective_function(age_map, solution, occupants, surgeons, rooms, time, shifts, weights))
 
-    out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map)
 
-    # save the sol on output_for_validation
+
+
+    
+
+    ######################################## OUTPUT FOR VALIDATION ########################################
+
+    out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map)
     
     with open('output_for_validation/'+"sol_"+filename, 'w') as file:
         json.dump(out_sol, file, indent=4)

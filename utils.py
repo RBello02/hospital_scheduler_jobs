@@ -123,7 +123,7 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
             patients_solution.append({"id": f"p{patient.id:0{num_digits_for_patient}d}",
                                       "admission_day": patient_dic['day'],
                                       "room": f"r{patient_dic['room']:0{num_digits_for_room}d}",
-                                      "operating_theater2": f"t{theater_id:0{num_digits_for_theater}d}"})
+                                      "operating_theater": f"t{theater_id:0{num_digits_for_theater}d}"})
             
     
     # now we go for the nurses
@@ -147,6 +147,7 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
                                 rooms_set.add(f"r{room_id:0{num_digits_for_room}d}")
                     
                     rooms_list = list(rooms_set) # rooms_set becomes a list
+                    rooms_list.sort()
                     nurse_assignment.append({"day": day, "shift": next((k for k, v in shift_mapping.items() if v == shift), None), "rooms": rooms_list})
         nurses_solution.append({"id": f"n{nurse.id:0{num_digits_for_nurse}d}", "assignment": nurse_assignment})
                             
