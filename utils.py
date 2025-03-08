@@ -85,3 +85,51 @@ def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeo
 
 
     return {'T': total_days,'shifts': shifts ,'age_mapping': age_to_number,'shift_mapping': shift_to_number ,'occupants': occupants_data, 'patients':patients_data, 'surgeons': surgeons_data, 'nurses': nurses_data ,'rooms': rooms_data, 'theaters': operating_theaters_data, 'weights': data['weights'] }
+
+
+
+def postprocess (solution, patients, surgeons, nurses, rooms, theaters, shifts, shift_mapping):
+
+    # this function produces the json file for the validation of the solution
+
+    # get the number of patients
+    n_patients = len(patients)
+    num_digits_for_patient = len(str(n_patients))
+
+    # get the number of theaters
+    n_theaters = theaters.n_theaters
+    num_digits_for_theater = len(str(n_theaters))
+
+    # get the number of rooms
+    n_rooms = rooms.n_rooms
+    num_digits_for_room = len(str(n_rooms))
+
+    # starting from the patients
+    patients_solution = []
+
+    for patient in patients:
+        patient_dic = solution.patient_schedule[patient.id]
+        if patient_dic['day'] is None:          # it means that the patient is not in the hospital
+            patients_solution.append({"id": f"p{patient.id:0{num_digits_for_patient}d}",
+                                      "admission_day": "none"})
+        else:
+            # get the operating theater where the patient is
+            operating = solution.surgeons_operations[patient.id]
+            for surgeon in surgeons:
+                if operating[surgeon.id]['patient'] == patient and operating[surgeon.id]['theater'] is not None:
+                    theater_id = operating[surgeon.id]['theater']   # found the theater
+                    break
+            
+            patients_solution.append({"id": f"p{patient.id:0{num_digits_for_patient}d}",
+                                      "admission_day": patient_dic['day'],
+                                      "room": f"r{patient_dic['room']:0{num_digits_for_room}d}",
+                                      "operating_theater2": f"t{theater_id:0{num_digits_for_theater}d}"})
+            
+
+    # return the json file
+
+    return {"patients": patients_solution}
+
+
+
+

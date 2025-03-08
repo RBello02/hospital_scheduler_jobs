@@ -151,6 +151,12 @@ def main():
 
     print(problem.objective_function(age_map, solution, occupants, surgeons, rooms, time, shifts, weights))
 
+    pat_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, shifts, shift_map)
+
+    print(pat_sol)
+
+    with open(filename[:-5]+'_solution.json', 'w') as file:
+        json.dump(pat_sol, file, indent=4)
 
 
 
