@@ -150,14 +150,17 @@ def main():
 
 
 
-    
+
 
     ######################################## OUTPUT FOR VALIDATION ########################################
 
     out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map)
-    
-    with open('output_for_validation/'+"sol_"+filename, 'w') as file:
-        json.dump(out_sol, file, indent=4)
+
+    json_object = json.dumps(out_sol, indent=4)
+
+    with open('output_for_validation/'+"out_"+filename, 'w') as file:
+        file.write(json_object)
+
         
 
 
