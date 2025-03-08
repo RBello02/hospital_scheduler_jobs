@@ -114,33 +114,6 @@ class Problem ():
 
         # H4: the duration of all the surgery at time t must not exceed the maximal daily capacity of the theater
 
-        """
-        theaters_usage = {t: {theater_id: 0 for theater_id in theaters.theaters_id} for t in range(T)}    # time of daily operations
-
-        counter = 0
-        for t in range(T):
-            for row in solution.surgeons_operations:
-                for entry in row:
-                    if entry['patient'] is not None and entry['theater'] is not None:
-                        patient = entry['patient']
-                        theater = entry['theater']
-                        
-                        # Check if the operation is scheduled for day t
-                        if patient.surgery_due_day == t:
-                            # Add the surgery duration to the operating theater usage
-                            if theater not in theaters_usage[t]:
-                                theaters_usage[t][theater] = 0  # Initialize the usage time if it's not already present
-                            theaters_usage[t][theater] += patient.surgery_duration
-
-        for t in range(T):
-            for theater_id in theaters.theaters_id:
-                if theaters_usage[t][theater_id] > theaters.theaters_capacity[theater_id][t]:
-                    counter += 1
-                    print(Fore.YELLOW +  f"H4 FAILED: Exceed maximal operation capacity for the theater {theater_id} at time {t}, requested: {theaters_usage[t][theater_id]} | maximal: {theaters.theaters_capacity[theater_id][t]}" )
-                
-        if counter != 0:
-            check = False
-        """
         counter = 0
         theaters_usage =  [ [0 for theater_id in theaters.theaters_id] for t in range(T)]    # time of daily operations
 
@@ -322,9 +295,10 @@ class Problem ():
             for shift in shifts:
                 for room_id in rooms.rooms_id:
                     nurses_list_of_dic = solution.nurses_schedule[day][shift][room_id]    # get the nurse that work in that time
+                    max_load = 0 # initialize the max load
                     for nurse_dic in nurses_list_of_dic:
                         nurse = nurse_dic['nurse']
-                        max_load = nurse.possible_turns[day][shift]
+                        max_load += nurse.possible_turns[day][shift]    # is the sum of the workload of the nurses that stay in that room
                         room_load = 0
                         for patient_s in solution.patient_schedule:     # it is not a patient object but a dic
                             if patient_s['room'] == room_id:   # check if it is in the room

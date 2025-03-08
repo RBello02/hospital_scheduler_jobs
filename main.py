@@ -136,14 +136,6 @@ def main():
 
     # initializing the problem
 
-    """
-    for patient in patients:
-        arriving = solution.patient_schedule[patient.id]['day']
-        for surgeon in surgeons:
-            if solution.surgeons_operations[patient.id][surgeon.id]['theater'] is not None:
-                print('time', arriving,'surgeon', surgeon.id, 'patient', patient.id, 'duration', patient.surgery_duration, 'max duration for surgeon', surgeon.max_surgery_time[arriving] , 'theater', solution.surgeons_operations[patient.id][surgeon.id]['theater'], 'max duration for theater', theaters.theaters_capacity[solution.surgeons_operations[patient.id][surgeon.id]['theater']][arriving])
-    
-    """
 
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
@@ -151,12 +143,13 @@ def main():
 
     print(problem.objective_function(age_map, solution, occupants, surgeons, rooms, time, shifts, weights))
 
-    pat_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, shifts, shift_map)
+    out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map)
 
-    print(pat_sol)
-
-    with open(filename[:-5]+'_solution.json', 'w') as file:
-        json.dump(pat_sol, file, indent=4)
+    # save the sol on output_for_validation
+    
+    with open('output_for_validation/'+"sol_"+filename, 'w') as file:
+        json.dump(out_sol, file, indent=4)
+        
 
 
 

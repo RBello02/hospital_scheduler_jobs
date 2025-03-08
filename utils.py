@@ -88,7 +88,7 @@ def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeo
 
 
 
-def postprocess (solution, patients, surgeons, nurses, rooms, theaters, shifts, shift_mapping):
+def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shifts, shift_mapping):
 
     # this function produces the json file for the validation of the solution
 
@@ -125,10 +125,35 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, shifts, 
                                       "room": f"r{patient_dic['room']:0{num_digits_for_room}d}",
                                       "operating_theater2": f"t{theater_id:0{num_digits_for_theater}d}"})
             
+    
+    # now we go for the nurses
+
+    # get the number of nurses
+    n_nurses = len(nurses)
+    num_digits_for_nurse = len(str(n_nurses))
+
+    nurses_solution = []
+
+    for nurse in nurses:
+        nurse_assignment= []
+        for day in range(T):
+            for shift in shifts:
+                if nurse.possible_turns[day][shift] > 0:   # check if the nurse can work on that day
+                    rooms_set = set()   # is the set of the rooms where the nurse is working
+                    for room_id in rooms.rooms_id:
+                        nurse_list = solution.nurses_schedule[day][shift][room_id]   # get the nurses that work in that particular room
+                        for nurse_dic in nurse_list:
+                            if nurse_dic['nurse'] == nurse:
+                                rooms_set.add(f"r{room_id:0{num_digits_for_room}d}")
+                    
+                    rooms_list = list(rooms_set) # rooms_set becomes a list
+                    nurse_assignment.append({"day": day, "shift": next((k for k, v in shift_mapping.items() if v == shift), None), "rooms": rooms_list})
+        nurses_solution.append({"id": f"n{nurse.id:0{num_digits_for_nurse}d}", "assignment": nurse_assignment})
+                            
 
     # return the json file
 
-    return {"patients": patients_solution}
+    return {"patients": patients_solution, "nurses": nurses_solution}
 
 
 
