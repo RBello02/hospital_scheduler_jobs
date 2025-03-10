@@ -109,8 +109,9 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
 
     for patient in patients:
         patient_dic = solution.patient_schedule[patient.id]
+        patient_id_str = f"p{patient.id:0{num_digits_for_patient}d}"
         if patient_dic['day'] is None:          # it means that the patient is not in the hospital
-            patients_solution.append({"id": f"p{patient.id}",
+            patients_solution.append({"id": patient_id_str,
                                       "admission_day": "none"})
         else:
             # get the operating theater where the patient is
@@ -120,10 +121,10 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
                     theater_id = operating[surgeon.id]['theater']   # found the theater
                     break
             
-            patients_solution.append({"id": f"p{patient.id}",
+            patients_solution.append({"id": patient_id_str,
                                       "admission_day": patient_dic['day'],
-                                      "room": f"r{patient_dic['room']}",
-                                      "operating_theater": f"t{theater_id}"})
+                                      "room": f"r{patient_dic['room']:0{num_digits_for_room}d}",
+                                      "operating_theater": f"t{theater_id:0{num_digits_for_theater}d}"})
             
     
     # now we go for the nurses
@@ -136,6 +137,7 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
 
     for nurse in nurses:
         nurse_assignment= []
+        nurse_id_str = f"n{nurse.id:0{num_digits_for_nurse}d}"
         for day in range(T):
             for shift in shifts:
                 if nurse.possible_turns[day][shift] > 0:   # check if the nurse can work on that day
@@ -149,7 +151,7 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
                     rooms_list = list(rooms_set) # rooms_set becomes a list
                     rooms_list.sort()
                     nurse_assignment.append({"day": day, "shift": next((k for k, v in shift_mapping.items() if v == shift), None), "rooms": rooms_list})
-        nurses_solution.append({"id": f"n{nurse.id}", "assignment": nurse_assignment})
+        nurses_solution.append({"id": nurse_id_str, "assignment": nurse_assignment})
                             
 
     # return the json file

@@ -1,45 +1,45 @@
 {
     "patients": [
         {
-            "id": "p0",
+            "id": "p00",
             "admission_day": "none"
         },
         {
-            "id": "p1",
+            "id": "p01",
             "admission_day": "none"
         },
         {
-            "id": "p2",
+            "id": "p02",
             "admission_day": "none"
         },
         {
-            "id": "p3",
+            "id": "p03",
             "admission_day": "none"
         },
         {
-            "id": "p4",
+            "id": "p04",
             "admission_day": 3,
             "room": "r3",
             "operating_theater": "t0"
         },
         {
-            "id": "p5",
+            "id": "p05",
             "admission_day": "none"
         },
         {
-            "id": "p6",
+            "id": "p06",
             "admission_day": "none"
         },
         {
-            "id": "p7",
+            "id": "p07",
             "admission_day": "none"
         },
         {
-            "id": "p8",
+            "id": "p08",
             "admission_day": "none"
         },
         {
-            "id": "p9",
+            "id": "p09",
             "admission_day": "none"
         },
         {
@@ -193,7 +193,7 @@
     ],
     "nurses": [
         {
-            "id": "n0",
+            "id": "n00",
             "assignment": [
                 {
                     "day": 0,
@@ -396,7 +396,7 @@
             ]
         },
         {
-            "id": "n1",
+            "id": "n01",
             "assignment": [
                 {
                     "day": 0,
@@ -569,7 +569,7 @@
             ]
         },
         {
-            "id": "n2",
+            "id": "n02",
             "assignment": [
                 {
                     "day": 0,
@@ -731,7 +731,7 @@
             ]
         },
         {
-            "id": "n3",
+            "id": "n03",
             "assignment": [
                 {
                     "day": 0,
@@ -843,7 +843,7 @@
             ]
         },
         {
-            "id": "n4",
+            "id": "n04",
             "assignment": [
                 {
                     "day": 0,
@@ -963,7 +963,7 @@
             ]
         },
         {
-            "id": "n5",
+            "id": "n05",
             "assignment": [
                 {
                     "day": 1,
@@ -1060,7 +1060,7 @@
             ]
         },
         {
-            "id": "n6",
+            "id": "n06",
             "assignment": [
                 {
                     "day": 0,
@@ -1198,7 +1198,7 @@
             ]
         },
         {
-            "id": "n7",
+            "id": "n07",
             "assignment": [
                 {
                     "day": 0,
@@ -1294,7 +1294,7 @@
             ]
         },
         {
-            "id": "n8",
+            "id": "n08",
             "assignment": [
                 {
                     "day": 0,
@@ -1374,7 +1374,7 @@
             ]
         },
         {
-            "id": "n9",
+            "id": "n09",
             "assignment": [
                 {
                     "day": 3,
