@@ -37,7 +37,7 @@ def main():
 
     #  reading
 
-    filename = 'test01.json'
+    filename = 'test02.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -143,9 +143,18 @@ def main():
 
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
-    print(problem.constraints(solution, patients, surgeons, rooms, theaters, time, shifts))
+    if problem.constraints(solution, patients, surgeons, rooms, theaters, time, shifts):
+        print("The solution is feasible")
+        print("**********************************")
+        tot_cost, cost_dic = problem.objective_function(age_map, solution, occupants, surgeons, rooms, time, shifts, weights)
+        print("The total cost is: ", tot_cost)
+        print("**********************************") 
+        print("the cost of each part is")
+        for key, value in cost_dic.items():
+            print(key, ":", value)
+    else:
+        print("The solution is not feasible")
 
-    print(problem.objective_function(age_map, solution, occupants, surgeons, rooms, time, shifts, weights))
 
 
 
