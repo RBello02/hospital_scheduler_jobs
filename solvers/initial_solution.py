@@ -124,10 +124,14 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
 
    for day in range(T):
       for shift in shifts:
-         nurses_working = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]   # find the nurses that work on that shift and day, it must be not empty
-         for room_id in rooms.rooms_id: # assign that nurse to all the rooms, this is a first solution
-            solution.nurses_schedule[day][shift][room_id].append({'nurse': nurses_working[0],
-                                                                  'room': room_id})
+         nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
+         counter = 0
+         while counter < rooms.n_rooms:
+            room_id = rooms.rooms_id[counter]
+            nurse = nurse_that_can_work[counter % len(nurse_that_can_work)]
+            solution.nurses_schedule[day][shift][room_id].append( {'nurse': nurse,
+                                                            'room': room_id})
+            counter += 1
              
             
    return solution

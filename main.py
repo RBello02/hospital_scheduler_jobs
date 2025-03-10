@@ -37,7 +37,7 @@ def main():
 
     #  reading
 
-    filename = 'test04.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -140,10 +140,17 @@ def main():
 
     # initializing the problem
 
+    # printing the sol
+
+    for day in range(time):
+        for shift in shifts:
+            for room_id in rooms.rooms_id:
+                print("Day: ", day, "Shift: ", shift, "Room: ", room_id, "Nurse: ", solution.nurses_schedule[day][shift][room_id])
+
 
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
-    if problem.constraints(solution, patients, surgeons, rooms, theaters, time, shifts):
+    if problem.constraints(solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
         print("The solution is feasible")
         print("**********************************")
         tot_cost, cost_dic = problem.objective_function(age_map, solution, occupants, surgeons, rooms, time, shifts, weights)

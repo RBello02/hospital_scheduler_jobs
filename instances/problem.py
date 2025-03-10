@@ -22,7 +22,7 @@ class Problem ():
 
     # creating a function for checking the Hard constraints
 
-    def constraints(self, solution, patients, surgeons, rooms, theaters, T, shifts):      # THERE'S NO NURSES AND OCCUPANTS
+    def constraints(self, solution, patients, surgeons, nurses, rooms, theaters, T, shifts):      # THERE'S NO NURSES AND OCCUPANTS
 
         # boolean variable that tells us if all the constraints are ok
 
@@ -187,8 +187,21 @@ class Problem ():
                         print(Fore.YELLOW + f"H7|B FAILED: more then one nurse in the room {room_id} in day {day} in shift {shift}")
                         check = False
 
+        # H8|B: Add a new constraint, all the nurse should work in their working shifts
 
-                
+        for nurse in nurses:
+            for day in range(T):
+                for shift in shifts:
+                    if nurse.possible_turns[day][shift] > 0: # if the nurse work on that day
+                        counter = 0
+                        for room_id in rooms.rooms_id:
+                            nurse_list_dic = solution.nurses_schedule[day][shift][room_id]   # list of dic
+                            for nurse_dic in nurse_list_dic:
+                                if nurse_dic['nurse'].id == nurse.id:
+                                    counter += 1
+                        if counter == 0:
+                            print(Fore.YELLOW + f"H8|B FAILED: Nurse {nurse.id} is not working in the shift {shift} in day {day}")
+                            check = False
 
 
         return check  # end value
