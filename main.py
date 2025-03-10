@@ -37,7 +37,7 @@ def main():
 
     #  reading
 
-    filename = 'test02.json'
+    filename = 'test04.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -163,7 +163,7 @@ def main():
 
     ######################################## OUTPUT FOR VALIDATION ########################################
 
-    out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map)
+    out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename)
 
     json_object = json.dumps(out_sol, indent=4)
 
