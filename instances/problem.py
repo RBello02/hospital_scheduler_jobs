@@ -160,8 +160,8 @@ class Problem ():
         if counter != 0:
             check = False
 
-
-        # H7|A; added new constraint, for each day and shift, if a room is not empty a nurse must be there
+        """
+        # H8|A; added new constraint, for each day and shift, if a room is not empty a nurse must be there
 
         for day in range(T):
             for shift in shifts:
@@ -169,9 +169,9 @@ class Problem ():
                     if rooms.rooms_count_people[t][room_id] > 0 and len(solution.nurses_schedule[day][shift][room_id]) == 0: # if there somebody and there isn't a nurse
                         check = False
                         print(Fore.YELLOW + f"H7|A FAILED: room {room_id} during day ({day}) and shift ({shifts}) has no nurse assigned, also if there are ({rooms.rooms_count_people[t][room_id]}) people")
+        """
 
-
-        # H7|B: Added a new constraint, all the rooms that are not empty should be viewed by a nurse 
+        # H8|A: Added a new constraint, all the rooms that are not empty should be viewed by a nurse 
 
         for day in range(T):
             for shift in shifts:
@@ -271,7 +271,7 @@ class Problem ():
                     nurses_in_the_room = solution.nurses_schedule[day][shift][room_id]
                     for nurse in nurses_in_the_room:
                         total_nurses.add(nurse['nurse'])   # this is a dic
-            S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
+            S3 += (len(total_nurses))   # changed for the last update of the competition  # -3 because we want 0 to be the minimum value of the function
 
         for patient_s in solution.patient_schedule:  # for the patient
             room_id = patient_s['room']      # this is not a patient object but a dic
@@ -284,7 +284,7 @@ class Problem ():
                         nurses_in_the_room = solution.nurses_schedule[day][shift][room_id]
                         for nurse in nurses_in_the_room:
                             total_nurses.add(nurse['nurse'])    # update the set with nurse
-                S3 += (len(total_nurses) - 3)     # -3 because we want 0 to be the minimum value of the function
+                S3 += (len(total_nurses))     # changed in the last update of the competition : # -3 because we want 0 to be the minimum value of the function
 
         
         # S4: for all the shifts, the workload of all the patient in a room can't exceed the workload of the nurse in that turn
