@@ -89,7 +89,7 @@ def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeo
 
 
 
-def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shifts, shift_mapping, filename):
+def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shifts, shift_mapping, filename, tot_cost, cost_dic, weights):
 
     # this function produces the json file for the validation of the solution
 
@@ -161,12 +161,17 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
                     rooms_list = list(rooms_set) # rooms_set becomes a list
                     rooms_list.sort()
                     nurse_assignment.append({"day": day, "shift": next((k for k, v in shift_mapping.items() if v == shift), None), "rooms": rooms_list})
-        nurses_solution.append({"id": nurse_id_str, "assignment": nurse_assignment})
+        nurses_solution.append({"id": nurse_id_str, "assignments": nurse_assignment})
+
+    # add the costs
+
+    string_cost = ["Costs: "+str(int(tot_cost))+", Unscheduled: "+str(int(cost_dic['S8']/weights['unscheduled_optional']))+",  Delay: " + str(int(cost_dic['S7']/weights['patient_delay'])) + ",  OpenOT: " + str(int(cost_dic['S5']/weights['open_operating_theater'])) + ",  AgeMix: " + str(int(cost_dic['S1']/weights['room_mixed_age'])) + ",  Skill: " + str(int(cost_dic['S2']/weights['room_nurse_skill'])) + ",  Excess: " + str(int(cost_dic['S4']/weights['nurse_eccessive_workload'])) + ",  Continuity: " + str(int(cost_dic['S3']/weights['continuity_of_care'])) + ",  SurgeonTransfer: " + str(int(cost_dic['S6']/weights['surgeon_transfer']))]
+
                             
 
     # return the json file
 
-    return {"patients": patients_solution, "nurses": nurses_solution}
+    return {"patients": patients_solution, "nurses": nurses_solution, "costs": string_cost}
 
 
 

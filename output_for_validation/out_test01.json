@@ -194,7 +194,7 @@
     "nurses": [
         {
             "id": "n00",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "late",
@@ -344,7 +344,7 @@
         },
         {
             "id": "n01",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "late",
@@ -500,7 +500,7 @@
         },
         {
             "id": "n02",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "night",
@@ -641,7 +641,7 @@
         },
         {
             "id": "n03",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "late",
@@ -790,7 +790,7 @@
         },
         {
             "id": "n04",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "night",
@@ -930,7 +930,7 @@
         },
         {
             "id": "n05",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 1,
                     "shift": "early",
@@ -1061,7 +1061,7 @@
         },
         {
             "id": "n06",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "early",
@@ -1201,7 +1201,7 @@
         },
         {
             "id": "n07",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "early",
@@ -1337,7 +1337,7 @@
         },
         {
             "id": "n08",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "early",
@@ -1453,7 +1453,7 @@
         },
         {
             "id": "n09",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 3,
                     "shift": "early",
@@ -1531,7 +1531,7 @@
         },
         {
             "id": "n10",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 2,
                     "shift": "late",
@@ -1580,7 +1580,7 @@
         },
         {
             "id": "n11",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 4,
                     "shift": "late",
@@ -1600,7 +1600,7 @@
         },
         {
             "id": "n12",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 4,
                     "shift": "late",
@@ -1610,5 +1610,8 @@
                 }
             ]
         }
+    ],
+    "costs": [
+        "Costs: 5576, Unscheduled: 31,  Delay: 0,  OpenOT: 6,  AgeMix: 6,  Skill: 25,  Excess: 0,  Continuity: 137,  SurgeonTransfer: 6"
     ]
 }

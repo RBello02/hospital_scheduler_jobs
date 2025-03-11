@@ -170,7 +170,7 @@ def main():
 
     ######################################## OUTPUT FOR VALIDATION ########################################
 
-    out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename)
+    out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, tot_cost, cost_dic, weights)
 
     json_object = json.dumps(out_sol, indent=4)
 
