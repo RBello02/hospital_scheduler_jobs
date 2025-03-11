@@ -156,7 +156,7 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
                         nurse_list = solution.nurses_schedule[day][shift][room_id]   # get the nurses that work in that particular room
                         for nurse_dic in nurse_list:
                             if nurse_dic['nurse'] == nurse:
-                                rooms_set.add(f"r{room_id}")
+                                rooms_set.add(f"r{room_id:0{num_digits_for_room}d}")
                     
                     rooms_list = list(rooms_set) # rooms_set becomes a list
                     rooms_list.sort()

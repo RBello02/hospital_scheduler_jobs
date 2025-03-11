@@ -187,6 +187,8 @@ class Problem ():
                         print(Fore.YELLOW + f"H7|B FAILED: more then one nurse in the room {room_id} in day {day} in shift {shift}")
                         check = False
 
+        """
+
         # H8|B: Add a new constraint, all the nurse should work in their working shifts
 
         for nurse in nurses:
@@ -201,13 +203,14 @@ class Problem ():
                                     counter += 1
                         if counter == 0:
                             print(Fore.YELLOW + f"H8|B FAILED: Nurse {nurse.id} is not working in the shift {shift} in day {day}")
-                            check = False
+                            check = False"
+        """
 
 
         return check  # end value
     
 
-    def objective_function(self, age_map, solution, occupants, surgeons, rooms, T, shifts, weights):   # THERE'S NO PATIENTS,NURSES AND THEATERS
+    def objective_function(self, solution, occupants, surgeons, rooms, T, shifts, weights):   # THERE'S NO PATIENTS,NURSES AND THEATERS, AGE MAP
 
         # firstly we are gonna extract all the parte that should be minimize, each part is defined by S soft constraints
 
