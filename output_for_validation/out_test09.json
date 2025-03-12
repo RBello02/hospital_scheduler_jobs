@@ -102,8 +102,8 @@
         },
         {
             "id": "p019",
-            "admission_day": 17,
-            "room": "r06",
+            "admission_day": 13,
+            "room": "r02",
             "operating_theater": "t1"
         },
         {
@@ -149,7 +149,7 @@
         {
             "id": "p027",
             "admission_day": 9,
-            "room": "r02",
+            "room": "r03",
             "operating_theater": "t0"
         },
         {
@@ -209,7 +209,7 @@
         {
             "id": "p037",
             "admission_day": 9,
-            "room": "r06",
+            "room": "r09",
             "operating_theater": "t1"
         },
         {
@@ -247,7 +247,7 @@
         {
             "id": "p044",
             "admission_day": 8,
-            "room": "r03",
+            "room": "r06",
             "operating_theater": "t0"
         },
         {
@@ -288,8 +288,8 @@
         },
         {
             "id": "p051",
-            "admission_day": 17,
-            "room": "r09",
+            "admission_day": 4,
+            "room": "r07",
             "operating_theater": "t1"
         },
         {
@@ -469,7 +469,7 @@
         {
             "id": "p084",
             "admission_day": 9,
-            "room": "r09",
+            "room": "r10",
             "operating_theater": "t1"
         },
         {
@@ -4473,6 +4473,6 @@
         }
     ],
     "costs": [
-        "Costs: 27797, Unscheduled: 58,  Delay: 17,  OpenOT: 32,  AgeMix: 7,  Skill: 138,  Excess: 24,  Continuity: 1134,  SurgeonTransfer: 40"
+        "Costs: 27722, Unscheduled: 58,  Delay: 0,  OpenOT: 32,  AgeMix: 7,  Skill: 138,  Excess: 24,  Continuity: 1145,  SurgeonTransfer: 48"
     ]
 }

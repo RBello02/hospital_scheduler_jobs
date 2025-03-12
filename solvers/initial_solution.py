@@ -54,6 +54,10 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
    
    for patient_dic in mandatory_patients:
       patient = patient_dic['patient']
+      surgeon_id = patient.surgeon_id
+      for surgeon in surgeons:
+         if surgeon.id == surgeon_id:
+            break                   # find the surgeon
       
       # we have to find a room for this patient,
       # the room must be
@@ -73,10 +77,9 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
          there_is_surgeon = False
          there_is_theater = False
 
-         for idx,surgeon in enumerate(surgeons):
-            if surgeons_workload[idx][admission_day] + patient.surgery_duration <= surgeon.max_surgery_time[admission_day]:    # if a surgeon can operate in the admission date 
-               there_is_surgeon = True
-               break
+         
+         if surgeons_workload[surgeon_id][admission_day] + patient.surgery_duration <= surgeon.max_surgery_time[admission_day]:    # if a surgeon can operate in the admission date 
+            there_is_surgeon = True
          
          for theater_id in theaters.theaters_id:
             if theaters_workload[theater_id][admission_day] + patient.surgery_duration <= theaters.theaters_capacity[theater_id][admission_day]: # if there is a theater in the admission date
@@ -98,13 +101,12 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
                   solution.patient_schedule[patient.id] = {'patient': patient,
                                                          'room': room_id,    
                                                          'day': admission_day}
-                  solution.surgeons_operations[patient.id][surgeon.id]  = {'surgeon': surgeon,
-                                                                     'theater': theater_id,
-                                                                     'patient': patient}
+                  solution.surgeons_operations[patient.id]  = {'theater': theater_id,
+                                                               'patient': patient}
                   
                   # add the time to the surgeons and theaters
 
-                  surgeons_workload[idx][admission_day] += patient.surgery_duration
+                  surgeons_workload[surgeon_id][admission_day] += patient.surgery_duration
                   theaters_workload[theater_id][admission_day] += patient.surgery_duration
 
                   found_solution = True
@@ -114,6 +116,8 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
       # now we add the patient to the hospital
       if found_solution:
          rooms.add_patient(room_id, patient, admission_day, T)
+      else:
+         print("There is no solution for the patient: ", patient.id)
 
 
 

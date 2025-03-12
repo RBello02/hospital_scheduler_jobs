@@ -151,13 +151,26 @@ def main():
 
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
+    for patient in patients:
+        op_patient = solution.surgeons_operations[patient.id]['patient']
+        op_theater = solution.surgeons_operations[patient.id]['theater']
+        if op_theater is not None:
+            print("Patient ID: ", patient.id, "Theater ID: ", op_theater)
+
+    print("********************")
+    
+    for patient in patients:
+        sol_pat = solution.patient_schedule[patient.id]
+        if sol_pat['day'] is not None:
+            print("Patient ID: ", patient.id, "Day: ", sol_pat['day'])
+
     if problem.constraints(solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
         print("The solution is feasible")
         print("**********************************")
         tot_cost, cost_dic = problem.objective_function(solution, occupants, surgeons, rooms, time, shifts, weights)
         print("The total cost is: ", tot_cost)
         print("**********************************") 
-        print("the cost of each part is")
+        print("The cost of each part is")
         for key, value in cost_dic.items():
             print(key, ":", value)
     else:

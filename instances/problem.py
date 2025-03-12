@@ -92,17 +92,16 @@ class Problem ():
 
         counter = 0
         for surgeon in surgeons:
-            operated_patients_by_surgeon = [entry['patient'] for row in solution.surgeons_operations 
-                                            for entry in row if entry['surgeon'].id == surgeon.id 
-                                            and entry['patient'] is not None]
+            operated_patients_by_surgeon = [patient for patient in patients if patient.surgeon_id == surgeon.id]     # get the patient operated by the surgeon
             
-            arrival_times = {entry['patient']: entry['day'] for entry in solution.patient_schedule}
+            arrival_times = {entry['patient']: entry['day'] for entry in solution.patient_schedule}  # it is a dic that contains the arriving day for each patient
 
             for t in range(T):
                 total_time_of_operation = 0
-                for operated_patient_by_surgeon in operated_patients_by_surgeon:
-                    if t == arrival_times.get(operated_patient_by_surgeon):
+                for operated_patient_by_surgeon in operated_patients_by_surgeon:   #cycle over the patient operated by the surgeon
+                    if t == arrival_times.get(operated_patient_by_surgeon):  # for the arriving day
                         total_time_of_operation += operated_patient_by_surgeon.surgery_duration
+
                 if total_time_of_operation > surgeon.max_surgery_time[t]:
                     print(Fore.YELLOW + f"H3 FAILED: Exceed maximal operation capacity for surgeon {surgeon.id} at time {t}, requested: {total_time_of_operation} | maximal: {surgeon.max_surgery_time[t]}" )
                     counter += 1
@@ -119,10 +118,9 @@ class Problem ():
 
         for t in range(T):
             for patient in patients:
-                for surgeon in surgeons:
-                    if solution.surgeons_operations[patient.id][surgeon.id]['theater'] is not None:
-                        if solution.patient_schedule[patient.id]['day'] == t:    # if the patient is in the hospital
-                            theaters_usage[t][solution.surgeons_operations[patient.id][surgeon.id]['theater']] += patient.surgery_duration
+                if solution.surgeons_operations[patient.id]['theater'] is not None:
+                    if solution.patient_schedule[patient.id]['day'] == t:    # if the patient is in the hospital
+                        theaters_usage[t][solution.surgeons_operations[patient.id]['theater']] += patient.surgery_duration
 
         for t in range(T):
             for theater_id in theaters.theaters_id:
@@ -337,9 +335,8 @@ class Problem ():
         S5 = 0
 
         for day in range(T):
-            theaters_per_day = {op['theater'] for patient_ops in solution.surgeons_operations for op in patient_ops      # double for because of the structure of the class that is formed by two lists, one inside the other
-                                if op['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day] 
-                                and op['theater'] is not None}
+            theaters_per_day = {patient_ops['theater'] for patient_ops in solution.surgeons_operations 
+                                if patient_ops['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day]}
             S5 += len(theaters_per_day)
 
         
@@ -349,10 +346,8 @@ class Problem ():
 
         for day in range(T):
             for surgeon in surgeons:
-                theaters_to_surgeon = {op['theater'] for patient_ops in solution.surgeons_operations for op in patient_ops
-                                       if op['surgeon'] == surgeon 
-                                       and op['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day]
-                                       and op['theater'] is not None}
+                theaters_to_surgeon = {patient_ops['theater'] for patient_ops in solution.surgeons_operations 
+                                       if patient_ops['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day] and patient_ops['theater'] is not None and patient_ops['patient'].surgeon_id == surgeon.id}
                 S6 += len(theaters_to_surgeon)
 
     

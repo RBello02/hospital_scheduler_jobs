@@ -17,11 +17,10 @@ class Solution():
                                   'day': None} for patient in patients]
 
 
-        # matrix surgeons x patients x theater
+        # matrix patients x theater
 
-        self.surgeons_operations = [[{'surgeon': surgeon,
-                                     'theater': None,
-                                     'patient': None} for surgeon in surgeons] for patient in patients]
+        self.surgeons_operations = [ {'theater': None,
+                                     'patient': patient}for patient in patients]
 
 
         # each nurse can work on a room in a shift in a particular day, notice that a during a particular day and a particular shift the nurse can stay in different rooms

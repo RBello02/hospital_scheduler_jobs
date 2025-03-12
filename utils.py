@@ -66,6 +66,7 @@ def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeo
 
     for patient_data in patients_data:
         patient_data['id'] = patients_mapping[patient_data['id']]   # change the id
+        patient_data['surgeon_id'] = surgeons_mapping[patient_data['surgeon_id']]   # change the id
         if patient_data['gender'] == 'A':
             patient_data['gender'] = 0
         else:
@@ -116,11 +117,10 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
                                       "admission_day": "none"})
         else:
             # get the operating theater where the patient is
-            operating = solution.surgeons_operations[patient.id]
-            for surgeon in surgeons:
-                if operating[surgeon.id]['patient'] == patient and operating[surgeon.id]['theater'] is not None:
-                    theater_id = operating[surgeon.id]['theater']   # found the theater
-                    break
+            for operating in solution.surgeons_operations:
+                if operating['patient'] == patient:
+                    if operating['theater'] is not None:
+                       theater_id = operating['theater']   # found the theater
             
             patients_solution.append({"id": patient_id_str,
                                       "admission_day": patient_dic['day'],
