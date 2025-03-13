@@ -37,7 +37,7 @@ def main():
 
     #  reading
 
-    filename = 'test09.json'
+    filename = 'test10.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -150,19 +150,6 @@ def main():
     """
 
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
-
-    for patient in patients:
-        op_patient = solution.surgeons_operations[patient.id]['patient']
-        op_theater = solution.surgeons_operations[patient.id]['theater']
-        if op_theater is not None:
-            print("Patient ID: ", patient.id, "Theater ID: ", op_theater)
-
-    print("********************")
-    
-    for patient in patients:
-        sol_pat = solution.patient_schedule[patient.id]
-        if sol_pat['day'] is not None:
-            print("Patient ID: ", patient.id, "Day: ", sol_pat['day'])
 
     if problem.constraints(solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
         print("The solution is feasible")

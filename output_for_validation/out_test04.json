@@ -284,7 +284,7 @@
     "nurses": [
         {
             "id": "n00",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "night",
@@ -371,7 +371,7 @@
         },
         {
             "id": "n01",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "late",
@@ -465,7 +465,7 @@
         },
         {
             "id": "n02",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "night",
@@ -580,7 +580,7 @@
         },
         {
             "id": "n03",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "late",
@@ -673,7 +673,7 @@
         },
         {
             "id": "n04",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "late",
@@ -775,7 +775,7 @@
         },
         {
             "id": "n05",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "late",
@@ -867,7 +867,7 @@
         },
         {
             "id": "n06",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "late",
@@ -975,7 +975,7 @@
         },
         {
             "id": "n07",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "early",
@@ -1084,7 +1084,7 @@
         },
         {
             "id": "n08",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "night",
@@ -1174,7 +1174,7 @@
         },
         {
             "id": "n09",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "early",
@@ -1264,7 +1264,7 @@
         },
         {
             "id": "n10",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "early",
@@ -1352,7 +1352,7 @@
         },
         {
             "id": "n11",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 1,
                     "shift": "early",
@@ -1432,7 +1432,7 @@
         },
         {
             "id": "n12",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 1,
                     "shift": "early",
@@ -1515,7 +1515,7 @@
         },
         {
             "id": "n13",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "early",
@@ -1589,7 +1589,7 @@
         },
         {
             "id": "n14",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 0,
                     "shift": "early",
@@ -1663,7 +1663,7 @@
         },
         {
             "id": "n15",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 1,
                     "shift": "early",
@@ -1726,7 +1726,7 @@
         },
         {
             "id": "n16",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 2,
                     "shift": "late",
@@ -1769,7 +1769,7 @@
         },
         {
             "id": "n17",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 8,
                     "shift": "night",
@@ -1782,7 +1782,7 @@
         },
         {
             "id": "n18",
-            "assignment": [
+            "assignments": [
                 {
                     "day": 8,
                     "shift": "night",
@@ -1793,5 +1793,8 @@
                 }
             ]
         }
+    ],
+    "costs": [
+        "Costs: 6174, Unscheduled: 22,  Delay: 6,  OpenOT: 11,  AgeMix: 2,  Skill: 33,  Excess: 2,  Continuity: 313,  SurgeonTransfer: 14"
     ]
 }
