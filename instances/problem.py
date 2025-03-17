@@ -352,6 +352,7 @@ class Problem ():
                                                 exit_time = patient_s['patient'].length_of_stay + arriving_time  # the next check is not essential because workload = 0 if the patient is not in the Hospital
                                                 if arriving_time <= day and exit_time > day: # check if the patient is in the hospital in that day
                                                     room_load += patient.workload_produced[day][shift] 
+                                                    #print("patient id: ", patient.id, "patient load: ", patient.workload_produced[day][shift])
                                         # FOR THE OCCUPANTS    
                                         for occupant in occupants: # just remember that there's also the occupants in the room
                                             if occupant.room_id == room_id:  # if he/she is in the room
@@ -359,10 +360,12 @@ class Problem ():
                                                 exit_time = occupant.length_of_stay + arriving_time
                                                 if arriving_time <= day and exit_time > day: # check if the occupant is in the hospital in that day
                                                     room_load += occupant.workload_produced[day][shift]
-                        print("day: ", day, "shift: ", shift, "nurse id: n",nurse.id , "nurse load: ", nurse_load, "room load: ", room_load)
+                                                    #print("occupant id: ", occupant.id, "occupant load: ", occupant.workload_produced[day][shift])
+                        #print("day: ", day, "shift: ", shift, "nurse id: n",nurse.id , "nurse load: ", nurse_load, "room load: ", room_load)
                         if nurse_load < room_load:   # check if the load of a nurse is not sufficient for the room
                             S4 += room_load-nurse_load
-                            print(" ****************** look up *****************")
+                            #print(" ****************** look up *****************")
+    
 
 
         
