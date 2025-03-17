@@ -277,7 +277,7 @@ class Problem ():
             arriving_time = 0
             exit_time = occupant.length_of_stay
             total_nurses = set()   # set with all the nurses for the occupant
-            for day in range(arriving_time, exit_time + 1):
+            for day in range(arriving_time, exit_time):
                 for shift in shifts:
                     nurses_in_the_room = solution.nurses_schedule[day][shift][room_id]
                     for nurse in nurses_in_the_room:
@@ -301,38 +301,6 @@ class Problem ():
         # S4: for all the shifts, the workload of all the patient in a room can't exceed the workload of the nurse in that turn
 
         S4 = 0
-
-        """
-        for day in range(T):
-            for shift in shifts:
-                for room_id in rooms.rooms_id:
-                    nurses_list_of_dic = solution.nurses_schedule[day][shift][room_id]    # get the nurse that work in that time
-                    max_load = 0 # initialize the max load
-                    for nurse_dic in nurses_list_of_dic:
-                        nurse = nurse_dic['nurse']
-                        if nurse_dic['room'] == room_id:
-                            max_load += nurse.possible_turns[day][shift]    # is the sum of the workload of the nurses that stay in that room
-                        room_load = 0
-                        for patient_s in solution.patient_schedule:     # it is not a patient object but a dic
-                            if patient_s['room'] == room_id:   # check if it is in the room
-                                patient = patient_s['patient']
-                                arriving_time = patient_s['day']
-                                exit_time = patient_s['patient'].length_of_stay + arriving_time  # the next check is not essential because workload = 0 if the patient is not in the Hospital
-                                if arriving_time <= day and exit_time > day: # check if the patient is in the hospital in that day
-                                    room_load += patient.workload_produced[day][shift]    
-                        
-                        for occupant in occupants: # just remember that there's also the occupants in the room
-                            if occupant.room_id == room_id:  # if he/she is in the room
-                                arriving_time = 0
-                                exit_time = occupant.length_of_stay + arriving_time
-                                if arriving_time <= day and exit_time > day: # check if the occupant is in the hospital in that day
-                                    room_load += occupant.workload_produced[day][shift]  
-
-                        #print("day: ", day, "shift: ", shift, "room: ", room_id, "people inside: ", rooms.rooms_count_people[day][room_id], "nurse id: n",nurse.id , "nurse load: ", max_load, "room load: ", room_load)
-                        if max_load < room_load:   # check if the load of a nurse is not sufficient for the room
-                            S4 += room_load-max_load
-        """
-
         
         for nurse in nurses:
             for day in range(T):
