@@ -208,7 +208,7 @@ class Problem ():
         return check  # end value
     
 
-    def objective_function(self, solution, occupants, surgeons, rooms, T, shifts, weights):   # THERE'S NO PATIENTS,NURSES AND THEATERS, AGE MAP
+    def objective_function(self, solution, occupants, surgeons, nurses,  rooms, T, shifts, weights):   # THERE'S NO PATIENTS,NURSES AND THEATERS, AGE MAP
 
         # firstly we are gonna extract all the parte that should be minimize, each part is defined by S soft constraints
 
@@ -302,6 +302,7 @@ class Problem ():
 
         S4 = 0
 
+        """
         for day in range(T):
             for shift in shifts:
                 for room_id in rooms.rooms_id:
@@ -309,26 +310,62 @@ class Problem ():
                     max_load = 0 # initialize the max load
                     for nurse_dic in nurses_list_of_dic:
                         nurse = nurse_dic['nurse']
-                        max_load += nurse.possible_turns[day][shift]    # is the sum of the workload of the nurses that stay in that room
+                        if nurse_dic['room'] == room_id:
+                            max_load += nurse.possible_turns[day][shift]    # is the sum of the workload of the nurses that stay in that room
                         room_load = 0
                         for patient_s in solution.patient_schedule:     # it is not a patient object but a dic
                             if patient_s['room'] == room_id:   # check if it is in the room
                                 patient = patient_s['patient']
                                 arriving_time = patient_s['day']
                                 exit_time = patient_s['patient'].length_of_stay + arriving_time  # the next check is not essential because workload = 0 if the patient is not in the Hospital
-                                if arriving_time <= day and exit_time >= day: # check if the patient is in the hospital in that day
+                                if arriving_time <= day and exit_time > day: # check if the patient is in the hospital in that day
                                     room_load += patient.workload_produced[day][shift]    
                         
                         for occupant in occupants: # just remember that there's also the occupants in the room
                             if occupant.room_id == room_id:  # if he/she is in the room
                                 arriving_time = 0
                                 exit_time = occupant.length_of_stay + arriving_time
-                                if arriving_time <= day and exit_time >= day: # check if the occupant is in the hospital in that day
+                                if arriving_time <= day and exit_time > day: # check if the occupant is in the hospital in that day
                                     room_load += occupant.workload_produced[day][shift]  
 
+                        #print("day: ", day, "shift: ", shift, "room: ", room_id, "people inside: ", rooms.rooms_count_people[day][room_id], "nurse id: n",nurse.id , "nurse load: ", max_load, "room load: ", room_load)
                         if max_load < room_load:   # check if the load of a nurse is not sufficient for the room
                             S4 += room_load-max_load
+        """
 
+        
+        for nurse in nurses:
+            for day in range(T):
+                for shift in shifts:
+                    if nurse.possible_turns[day][shift] > 0:   # check if the nurse can work
+                        nurse_load = nurse.possible_turns[day][shift]   # the workload of the nurse
+                        room_load = 0
+                        for room_id in rooms.rooms_id:
+                            if solution.nurses_schedule[day][shift][room_id]:   # check if the list is not empty,
+                                for nurse_dic in solution.nurses_schedule[day][shift][room_id]:
+                                    if nurse_dic['nurse'].id == nurse.id and nurse_dic['room'] == room_id:        # check if the nurse is in the room
+                                        # FOR THE PATIENTS
+                                        for patient_s in solution.patient_schedule:     # it is not a patient object but a dic
+                                            if patient_s['room'] == room_id:   # check if it is in the room
+                                                patient = patient_s['patient']
+                                                arriving_time = patient_s['day']
+                                                exit_time = patient_s['patient'].length_of_stay + arriving_time  # the next check is not essential because workload = 0 if the patient is not in the Hospital
+                                                if arriving_time <= day and exit_time > day: # check if the patient is in the hospital in that day
+                                                    room_load += patient.workload_produced[day][shift] 
+                                        # FOR THE OCCUPANTS    
+                                        for occupant in occupants: # just remember that there's also the occupants in the room
+                                            if occupant.room_id == room_id:  # if he/she is in the room
+                                                arriving_time = 0
+                                                exit_time = occupant.length_of_stay + arriving_time
+                                                if arriving_time <= day and exit_time > day: # check if the occupant is in the hospital in that day
+                                                    room_load += occupant.workload_produced[day][shift]
+                        print("day: ", day, "shift: ", shift, "nurse id: n",nurse.id , "nurse load: ", nurse_load, "room load: ", room_load)
+                        if nurse_load < room_load:   # check if the load of a nurse is not sufficient for the room
+                            S4 += room_load-nurse_load
+                            print(" ****************** look up *****************")
+
+
+        
 
         # S5: the number of theaters opened per day should be minimized
 
@@ -346,9 +383,11 @@ class Problem ():
 
         for day in range(T):
             for surgeon in surgeons:
-                theaters_to_surgeon = {patient_ops['theater'] for patient_ops in solution.surgeons_operations 
-                                       if patient_ops['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day] and patient_ops['theater'] is not None and patient_ops['patient'].surgeon_id == surgeon.id}
-                S6 += len(theaters_to_surgeon)
+                theaters_to_surgeon = {patient_ops['theater'] for patient_ops in solution.surgeons_operations     # get the theaters
+                                       if patient_ops['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day] # if there is a patient that is under surgeon on that day
+                                       and patient_ops['theater'] is not None and patient_ops['patient'].surgeon_id == surgeon.id} # if the theater is not None and the patient is operated by that surgeon
+                if len(theaters_to_surgeon) > 0:   
+                    S6 += len(theaters_to_surgeon)-1   # I dont have to count it if the surgeon stays in the same theater for all the day, that's because -1
 
     
         # S7: the number of days between the admission date and the release date should be minimize

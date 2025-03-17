@@ -37,7 +37,7 @@ def main():
 
     #  reading
 
-    filename = 'test10.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -154,7 +154,7 @@ def main():
     if problem.constraints(solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
         print("The solution is feasible")
         print("**********************************")
-        tot_cost, cost_dic = problem.objective_function(solution, occupants, surgeons, rooms, time, shifts, weights)
+        tot_cost, cost_dic = problem.objective_function(solution, occupants, surgeons, nurses, rooms, time, shifts, weights)
         print("The total cost is: ", tot_cost)
         print("**********************************") 
         print("The cost of each part is")
@@ -164,14 +164,11 @@ def main():
         print("The solution is not feasible")
 
 
-
-
-
-
-
     ######################################## OUTPUT FOR VALIDATION ########################################
 
     out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, tot_cost, cost_dic, weights)
+
+    print(out_sol['costs'])  # for debugging
 
     json_object = json.dumps(out_sol, indent=4)
 
