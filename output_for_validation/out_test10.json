@@ -14203,6 +14203,6 @@
         }
     ],
     "costs": [
-        "Costs: 85022, Unscheduled: 176,  Delay: 22,  OpenOT: 77,  AgeMix: 47,  Skill: 391,  Excess: 12,  Continuity: 4303,  SurgeonTransfer: 262"
+        "Costs: 84232, Unscheduled: 176,  Delay: 22,  OpenOT: 77,  AgeMix: 47,  Skill: 460,  Excess: 55,  Continuity: 4186,  SurgeonTransfer: 151"
     ]
 }

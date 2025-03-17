@@ -243,26 +243,34 @@ class Problem ():
         # S2: we shouldn't have a nurse with a skill level X working in a room where there is a patient with a skill level Y with Y > X
 
         S2 = 0         # the sum that we should minimize
-        for day in range(T):
+        for room_id in rooms.rooms_id:
             for shift in shifts:
-                for room_id in rooms.rooms_id:
+                for day in range(T):
                     nurse_dic_working_in_room = solution.nurses_schedule[day][shift][room_id] # this is a list of dic
 
                     list_skills = [nurse['nurse'].skill_level for nurse in nurse_dic_working_in_room]   # list of the skill level of the nurses in the room
-                    
+
+                    #print("nurse", nurse_dic_working_in_room[0]['nurse'].id, "skill", list_skills)
+
                     nurse_skill = max(list_skills)   # the skill level is maximum skill level in the rooms
 
                     patients_in_room = [entry['patient'] for entry in solution.patient_schedule
-                                        if entry['room'] == room_id and entry['day'] == day]
+                                        if entry['room'] == room_id and day >= entry['day'] and day < entry['day'] + entry['patient'].length_of_stay]  # get the patients in the room
                     
                     for patient in patients_in_room:       # delay for the patients
+                        print("patient", patient.id, "skill", patient.skill_level_required[day][shift], "nurse id: ", nurse_dic_working_in_room[0]['nurse'].id,"nurse skill", nurse_skill, "day: ", day, "shift: ", shift, "room: ", room_id)   
                         if patient.skill_level_required[day][shift] > nurse_skill:
                             S2 += patient.skill_level_required[day][shift] - nurse_skill
+                            print("***************** look up *****************")
+                            print(S2)
                         
                     for occupant in occupants:    # delay for the occupants
-                        if occupant.room_id == room_id:    # check if the occupant is in the room
+                        if occupant.room_id == room_id and occupant.length_of_stay < day:    # check if the occupant is in the room
+                            print("occupant", occupant.id, "skill", occupant.skill_level_required[day][shift], "nurse id:",nurse_dic_working_in_room[0]['nurse'].id, "nurse skill", nurse_skill, "day: ", day, "shift: ", shift, "room: ", room_id)
                             if occupant.skill_level_required[day][shift] > nurse_skill:
                                 S2 += occupant.skill_level_required[day][shift] - nurse_skill
+                                print("***************** look up *****************")
+                                print(S2)
 
         
         # S3: minimize the total number of nurses that provide a care to a single patient,
