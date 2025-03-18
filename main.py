@@ -37,7 +37,7 @@ def main():
 
     #  reading
 
-    filename = 'test10.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
