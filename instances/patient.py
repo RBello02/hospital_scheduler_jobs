@@ -19,8 +19,8 @@ class Patient():
         T = Tempo.T
         shifts = Tempo.shifts
 
-        self.skill_level_required = [[0 for _ in shifts] for _ in range(T)]
-        self.workload_produced =  [[0 for _ in shifts] for _ in range(T)]
+        self.skill_level_required = [[0 for _ in shifts] for _ in range(self.length_of_stay)]
+        self.workload_produced =  [[0 for _ in shifts] for _ in range(self.length_of_stay)]
 
         for x in range(len(patient_data['workload_produced'])):
             day = x//len(shifts)

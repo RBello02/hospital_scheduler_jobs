@@ -37,7 +37,7 @@ def main():
 
     #  reading
 
-    filename = 'test01.json'
+    filename = 'test10.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -124,10 +124,6 @@ def main():
     # creating the nurses
 
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
-
-
-    #for nurse in nurses:
-        #print(nurse)
 
 
 

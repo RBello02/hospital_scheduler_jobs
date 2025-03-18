@@ -258,9 +258,11 @@ class Problem ():
                                         if entry['room'] == room_id and day >= entry['day'] and day < entry['day'] + entry['patient'].length_of_stay]  # get the patients in the room
                     
                     for patient in patients_in_room:       # delay for the patients
-                        #print("patient", patient.id, "skill", patient.skill_level_required[day][shift], "nurse id: ", nurse_dic_working_in_room[0]['nurse'].id,"nurse skill", nurse_skill, "day: ", day, "shift: ", shift, "room: ", room_id)   
-                        if patient.skill_level_required[day][shift] > nurse_skill:
-                            S2 += patient.skill_level_required[day][shift] - nurse_skill
+                        #print("patient", patient.id, "skill", patient.skill_level_required[day][shift], "nurse id: ", nurse_dic_working_in_room[0]['nurse'].id,"nurse skill", nurse_skill, "day: ", day, "shift: ", shift, "room: ", room_id) 
+
+                        admission_day = solution.patient_schedule[patient.id]['day']   # the day in which the patient arrives  
+                        if patient.skill_level_required[day-admission_day][shift] > nurse_skill:
+                            S2 += patient.skill_level_required[day-admission_day][shift] - nurse_skill
                             #print("***************** look up *****************")
                             #print(S2)
                         
@@ -327,7 +329,7 @@ class Problem ():
                                                 arriving_time = patient_s['day']
                                                 exit_time = patient_s['patient'].length_of_stay + arriving_time  # the next check is not essential because workload = 0 if the patient is not in the Hospital
                                                 if arriving_time <= day and exit_time > day: # check if the patient is in the hospital in that day
-                                                    room_load += patient.workload_produced[day][shift] 
+                                                    room_load += patient.workload_produced[day-arriving_time][shift] 
                                                     #print("patient id: ", patient.id, "patient load: ", patient.workload_produced[day][shift])
                                         # FOR THE OCCUPANTS    
                                         for occupant in occupants: # just remember that there's also the occupants in the room
