@@ -126,8 +126,8 @@ def main():
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
 
-    for nurse in nurses:
-        print(nurse)
+    #for nurse in nurses:
+        #print(nurse)
 
 
 
