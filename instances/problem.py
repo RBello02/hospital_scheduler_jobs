@@ -250,7 +250,7 @@ class Problem ():
 
                     list_skills = [nurse['nurse'].skill_level for nurse in nurse_dic_working_in_room]   # list of the skill level of the nurses in the room
 
-                    print("nurse", nurse_dic_working_in_room[0]['nurse'].id, "skill", list_skills)
+                    #print("nurse", nurse_dic_working_in_room[0]['nurse'].id, "skill", list_skills)
 
                     nurse_skill = max(list_skills)   # the skill level is maximum skill level in the rooms
 
@@ -259,23 +259,25 @@ class Problem ():
                     
                     for patient in patients_in_room:       # delay for the patients
 
-                        admission_day = solution.patient_schedule[patient.id]['day']   # the day in which the patient arrives  
-                        print("patient", patient.id, "skill", patient.skill_level_required[day-admission_day][shift], "nurse id: ", nurse_dic_working_in_room[0]['nurse'].id,"nurse skill", nurse_skill, "day: ", day, "shift: ", shift, "room: ", room_id) 
+                        for patient_dic in solution.patient_schedule:  
+                            if patient_dic['patient'].id == patient.id:
+                                admission_day = patient_dic['day']
+                                break
+                        #print("patient", patient.id, "skill", patient.skill_level_required[day-admission_day][shift], "nurse id: ", nurse_dic_working_in_room[0]['nurse'].id,"nurse skill", nurse_skill, "day: ", day, "shift: ", shift, "room: ", room_id) 
 
                         if patient.skill_level_required[day-admission_day][shift] > nurse_skill:
                             S2 += patient.skill_level_required[day-admission_day][shift] - nurse_skill
-                            print("***************** look up *****************")
-                            print(S2)
+                            #print("***************** look up *****************")
+                            #print(S2)
                         
                     for occupant in occupants:    # delay for the occupants
-                        if occupant.room_id == room_id and occupant.length_of_stay < day:    # check if the occupant is in the room
-                            print("occupant", occupant.id, "skill", occupant.skill_level_required[day][shift], "nurse id:",nurse_dic_working_in_room[0]['nurse'].id, "nurse skill", nurse_skill, "day: ", day, "shift: ", shift, "room: ", room_id)
+                        if occupant.room_id == room_id and occupant.length_of_stay > day:    # check if the occupant is in the room
+                            #print("occupant", occupant.id, "skill", occupant.skill_level_required[day][shift], "nurse id:",nurse_dic_working_in_room[0]['nurse'].id, "nurse skill", nurse_skill, "day: ", day, "shift: ", shift, "room: ", room_id)
                             if occupant.skill_level_required[day][shift] > nurse_skill:
                                 S2 += occupant.skill_level_required[day][shift] - nurse_skill
-                                print("***************** look up *****************")
-                                print(S2)
+                                #print("***************** look up *****************")
+                                #print(S2)
 
-        
         # S3: minimize the total number of nurses that provide a care to a single patient,
         # we know each patient stays in only one room during their recovery (H2)
 

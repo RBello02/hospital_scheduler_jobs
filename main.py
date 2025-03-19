@@ -37,7 +37,7 @@ def main():
 
     #  reading
 
-    filename = 'test01.json'
+    filename = 'test10.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -125,8 +125,6 @@ def main():
 
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
-
-
     ############################### SOLVING PROBLEM ##################################
 
     # initial solution
@@ -139,12 +137,6 @@ def main():
 
     # printing the sol
 
-    """
-    for day in range(time):
-        for shift in shifts:
-            for room_id in rooms.rooms_id:
-                print("Day: ", day, "Shift: ", shift, "Room: ", room_id, "Nurse: ", solution.nurses_schedule[day][shift][room_id])
-    """
 
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
