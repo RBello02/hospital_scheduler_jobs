@@ -1,6 +1,5 @@
 def destroy(self, CASE ,current_point, problem):  #main function for the destroy phase
 
-    solution = problem.solution
     nurses = problem.nurses
     surgeons = problem.surgeons
     patients = problem.patients
@@ -9,6 +8,8 @@ def destroy(self, CASE ,current_point, problem):  #main function for the destroy
     theaters = problem.theaters
     Tempo = problem.T
     shifts = problem.shifts
+
+    print (current_point)
 
     # we have different CASE of destroyers
 

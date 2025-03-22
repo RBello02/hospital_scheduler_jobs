@@ -138,8 +138,6 @@ def main():
 
     problem = Problem(solution, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
-    print(problem.nurses)
-
     # solving the problem
 
     number_of_iterations = 1000
