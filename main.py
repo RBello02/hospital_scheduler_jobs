@@ -151,6 +151,8 @@ def main():
 
     if problem.constraints(init_solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
         print(" ")
+        print(" ")
+        print(" ")
         print("**********************************")
         print("The solution is feasible")
         print("**********************************")

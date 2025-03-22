@@ -1,6 +1,8 @@
 import random
 import time
 import numpy as np
+from itertools import cycle
+from time import sleep
 
 from solvers import Destroy
 from solvers import Repair
@@ -27,22 +29,21 @@ class ALNS:
     def solve(self, number_of_iterations = 1000):   # main function for the solver
 
         print(" ")
-
-        print("Starting ALNS...")
-
-        print(" ")
+        print("Solving with ALNS ...")
 
         current_point = self.starting_point    # this is the starting point
         problem = self.problem
         p_iteration = np.linspace(0, 100, number_of_iterations)
 
         for t in range(number_of_iterations):   # iterating
-            progress(p_iteration[t])
+            show_progress(p_iteration[t])
+            time.sleep(0.001)
 
 
-def progress(percent=0, width=30):   # function made only for printing the progress bar
+def show_progress(percent=0, width=30):   # function made only for printing the progress bar
     left = int(width * percent // 100)
     right = width - left
+    
     print('\r[', '#' * left, '' * right, ']',
           f' {percent: .0f}%', sep='', end='', flush=True)
 
