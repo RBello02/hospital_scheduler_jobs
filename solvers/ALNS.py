@@ -26,6 +26,12 @@ class ALNS:
 
     def solve(self, number_of_iterations = 1000):   # main function for the solver
 
+        print(" ")
+
+        print("Starting ALNS...")
+
+        print(" ")
+
         current_point = self.starting_point    # this is the starting point
         problem = self.problem
         p_iteration = np.linspace(0, 100, number_of_iterations)

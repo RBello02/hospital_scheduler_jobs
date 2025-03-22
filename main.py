@@ -136,7 +136,7 @@ def main():
 
     init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
 
-    problem = Problem(solution, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
+    problem = Problem(init_solution, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
     # solving the problem
 
@@ -149,12 +149,11 @@ def main():
     # printing the sol
 
 
-    """
-
-    if problem.constraints(solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
+    if problem.constraints(init_solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
+        print("**********************************")
         print("The solution is feasible")
         print("**********************************")
-        tot_cost, cost_dic = problem.objective_function(solution, occupants, surgeons, nurses, rooms, time, shifts, weights)
+        tot_cost, cost_dic = problem.objective_function(init_solution, occupants, surgeons, nurses, rooms, time, shifts, weights)
         print("The total cost is: ", tot_cost)
         print("**********************************") 
         print("The cost of each part is")
@@ -166,14 +165,12 @@ def main():
 
     ######################################## OUTPUT FOR VALIDATION ########################################
 
-    out_sol = postprocess(solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, tot_cost, cost_dic, weights)
+    out_sol = postprocess(init_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, tot_cost, cost_dic, weights)
 
     json_object = json.dumps(out_sol, indent=4)
 
     with open('output_for_validation/'+"out_"+filename, 'w') as file:
         file.write(json_object)
-
-    """
 
 
 
