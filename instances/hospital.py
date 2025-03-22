@@ -13,6 +13,8 @@ class Times :
         # For the shifts
         self.shifts = shifts
 
+        def __str__(self):
+            return f"Time: {self.T} Shifts: {self.shifts}"
 
         
 
@@ -38,6 +40,9 @@ class Rooms:
             if self.rooms_count_people[t][room_index] == 0:       #if the room is empty add the gender
                 self.rooms_gender[t][room_index] = occupant.gender
             self.rooms_count_people[t][room_index] +=1 
+
+    def __str__(self):
+        return f"Rooms ID: {self.rooms_id} Number of Rooms: {self.n_rooms} Rooms Capacity: {self.rooms_capacity} Rooms Count People: {self.rooms_count_people}"
     
 
         
@@ -48,6 +53,9 @@ class Theaters :
         self.theaters_id = [theater['id'] for theater in theaters]  # Save the id of the theater as a number
         self.n_theaters = len(theaters)
         self.theaters_capacity = {theater['id']:theater['availability'] for theater in theaters} # Tracks the capacity of a single theater
+
+    def __str__(self):
+        return f"Theaters ID: {self.theaters_id} Number of Theaters: {self.n_theaters} Theaters Capacity: {self.theaters_capacity}"
 
         
 

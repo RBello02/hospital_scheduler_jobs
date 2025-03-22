@@ -9,7 +9,7 @@ class Surgeon:
         self.max_surgery_time = surgeon_data['max_surgery_time']
 
     def __str__(self):
-        return f"Surgeon ID: {self.id}"
+        return f"Surgeon ID: {self.id} Max Surgery Time: {self.max_surgery_time}"
     
     
             

@@ -132,15 +132,19 @@ def main():
 
     solution = Solution(times, rooms, patients, surgeons, nurses)    # initializing the class solution
 
-    init_solution = initial_solution(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
+    starting_point = Solution(times, rooms, patients, surgeons, nurses)    # starting point is a solution class
+
+    init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
 
     problem = Problem(solution, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
+
+    print(problem.nurses)
 
     # solving the problem
 
     number_of_iterations = 1000
 
-    solver = ALNS(problem, init_solution)
+    solver = ALNS(problem, initial_solution)
 
     solver.solve(number_of_iterations)
 
@@ -148,8 +152,6 @@ def main():
 
 
     """
-
-    problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
     if problem.constraints(solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
         print("The solution is feasible")
