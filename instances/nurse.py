@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 
-class Nurse():
+class Nurse :
 
     def __init__(self, nurse_data, Total_days, shift_map):
         self.id = nurse_data['id']

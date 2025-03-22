@@ -3,7 +3,7 @@ import numpy as np
 from colorama import Fore
 import random
 
-class Problem ():
+class Problem :
 
     def __init__(self, solution , occupants, patients, surgeons, nurses, rooms, theaters, T, shifts , weights):
 

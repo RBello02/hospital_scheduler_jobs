@@ -15,6 +15,7 @@ from instances.solution import Solution
 from utils import *
 
 from solvers.initial_solution import initial_solution
+from solvers.ALNS import ALNS
 
 
 
@@ -131,12 +132,22 @@ def main():
 
     solution = Solution(times, rooms, patients, surgeons, nurses)    # initializing the class solution
 
-    solution = initial_solution(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
+    init_solution = initial_solution(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
 
-    # initializing the problem
+    problem = Problem(solution, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
+
+    # solving the problem
+
+    number_of_iterations = 1000
+
+    solver = ALNS(problem, init_solution)
+
+    solver.solve(number_of_iterations)
 
     # printing the sol
 
+
+    """
 
     problem = Problem(solution , occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
@@ -162,7 +173,7 @@ def main():
     with open('output_for_validation/'+"out_"+filename, 'w') as file:
         file.write(json_object)
 
-        
+    """
 
 
 

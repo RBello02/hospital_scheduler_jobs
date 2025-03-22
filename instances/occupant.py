@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 
-class Occupant():
+class Occupant :
 
     def __init__(self, occupant_data, Tempo):
         self.id = occupant_data['id']

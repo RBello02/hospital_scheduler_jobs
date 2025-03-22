@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 
-class Patient():
+class Patient :
 
     def __init__(self, patient_data, Tempo):
         self.id = patient_data['id']

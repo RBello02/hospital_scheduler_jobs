@@ -4,7 +4,7 @@ from instances import patient
 from instances import occupant
 from instances import surgeon
 
-class Times():
+class Times :
 
     def __init__(self, T, shifts):
         # For the time
@@ -16,7 +16,7 @@ class Times():
 
         
 
-class Rooms():
+class Rooms:
 
     def __init__(self, rooms, tempo):
 
@@ -41,7 +41,7 @@ class Rooms():
     
 
         
-class Theaters():
+class Theaters :
 
     def __init__(self, theaters):
         # For theaters

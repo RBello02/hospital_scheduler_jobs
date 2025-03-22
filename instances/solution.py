@@ -4,7 +4,7 @@ import numpy as np
 
 # in this class we are going to store the current solution of the problem, this class represents the variables of the problem
 
-class Solution():
+class Solution:
 
     def __init__(self, Tempo, rooms, patients, surgeons, nurses):
 
