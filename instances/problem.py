@@ -51,7 +51,7 @@ class Problem :
 
     # creating a method for checking the Hard constraints
 
-    def constraints(self, solution, patients, surgeons, nurses, rooms, theaters, T, shifts):      # THERE'S NO NURSES AND OCCUPANTS
+    def constraints(self, solution, patients, surgeons, rooms, theaters, T, shifts):      # THERE'S NO NURSES AND OCCUPANTS
 
         # boolean variable that tells us if all the constraints are ok
 
