@@ -23,7 +23,7 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
         random_shift = random.choice(shifts)
         random_day = random.choice(range(Tempo))
 
-        for day in Tempo:
+        for day in range(Tempo):
             for shift in shifts:
                 for room_id in rooms.rooms_id:
                     if day != random_day and shift != random_shift and room_id != random_room:    # we change all the other schedule
@@ -45,8 +45,23 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
         
         # in this case we select randomly a list of rooms, some days and some shift, and we do like in B but with more combination
 
-        n_random_rooms = random.choice(range(rooms.n_rooms))    # the number of random rooms to select
-        
+        n_random_rooms = random.choice(range(1,rooms.n_rooms-1))    # the number of random rooms to select
+        random_rooms = random.sample(tot_room_id, n_random_rooms)   # sample the rooms
+
+        n_random_shifts = random.choice(range(1,len(shifts)-1))
+        random_shifts = random.sample(shifts, n_random_shifts)
+
+        n_random_days = random.choice(range(1,Tempo-1))
+        random_days = random.sample(range(Tempo), n_random_days)
+
+        for day in range(Tempo):
+            for shift in shifts:
+                for room_id in rooms.rooms_id:
+                    if day in random_days and shift in random_shifts and room_id in random_rooms:    # we change all the other schedule
+                        current_point.nurses_schedule[day][shift][room_id] = []    # empty list
+
+    
+
 
 
 

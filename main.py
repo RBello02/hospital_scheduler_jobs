@@ -16,6 +16,7 @@ from utils import *
 
 from solvers.initial_solution import initial_solution
 from solvers.ALNS import ALNS
+#from solvers.Destroy import destroy
 
 
 
@@ -94,7 +95,7 @@ def main():
     t_rooms = transformed_data['rooms']
 
     shift_map = transformed_data['shift_mapping']
-    age_map = transformed_data['age_mapping']
+    #age_map = transformed_data['age_mapping']
     weights = transformed_data['weights']
     shifts = transformed_data['shifts']
 
@@ -130,7 +131,7 @@ def main():
 
     # initial solution
 
-    solution = Solution(times, rooms, patients, surgeons, nurses)    # initializing the class solution
+    #solution = Solution(times, rooms, patients, surgeons, nurses)    # initializing the class solution
 
     starting_point = Solution(times, rooms, patients, surgeons, nurses)    # starting point is a solution class
 
@@ -149,7 +150,7 @@ def main():
     # printing the sol
 
 
-    if problem.constraints(init_solution, patients, surgeons, nurses ,rooms, theaters, time, shifts):
+    if problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts):
         print(" ")
         print(" ")
         print(" ")
