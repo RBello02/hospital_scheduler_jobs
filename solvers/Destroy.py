@@ -2,12 +2,12 @@ import random
 
 def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destroy phase
 
-    nurses = problem.nurses
-    surgeons = problem.surgeons
+    #nurses = problem.nurses
+    #surgeons = problem.surgeons
     patients = problem.patients
-    occupants = problem.occupants
+    #occupants = problem.occupants
     rooms = problem.rooms
-    theaters = problem.theaters
+    #theaters = problem.theaters
     Tempo = problem.T
     shifts = problem.shifts
 
