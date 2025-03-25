@@ -60,6 +60,43 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                     if day in random_days and shift in random_shifts and room_id in random_rooms:    # we change all the other schedule
                         current_point.nurses_schedule[day][shift][room_id] = []    # empty list
 
+    if CASE_DESTROY == 'D':
+
+        # in this case we select one patient randomly and kick off all the other from the hospital
+
+        all_patient_id = [patient.id for patient in patients]
+        random_patient_id = random.choice(all_patient_id)
+
+        for patient_dic in current_point.patient_schedule:
+            if patient_dic['patient'].id != random_patient_id:
+                current_point.patient_schedule[patient_dic['patient'].id] = {'patient': patient_dic['patient'],
+                                                                             'room': None,
+                                                                              'day': None}     # kick off from the hospital
+                for theater_dic in current_point.surgeons_operations:
+                    if theater_dic['patient'].id == patient_dic['patient'].id:   # do not operate that patient
+                        current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
+                                                                                        'patient': patient_dic['patient']}
+                        
+    if CASE_DESTROY == 'E':
+
+        # the same thing we did above but we kick off that random patient
+
+        all_patient_id = [patient.id for patient in patients]
+        random_patient_id = random.choice(all_patient_id)
+
+        print(random_patient_id)
+
+        for patient_dic in current_point.patient_schedule:
+            if patient_dic['patient'].id == random_patient_id:
+                current_point.patient_schedule[patient_dic['patient'].id] = {'patient': patient_dic['patient'],
+                                                                             'room': None,
+                                                                              'day': None}     # kick off from the hospital
+                for theater_dic in current_point.surgeons_operations:
+                    if theater_dic['patient'].id == patient_dic['patient'].id:   # do not operate that patient
+                        current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
+                                                                                        'patient': patient_dic['patient']}
+                        
+
     
 
 

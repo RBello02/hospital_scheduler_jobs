@@ -16,7 +16,7 @@ from utils import *
 
 from solvers.initial_solution import initial_solution
 from solvers.ALNS import ALNS
-#from solvers.Destroy import destroy
+from solvers.Destroy import destroy
 
 
 
@@ -39,7 +39,7 @@ def main():
 
     #  reading
 
-    filename = 'test09.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -141,6 +141,9 @@ def main():
 
     # solving the problem
 
+    new = destroy('E',init_solution, problem)
+    print(new.patient_schedule)
+
     number_of_iterations = 1000
 
     solver = ALNS(problem, initial_solution)
@@ -164,7 +167,15 @@ def main():
         for key, value in cost_dic.items():
             print(key, ":", value)
     else:
+        print(" ")
+        print(" ")
+        print(" ")
+        print("**********************************")
         print("The solution is not feasible")
+        print(" ")
+        print(" ")
+        print(" ")
+        print("**********************************")
 
 
     ######################################## OUTPUT FOR VALIDATION ########################################
