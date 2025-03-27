@@ -188,7 +188,7 @@ def repair(CASE_REPAIR , current_destroyed_point,  problem): #main function for 
         # now we have to select the nurses that are not scheduled, they might be nurses that are destroyed
 
         for day in range(T):
-            for shift in shifts(T):
+            for shift in shifts:
                 nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
                 random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy
                 counter = 0
@@ -197,7 +197,7 @@ def repair(CASE_REPAIR , current_destroyed_point,  problem): #main function for 
                         # we have to find a nurse that can work in that room
                         nurse = nurse_that_can_work[counter % len(nurse_that_can_work)]
                         counter += 1
-                        point.nurses_schedule[day][shift][room_id] = ({'nurse': nurse,
+                        point.nurses_schedule[day][shift][room_id].append({'nurse': nurse,
                                                                        'room': room_id})
 
     

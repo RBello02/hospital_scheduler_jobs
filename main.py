@@ -145,14 +145,11 @@ def main():
 
     # solving the problem
 
-    new = destroy('E',init_solution, problem)
-    print(new.patient_schedule)
+    number_of_iterations = 100
 
-    number_of_iterations = 1000
+    solver = ALNS(problem, init_solution)
 
-    solver = ALNS(problem, initial_solution)
-
-    solver.solve(number_of_iterations)
+    final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
 
     # printing the sol
 
