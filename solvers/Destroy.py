@@ -345,7 +345,7 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                 for shift in shifts:
                     for room_id in rooms.rooms_id:
                         if day in random_days and shift in random_shifts and room_id in random_rooms:    # we change all the other schedule
-                            current_point.nurses_schedule[day]          
+                            current_point.nurses_schedule[day][shift][room_id] = []    # empty list          
                             
             all_patient_id = [patient.id for patient in patients]
             n_random_patients = random.choice(range(1,len(all_patient_id)-1))
