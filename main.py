@@ -2,6 +2,11 @@ import numpy as np
 import json 
 import random
 
+import matplotlib
+matplotlib.use("Agg")  # Usa un backend non interattivo
+import matplotlib.pyplot as plt
+import os
+
 from instances.hospital import Times
 from instances.hospital import Rooms
 from instances.hospital import Theaters
@@ -16,7 +21,6 @@ from utils import *
 
 from solvers.initial_solution import initial_solution
 from solvers.ALNS import ALNS
-from solvers.Destroy import destroy
 
 
 
@@ -189,7 +193,24 @@ def main():
         file.write(json_object)
 
 
+    ######################################## FUNCTION PLOT ########################################
 
+    plot_folder = "plots"
+    file_number = filename.replace('test', '').replace('.json', '')
+
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-')
+
+    plt.xlabel('Iterations')
+    plt.ylabel('Objective function value')
+    plt.legend()
+    plt.grid()
+
+    output_path = os.path.join(plot_folder, f'plot_test{file_number}.png')
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+
+    plt.close()
     
 
 

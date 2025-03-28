@@ -74,12 +74,14 @@ class ALNS:
 
             new_value, dic = problem.objective_function(new_point, occupants, surgeons, nurses,  rooms, T, shifts, weights) 
 
-            if new_value <= current_value:
+            if new_value < current_value:
                 current_point = new_point
                 current_value = new_value
                 # ************ for the plot *********
                 y_data.append(new_value)
                 # ************************************
+            else:
+                y_data.append(current_value)
 
         return (new_point,x_data,y_data)
 
