@@ -47,6 +47,21 @@ def repair(CASE_REPAIR , current_destroyed_point,  problem): #main function for 
         # create a variable that stores the theaters + the time of the operation of the patient 
 
         theaters_workload = [[0 for t in range(T)] for theater_id in theaters.theaters_id]
+
+        # in this case (not like initial solution) we have to init theaters_workload and surgeons_workload
+
+        for patient_dic in point.patient_schedule:
+            if patient_dic['day'] is not None: # if it is not destroyed:
+                patient = patient_dic['patient']
+                admission = patient_dic['day']
+                surgeon_id = patient.surgeon_id # surgeon id 
+                for theater_dic in point.surgeons_operations: # find the theater
+                    if theater_dic['patient'].id == patient.id:
+                        theater_id = theater_dic['theater']
+                surgeons_workload[surgeon_id][admission] += patient.surgery_duration
+                theaters_workload[theater_id][admission] += patient.surgery_duration
+            
+
         
         for patient_dic in mandatory_patients:
             patient = patient_dic['patient']

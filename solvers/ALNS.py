@@ -70,9 +70,7 @@ class ALNS:
             point_destroyed = destroy('A',current_point,problem)
             new_point = repair('A', point_destroyed, problem)
 
-            print(problem.constraints(new_point, patients, surgeons, rooms, theaters, T, shifts))      
-
-            break
+            #print(problem.constraints(new_point, patients, surgeons, rooms, theaters, T, shifts))      
 
             new_value, dic = problem.objective_function(new_point, occupants, surgeons, nurses,  rooms, T, shifts, weights) 
 

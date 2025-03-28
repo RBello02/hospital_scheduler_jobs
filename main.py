@@ -154,14 +154,14 @@ def main():
     # printing the sol
 
 
-    if problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts):
+    if problem.constraints(final_solution, patients, surgeons, rooms, theaters, time, shifts):
         print(" ")
         print(" ")
         print(" ")
         print("**********************************")
         print("The solution is feasible")
         print("**********************************")
-        tot_cost, cost_dic = problem.objective_function(init_solution, occupants, surgeons, nurses, rooms, time, shifts, weights)
+        tot_cost, cost_dic = problem.objective_function(final_solution, occupants, surgeons, nurses, rooms, time, shifts, weights)
         print("The total cost is: ", tot_cost)
         print("**********************************") 
         print("The cost of each part is")
@@ -181,7 +181,7 @@ def main():
 
     ######################################## OUTPUT FOR VALIDATION ########################################
 
-    out_sol = postprocess(init_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, tot_cost, cost_dic, weights)
+    out_sol = postprocess(final_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, tot_cost, cost_dic, weights)
 
     json_object = json.dumps(out_sol, indent=4)
 
