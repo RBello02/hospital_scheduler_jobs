@@ -51,7 +51,7 @@ def repair(CASE_REPAIR , current_destroyed_point,  problem): #main function for 
         # in this case (not like initial solution) we have to init theaters_workload and surgeons_workload
 
         for patient_dic in point.patient_schedule:
-            if patient_dic['day'] is not None: # if it is not destroyed:
+            if patient_dic['day'] is not None and patient_dic['patient'].mandatory == 1: # if it is not destroyed:
                 patient = patient_dic['patient']
                 admission = patient_dic['day']
                 surgeon_id = patient.surgeon_id # surgeon id 

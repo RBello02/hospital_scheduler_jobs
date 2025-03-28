@@ -53,7 +53,6 @@ class ALNS:
         x_data.append(0)
         current_value, dic = problem.objective_function(current_point, occupants, surgeons, nurses,  rooms, T, shifts, weights)
         y_data.append(current_value)
-
         # ********************
         
 
@@ -67,23 +66,25 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed = destroy('A',current_point,problem)
+            point_destroyed = destroy('F',current_point,problem)
             new_point = repair('A', point_destroyed, problem)
 
             #print(problem.constraints(new_point, patients, surgeons, rooms, theaters, T, shifts))      
 
             new_value, dic = problem.objective_function(new_point, occupants, surgeons, nurses,  rooms, T, shifts, weights) 
 
-            if new_value < current_value:
+            if new_value <= current_value:
+                print(" " + str(current_value) + " || " + str(new_value))
                 current_point = new_point
                 current_value = new_value
+                ottimal_solution = new_point
                 # ************ for the plot *********
                 y_data.append(new_value)
                 # ************************************
             else:
                 y_data.append(current_value)
 
-        return (new_point,x_data,y_data)
+        return (current_point,x_data,y_data)
 
 
 def show_progress(percent=0, width=30):   # function made only for printing the progress bar
