@@ -34,6 +34,12 @@ class Rooms:
                 self.rooms_gender[t][room_index] = patient.gender
             self.rooms_count_people[t][room_index] +=1 
 
+    def remove_patient(self, room_index, patient, starting_time, T):
+        for t in range(starting_time, min(starting_time + patient.length_of_stay, T)):         # i'll consider the min because i don't want to consider a time that exceed T
+            if self.rooms_count_people[t][room_index] == 1:       # if we have only one patient, and we kick he off, there is no more gender in the room
+                self.rooms_gender[t][room_index] = None
+            self.rooms_count_people[t][room_index] -=1 
+
     def add_occupant(self, occupant, T):        # add an occupant in a room at time t
         room_index = self.rooms_id.index(occupant.room_id)
         for t in range(min(occupant.length_of_stay,T)):  # same reason 

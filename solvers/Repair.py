@@ -1,7 +1,7 @@
 import random
 
 
-def repair(CASE_REPAIR , current_destroyed_point,  problem): #main function for the repair phase
+def repair(CASE_REPAIR, current_point, current_destroyed_point,  problem): #main function for the repair phase
 
     nurses = problem.nurses
     surgeons = problem.surgeons
@@ -12,195 +12,138 @@ def repair(CASE_REPAIR , current_destroyed_point,  problem): #main function for 
     T = problem.T
     shifts = problem.shifts
 
-    point = current_destroyed_point
-
     if CASE_REPAIR == 'A':
 
-        # in this case the repair we sort the patient by the delay
+        # we have to find the patients that have been destroyed:
 
-
-        # select all the mandatory patient that have been destroyed 
-
+        destroyed_mandatory = []
+        destroyed_not_mandatory = []
         mandatory_patients = []
-        not_mandatory_patients = []   # this is the list of all the destroyed patient 
-        for patient_dic in point.patient_schedule:
-            patient = patient_dic['patient']
-            if patient.mandatory == 0:
-                not_mandatory_patients.append({'patient': patient,
-                                               'delay': T-patient.surgery_release_day})
-            else:
-                if patient_dic['day'] is None: #if it is a destroyed patient
-                    mandatory_patients.append({'patient': patient,
-                                               'delay': patient.surgery_due_day - patient.surgery_release_day})
-                    
-        # sort by the delay:
+        not_mandatory_patients = []
 
+        not_mandatory_patients_in_the_hosp = []
+
+
+        for patient_dic, destroyed_patient_dic in zip(current_point.patient_schedule, current_destroyed_point.patient_schedule):
+
+            if patient_dic['patient'].mandatory == 1:
+                mandatory_patients.append({'patient': patient_dic['patient'],
+                                            'delay': patient_dic['patient'].surgery_due_day-patient_dic['patient'].surgery_release_day})
+            else:
+                not_mandatory_patients.append({'patient': patient_dic['patient'],
+                                                'delay': T-patient_dic['patient'].surgery_release_day})
+
+            if patient_dic['day'] is not None and destroyed_patient_dic['day'] is None: # in this case there a point destroyed
+                if patient_dic['patient'].mandatory == 1:
+                    destroyed_mandatory.append({'patient': patient_dic['patient'],
+                                                'delay': patient_dic['patient'].surgery_due_day-patient_dic['patient'].surgery_release_day})
+                else:
+                    destroyed_not_mandatory.append({'patient': patient_dic['patient'],
+                                                    'delay': T-patient_dic['patient'].surgery_release_day})
+                    
+            if patient_dic['day'] is not None and destroyed_patient_dic['day'] is not None and patient_dic['patient'].mandatory == 0: 
+                not_mandatory_patients_in_the_hosp.append({'patient': patient_dic['patient'],
+                                                               'day': patient_dic['day']})
+
+        
         mandatory_patients.sort(key=lambda x: x['delay']) # sort over delay
         not_mandatory_patients.sort(key=lambda x: x['delay'])
+        destroyed_mandatory.sort(key=lambda x: x['delay'])
+        destroyed_not_mandatory.sort(key=lambda x: x['delay'])
 
-        # now we have to add this patient to the solution again (similar to initial solution)
-
-        # create a variable that stores the surgeons + the time that they invest during a day for an operation
+        # surgeons and theaters workload
 
         surgeons_workload = [[0 for t in range(T)] for surgeon in surgeons]
-
-        # create a variable that stores the theaters + the time of the operation of the patient 
-
         theaters_workload = [[0 for t in range(T)] for theater_id in theaters.theaters_id]
 
-        # in this case (not like initial solution) we have to init theaters_workload and surgeons_workload
-
-        for patient_dic in point.patient_schedule:
-            if patient_dic['day'] is not None and patient_dic['patient'].mandatory == 1: # if it is not destroyed:
-                patient = patient_dic['patient']
-                admission = patient_dic['day']
-                surgeon_id = patient.surgeon_id # surgeon id 
-                for theater_dic in point.surgeons_operations: # find the theater
-                    if theater_dic['patient'].id == patient.id:
-                        theater_id = theater_dic['theater']
-                surgeons_workload[surgeon_id][admission] += patient.surgery_duration
-                theaters_workload[theater_id][admission] += patient.surgery_duration
+        for patient_schedule in current_destroyed_point.patient_schedule:   # add the workload
+            surgeon_id = patient_schedule['patient'].surgeon_id
+            day = patient_schedule['day']
+            if day is not None:
+                for theater_schedule in current_destroyed_point.surgeons_operations:
+                    if theater_schedule['patient'].id == patient_schedule['patient'].id:
+                        theater_id = theater_schedule['theater']
+                        break
+                surgeons_workload[surgeon_id][day] += patient_schedule['patient'].surgery_duration
+                theaters_workload[theater_id][day] += patient_schedule['patient'].surgery_duration
+                
             
+        # now we MUST find a place in the solution for all the destroyed_mandatory patient 
 
-        
-        for patient_dic in mandatory_patients:
+        for patient_dic in destroyed_mandatory:
             patient = patient_dic['patient']
             surgeon_id = patient.surgeon_id
             for surgeon in surgeons:
                 if surgeon.id == surgeon_id:
-                    break                   # find the surgeon
-            
-            # we have to find a room for this patient,
-            # the room must be
-            # 1) compatible
-            # 2) of the same sex of the patient
-            # 3) the there must be capacity for all his stay in the hospital
+                    break                   # found the surgeon
 
-            # also check that
-            # 4) there must be a surgeon for the patient in their admission date 
-            # 5) there must be a theater where the patient can be operated
+            found_place = False   # until we dont find a place for the patient we kick off not mandatory patients
 
-            compatible_room_ids = patient.compatible_room_ids
-            found_solution = False    
+            while not found_place:
+                compatible_room_ids = patient.compatible_room_ids
 
-            for admission_day in range(patient.surgery_release_day, patient.surgery_due_day+1):   # selecting the admission date
+                for admission_day in range(patient.surgery_release_day, patient.surgery_due_day+1):   # selecting the admission date
 
-                there_is_surgeon = False
-                there_is_theater = False
+                    there_is_surgeon = False
+                    there_is_theater = False
 
-                
-                if surgeons_workload[surgeon_id][admission_day] + patient.surgery_duration <= surgeon.max_surgery_time[admission_day]:    # if a surgeon can operate in the admission date 
-                    there_is_surgeon = True
-                
-                for theater_id in theaters.theaters_id:
-                    if theaters_workload[theater_id][admission_day] + patient.surgery_duration <= theaters.theaters_capacity[theater_id][admission_day]: # if there is a theater in the admission date
-                        there_is_theater = True
-                        break
+                    
+                    if surgeons_workload[surgeon_id][admission_day] + patient.surgery_duration <= surgeon.max_surgery_time[admission_day]:    # if a surgeon can operate in the admission date 
+                        there_is_surgeon = True
+                    
+                    for theater_id in theaters.theaters_id:
+                        if theaters_workload[theater_id][admission_day] + patient.surgery_duration <= theaters.theaters_capacity[theater_id][admission_day]: # if there is a theater in the admission date
+                            there_is_theater = True
+                            break
 
-                if there_is_surgeon and there_is_theater:  # i do all the for only if there is a theater and a surgeon
-                    for room_id in compatible_room_ids:
-                        there_is_place = True
-                        same_gender = True
-                        for t in range(admission_day, min(admission_day+patient.length_of_stay, T)):    # I take the min, because the admis + length can go over T, and i don't want to know nothing after T
-                            room_gender = rooms.rooms_gender[t][room_id] 
-                            room_count_people = rooms.rooms_count_people[t][room_id]
-                            if room_gender is not None and room_gender != patient.gender:    # room gender is None when a room is empty
-                                same_gender = False
-                            if room_count_people >= rooms.rooms_capacity[room_id]:   # if there's no place during the schedule for a patient 
-                                there_is_place = False
-                        if there_is_place and same_gender:        # if all the constraints are ok add the solution
-                            point.patient_schedule[patient.id] = {'patient': patient,
-                                                                'room': room_id,    
-                                                                'day': admission_day}
-                            point.surgeons_operations[patient.id]  = {'theater': theater_id,
-                                                                    'patient': patient}
-                        
-                            # add the time to the surgeons and theaters
+                    if there_is_surgeon and there_is_theater:  # i do all the for only if there is a theater and a surgeon
+                        for room_id in compatible_room_ids:
+                            there_is_place = True
+                            same_gender = True
+                            for t in range(admission_day, min(admission_day+patient.length_of_stay, T)):    # I take the min, because the admis + length can go over T, and i don't want to know nothing after T
+                                room_gender = rooms.rooms_gender[t][room_id] 
+                                room_count_people = rooms.rooms_count_people[t][room_id]
+                                if room_gender is not None and room_gender != patient.gender:    # room gender is None when a room is empty
+                                    same_gender = False
+                                if room_count_people >= rooms.rooms_capacity[room_id]:   # if there's no place during the schedule for a patient 
+                                    there_is_place = False
+                            if there_is_place and same_gender:        # if all the constraints are ok add the solution
+                                current_destroyed_point.patient_schedule[patient.id] = {'patient': patient,
+                                                                        'room': room_id,    
+                                                                        'day': admission_day}
+                                current_destroyed_point.surgeons_operations[patient.id]  = {'theater': theater_id,
+                                                                            'patient': patient}
+                                
+                                # add the time to the surgeons and theaters
 
-                            surgeons_workload[surgeon_id][admission_day] += patient.surgery_duration
-                            theaters_workload[theater_id][admission_day] += patient.surgery_duration
+                                surgeons_workload[surgeon_id][admission_day] += patient.surgery_duration
+                                theaters_workload[theater_id][admission_day] += patient.surgery_duration
 
-                            found_solution = True
-                            break   # close the for that is running over rooms_ids
-                    if found_solution:
-                        break # close the for that is running over the admission date
-            # now we add the patient to the hospital
-            if found_solution:
-                rooms.add_patient(room_id, patient, admission_day, T)
-            else:
-                print("There is no solution for the patient: ", patient.id)
+                                found_solution = True
+                                break   # close the for that is running over rooms_ids
+                        if found_solution:
+                            break # close the for that is running over the admission date
+                # now we add the patient to the hospital
+                if found_solution:
+                    rooms.add_patient(room_id, patient, admission_day, T)
+                else:  
+                    # if we have not found a solution we try to kick off a not mandatory patient
+                    not_mandatory_patients_in_the_hosp.sort(key=lambda x: abs(x['day']-patient_dic['patient'].surgery_release_day)) # find the closest one to the patient
+                    not_mandatory_patient_in_the_hosp = not_mandatory_patients_in_the_hosp[0]  # I'll take the first one
+                    patient_to_delete = not_mandatory_patient_in_the_hosp['patient']
+                    for schedule in current_destroyed_point.patient_schedule:
+                        if schedule['patient'].id == patient_to_delete.id:
+                            old_room = schedule['room']
+                            current_destroyed_point.patient_schedule[patient_to_delete.id] = {'patient': patient_to_delete,
+                                                                                              'room': None,
+                                                                                              'day': None}
+                        for theater_dic in current_destroyed_point.surgeons_operations:
+                            if theater_dic['patient'].id == patient_to_delete.id:
+                                current_destroyed_point.surgeons_operations[patient_to_delete] = {'patient': patient_to_delete,
+                                                                                                  'theater': None}
+                                break
+                    rooms.remove_patient(old_room, patient_to_delete, not_mandatory_patient_in_the_hosp['day'])
 
-
-
-        for patient_dic in not_mandatory_patients:   # also for not mandatory patients
-            patient = patient_dic['patient']
-            surgeon_id = patient.surgeon_id
-            for surgeon in surgeons:
-                if surgeon.id == surgeon_id:
-                    break                   # find the surgeon
-            
-            # we have to find a room for this patient,
-            # the room must be
-            # 1) compatible
-            # 2) of the same sex of the patient
-            # 3) the there must be capacity for all his stay in the hospital
-
-            # also check that
-            # 4) there must be a surgeon for the patient in their admission date 
-            # 5) there must be a theater where the patient can be operated
-
-            compatible_room_ids = patient.compatible_room_ids
-            found_solution = False    
-
-            for admission_day in range(patient.surgery_release_day, T):   # selecting the admission date
-
-                there_is_surgeon = False
-                there_is_theater = False
-
-                
-                if surgeons_workload[surgeon_id][admission_day] + patient.surgery_duration <= surgeon.max_surgery_time[admission_day]:    # if a surgeon can operate in the admission date 
-                    there_is_surgeon = True
-                
-                for theater_id in theaters.theaters_id:
-                    if theaters_workload[theater_id][admission_day] + patient.surgery_duration <= theaters.theaters_capacity[theater_id][admission_day]: # if there is a theater in the admission date
-                        there_is_theater = True
-                        break
-
-                if there_is_surgeon and there_is_theater:  # i do all the for only if there is a theater and a surgeon
-                    for room_id in compatible_room_ids:
-                        there_is_place = True
-                        same_gender = True
-                        for t in range(admission_day, min(admission_day+patient.length_of_stay, T)):    # I take the min, because the admis + length can go over T, and i don't want to know nothing after T
-                            room_gender = rooms.rooms_gender[t][room_id] 
-                            room_count_people = rooms.rooms_count_people[t][room_id]
-                            if room_gender is not None and room_gender != patient.gender:    # room gender is None when a room is empty
-                                same_gender = False
-                            if room_count_people >= rooms.rooms_capacity[room_id]:   # if there's no place during the schedule for a patient 
-                                there_is_place = False
-                        if there_is_place and same_gender:        # if all the constraints are ok add the solution
-                            point.patient_schedule[patient.id] = {'patient': patient,
-                                                                'room': room_id,    
-                                                                'day': admission_day}
-                            point.surgeons_operations[patient.id]  = {'theater': theater_id,
-                                                                    'patient': patient}
-                        
-                            # add the time to the surgeons and theaters
-
-                            surgeons_workload[surgeon_id][admission_day] += patient.surgery_duration
-                            theaters_workload[theater_id][admission_day] += patient.surgery_duration
-
-                            found_solution = True
-                            break   # close the for that is running over rooms_ids
-                    if found_solution:
-                        break # close the for that is running over the admission date
-            # now we add the patient to the hospital
-            if found_solution:
-                rooms.add_patient(room_id, patient, admission_day, T)
-            else:
-                continue # if it doesn't fit amen
-
-        
-        # now we have to select the nurses that are not scheduled, they might be nurses that are destroyed
 
         for day in range(T):
             for shift in shifts:
@@ -208,11 +151,11 @@ def repair(CASE_REPAIR , current_destroyed_point,  problem): #main function for 
                 random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy
                 counter = 0
                 for room_id in rooms.rooms_id:
-                    if not point.nurses_schedule[day][shift][room_id]:  # if the list is empty
+                    if not current_destroyed_point.nurses_schedule[day][shift][room_id]:  # if the list is empty
                         # we have to find a nurse that can work in that room
                         nurse = nurse_that_can_work[counter % len(nurse_that_can_work)]
                         counter += 1
-                        point.nurses_schedule[day][shift][room_id].append({'nurse': nurse,
+                        current_destroyed_point.nurses_schedule[day][shift][room_id].append({'nurse': nurse,
                                                                        'room': room_id})
 
     
@@ -220,7 +163,7 @@ def repair(CASE_REPAIR , current_destroyed_point,  problem): #main function for 
 
 
 
-    return point
+    return current_destroyed_point
 
 
 

@@ -110,8 +110,8 @@
         },
         {
             "id": "p21",
-            "admission_day": 7,
-            "room": "r4",
+            "admission_day": 11,
+            "room": "r2",
             "operating_theater": "t0"
         },
         {
@@ -156,8 +156,8 @@
         },
         {
             "id": "p29",
-            "admission_day": 11,
-            "room": "r1",
+            "admission_day": 7,
+            "room": "r0",
             "operating_theater": "t0"
         },
         {
@@ -1641,6 +1641,6 @@
         }
     ],
     "costs": [
-        "Costs: 4371, Unscheduled: 11,  Delay: 99,  OpenOT: 12,  AgeMix: 43,  Skill: 107,  Excess: 53,  Continuity: 298,  SurgeonTransfer: 1"
+        "Costs: 4371, Unscheduled: 11,  Delay: 99,  OpenOT: 12,  AgeMix: 41,  Skill: 102,  Excess: 58,  Continuity: 300,  SurgeonTransfer: 1"
     ]
 }

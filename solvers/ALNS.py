@@ -66,15 +66,14 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed = destroy('F',current_point,problem)
-            new_point = repair('A', point_destroyed, problem)
+            point_destroyed = destroy('C',current_point,problem)
+            new_point = repair('A', current_point, point_destroyed, problem)
 
             #print(problem.constraints(new_point, patients, surgeons, rooms, theaters, T, shifts))      
 
             new_value, dic = problem.objective_function(new_point, occupants, surgeons, nurses,  rooms, T, shifts, weights) 
-
             if new_value <= current_value:
-                print(" " + str(current_value) + " || " + str(new_value))
+                #print(" " + str(current_value) + " || " + str(new_value))
                 current_point = new_point
                 current_value = new_value
                 ottimal_solution = new_point
