@@ -2,6 +2,8 @@ import numpy as np
 import json 
 import random
 
+from colorama import Fore,Style
+
 import matplotlib
 matplotlib.use("Agg")  # Usa un backend non interattivo
 import matplotlib.pyplot as plt
@@ -21,6 +23,8 @@ from utils import *
 
 from solvers.initial_solution import initial_solution
 from solvers.ALNS import ALNS
+
+from solvers.Destroy import destroy
 
 
 
@@ -155,6 +159,10 @@ def main():
 
     final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
 
+    #final_solution = destroy('H', init_solution, problem)
+
+    #final_solution = init_solution
+
     # printing the sol
 
 
@@ -163,7 +171,7 @@ def main():
         print(" ")
         print(" ")
         print("**********************************")
-        print("The solution is feasible")
+        print(Fore.RED +"The solution is feasible"+ Style.RESET_ALL)
         print("**********************************")
         tot_cost, cost_dic = problem.objective_function(final_solution, occupants, surgeons, nurses, rooms, time, shifts, weights)
         print("The total cost is: ", tot_cost)
@@ -172,14 +180,19 @@ def main():
         for key, value in cost_dic.items():
             print(key, ":", value)
     else:
+        print("**********************************")
         print(" ")
         print(" ")
         print(" ")
         print("**********************************")
-        print("The solution is not feasible")
+        print(Fore.RED +"The solution is not feasible"+ Style.RESET_ALL)
         print(" ")
         print(" ")
         print(" ")
+        result = problem.constraints(final_solution, patients, surgeons, rooms, theaters, time, shifts, True)
+        print("")
+        print("")
+        print("")
         print("**********************************")
 
 
@@ -198,7 +211,7 @@ def main():
     plot_folder = "plots"
     file_number = filename.replace('test', '').replace('.json', '')
 
-
+'''
     plt.figure(figsize=(8, 5))
     plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-')
 
@@ -212,7 +225,7 @@ def main():
 
     plt.close()
     
-
+'''
 
 if __name__ == "__main__":
     main()

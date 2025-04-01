@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from colorama import Fore
+from colorama import Fore,Style
 import random
 
 class Problem :
@@ -51,7 +51,7 @@ class Problem :
 
     # creating a method for checking the Hard constraints
 
-    def constraints(self, solution, patients, surgeons, rooms, theaters, T, shifts):      # THERE'S NO NURSES AND OCCUPANTS
+    def constraints(self, solution, patients, surgeons, rooms, theaters, T, shifts, error = False):      # THERE'S NO NURSES AND OCCUPANTS
 
         # boolean variable that tells us if all the constraints are ok
 
@@ -72,10 +72,11 @@ class Problem :
                 if room_gender is not None:
                     for patient in patients_in_room_at_time_t:
                         if patient.gender != room_gender:
-                            counter +=1 
-                            #print(Fore.YELLOW + f"H1 FAILED: Gender mix in room {room_id} at time {t}: "
-                            #                  f"Patient {patient.id} has gender {patient.gender}, "
-                            #                  f"while the room is assigned to {room_gender}." )
+                            counter +=1
+                            if error:
+                                print(Fore.YELLOW + f"H1 FAILED: Gender mix in room {room_id} at time {t}: "
+                                              f"Patient {patient.id} has gender {patient.gender}, "
+                                              f"while the room is assigned to {room_gender}." + Style.RESET_ALL)
         if counter != 0 : 
             check = False
                         
@@ -90,10 +91,12 @@ class Problem :
                           if entry['patient'] == patient), None)
 
             if assigned_room is None and patient.mandatory == 1:  # if a patient that must be in the hospital has no room assigned 
-                #print(Fore.YELLOW + f"H2 FAILED: Patient {patient.id} has no assigned room")
+                if error:
+                    print(Fore.YELLOW + f"H2 FAILED: Patient {patient.id} has no assigned room"+ Style.RESET_ALL)
                 counter += 1
             elif assigned_room not in patient.compatible_room_ids and patient.mandatory == 1:  # if the room is not compatible
-                #print(Fore.YELLOW + f"H2 FAILED: The patient {patient.id} is assigned to an incompatible room")
+                if error:
+                    print(Fore.YELLOW + f"H2 FAILED: The patient {patient.id} is assigned to an incompatible room"+ Style.RESET_ALL)
                 counter += 1
         
         if counter != 0:
@@ -110,7 +113,8 @@ class Problem :
             for t in range(T):
                 if number_of_patients[t][room_id] > capacity[room_id]:
                     counter += 1
-                    #print(Fore.YELLOW +  f"H7 FAILED: Exceed maximal capacity of the room {room_id} at time {t}" )
+                    if error:
+                        print(Fore.YELLOW +  f"H7 FAILED: Exceed maximal capacity of the room {room_id} at time {t}"+ Style.RESET_ALL )
         
         if counter != 0:
             check = False
@@ -132,7 +136,8 @@ class Problem :
                         total_time_of_operation += operated_patient_by_surgeon.surgery_duration
 
                 if total_time_of_operation > surgeon.max_surgery_time[t]:
-                    #print(Fore.YELLOW + f"H3 FAILED: Exceed maximal operation capacity for surgeon {surgeon.id} at time {t}, requested: {total_time_of_operation} | maximal: {surgeon.max_surgery_time[t]}" )
+                    if error:
+                        print(Fore.YELLOW + f"H3 FAILED: Exceed maximal operation capacity for surgeon {surgeon.id} at time {t}, requested: {total_time_of_operation} | maximal: {surgeon.max_surgery_time[t]}"+ Style.RESET_ALL )
                     counter += 1
             
         if counter != 0:
@@ -155,7 +160,8 @@ class Problem :
             for theater_id in theaters.theaters_id:
                 if theaters_usage[t][theater_id] > theaters.theaters_capacity[theater_id][t]:
                     counter += 1
-                    #print(Fore.YELLOW +  f"H4 FAILED: Exceed maximal operation capacity for the theater {theater_id} at time {t}, requested: {theaters_usage[t][theater_id]} | maximal: {theaters.theaters_capacity[theater_id][t]}" )  
+                    if error:
+                        print(Fore.YELLOW +  f"H4 FAILED: Exceed maximal operation capacity for the theater {theater_id} at time {t}, requested: {theaters_usage[t][theater_id]} | maximal: {theaters.theaters_capacity[theater_id][t]}"+ Style.RESET_ALL )  
         if counter != 0:
             check = False
 
@@ -170,19 +176,22 @@ class Problem :
             day = row['day']
             if day is None:
                 if patient.mandatory == 1:
-                    #print(Fore.YELLOW + f"H5 FAILED: Patient {patient.id} is mandatory and must be admitted into the hospital.")
+                    if error:
+                        print(Fore.YELLOW + f"H5 FAILED: Patient {patient.id} is mandatory and must be admitted into the hospital."+ Style.RESET_ALL)
                     counter += 1
                 continue  # If the patient is optional and not admitted, it's fine
 
             # H6: Check that mandatory patients are admitted within their allowed period
             if patient.mandatory == 1 and (day < patient.surgery_release_day or day > patient.surgery_due_day):
                 counter += 1
-                #print(Fore.YELLOW + f"H6 FAILED: Patient {patient.id} is mandatory and must be admitted within the scheduling period.")
+                if error:
+                    print(Fore.YELLOW + f"H6 FAILED: Patient {patient.id} is mandatory and must be admitted within the scheduling period."+ Style.RESET_ALL)
 
             # General rule: No patient can be admitted before their release day
             if day < patient.surgery_release_day:
                 counter += 1
-                #print(Fore.YELLOW + f"H6 FAILED: Patient {patient.id} has an admission day ({day}) that is earlier than their release day ({patient.surgery_release_day}).")
+                if error:
+                    print(Fore.YELLOW + f"H6 FAILED: Patient {patient.id} has an admission day ({day}) that is earlier than their release day ({patient.surgery_release_day}).")
 
         if counter != 0:
             check = False
@@ -208,10 +217,12 @@ class Problem :
                         if nurse['room'] is not None:  
                             counter += 1     # count the number of nurses in the room
                     if counter == 0 and rooms.rooms_count_people[t][room_id]>0:   # if there is no nurse and the room is not empty
-                        #print(Fore.YELLOW + f"H7|B FAILED: Room {room_id} has no nurse in day {day} during the shift {shift}")
+                        if error:
+                            print(Fore.YELLOW + f"H7|B FAILED: Room {room_id} has no nurse in day {day} during the shift {shift}"+ Style.RESET_ALL)
                         check = False
                     if counter > 1 and rooms.rooms_count_people[t][room_id]>0:    # i can put nurses in empty rooms
-                        #print(Fore.YELLOW + f"H7|B FAILED: more then one nurse in the room {room_id} in day {day} in shift {shift}")
+                        if error:
+                            print(Fore.YELLOW + f"H7|B FAILED: more then one nurse in the room {room_id} in day {day} in shift {shift}"+ Style.RESET_ALL)
                         check = False
 
         """

@@ -1,6 +1,7 @@
 import random
+import copy
 
-def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destroy phase
+def destroy(CASE_DESTROY ,point, problem):  #main function for the destroy phase
 
     #nurses = problem.nurses
     #surgeons = problem.surgeons
@@ -12,6 +13,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
     shifts = problem.shifts
 
     tot_room_id = rooms.rooms_id
+
+    current_point = copy.copy(point)
 
     # we have different CASE of destroyers
 
@@ -37,6 +40,10 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
         random_room = random.choice(tot_room_id)    # select a random room
         random_shift = random.choice(shifts)
         random_day = random.choice(range(Tempo))
+
+        print(random_room)
+        print(random_day)
+        print(random_shift)
 
         current_point.nurses_schedule[random_day][random_shift][random_room] = []
 
@@ -67,8 +74,11 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
         all_patient_id = [patient.id for patient in patients]
         random_patient_id = random.choice(all_patient_id)
 
+        #print(random_patient_id)
+
         for patient_dic in current_point.patient_schedule:
             if patient_dic['patient'].id != random_patient_id:
+                #print(patient_dic['patient'].id)
                 current_point.patient_schedule[patient_dic['patient'].id] = {'patient': patient_dic['patient'],
                                                                              'room': None,
                                                                               'day': None}     # kick off from the hospital
@@ -77,7 +87,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
     if CASE_DESTROY == 'E':
 
@@ -88,6 +99,7 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
 
         for patient_dic in current_point.patient_schedule:
             if patient_dic['patient'].id == random_patient_id:
+                #print(random_patient_id)
                 current_point.patient_schedule[patient_dic['patient'].id] = {'patient': patient_dic['patient'],
                                                                              'room': None,
                                                                               'day': None}     # kick off from the hospital
@@ -96,7 +108,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'F':
@@ -117,7 +130,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'G':
@@ -147,7 +161,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
 
                         
     if CASE_DESTROY == 'H':
@@ -177,7 +192,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
     
     if CASE_DESTROY == 'I':
@@ -208,7 +224,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'L':
@@ -234,7 +251,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
     if CASE_DESTROY == 'M':
 
@@ -259,7 +277,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'N':
@@ -286,7 +305,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
     
     if CASE_DESTROY == 'O':
@@ -321,7 +341,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                         current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
-                rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                if patient_dic['day'] is not None:
+                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
         if CASE_DESTROY == 'P':
@@ -356,7 +377,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                             current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                             'patient': patient_dic['patient']}
                     # remove the patient from the hospital:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    if patient_dic['day'] is not None:
+                        rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
                             
         if CASE_DESTROY == 'Q':
@@ -392,7 +414,8 @@ def destroy(CASE_DESTROY ,current_point, problem):  #main function for the destr
                             current_point.surgeons_operations[patient_dic['patient'].id] = {'theater': None,
                                                                                             'patient': patient_dic['patient']}
                     # remove the patient from the hospital:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    if patient_dic['day'] is not None:
+                        rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
                         
                                                         
 

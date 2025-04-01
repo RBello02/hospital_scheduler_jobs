@@ -210,6 +210,9 @@ def initial_solution(solution , occupants, patients, surgeons, nurses, rooms, th
             solution.nurses_schedule[day][shift][room_id].append( {'nurse': nurse,
                                                                    'room': room_id})
             counter += 1
+
+
+
              
             
    return solution

@@ -4,10 +4,16 @@ import time
 from time import sleep
 import time
 import numpy as np
+from colorama import Fore,Style
+
+import copy
 
 from solvers.Destroy import destroy
 from solvers.Repair import repair
 from solvers import initial_solution
+
+from instances.solution import Solution
+from instances.hospital import Times
 
 class ALNS:
 
@@ -47,6 +53,12 @@ class ALNS:
 
         p_iteration = np.linspace(0, 100, number_of_iterations)
 
+        # ************************ init the destroy e repair
+        times = Times(T,shifts)
+        point_destroyed = Solution(times, rooms, patients, surgeons, nurses)
+        new_point = Solution(times, rooms, patients, surgeons, nurses )
+        #******************************
+
         # **************** things for the plot
         x_data, y_data = [], []
 
@@ -54,7 +66,6 @@ class ALNS:
         current_value, dic = problem.objective_function(current_point, occupants, surgeons, nurses,  rooms, T, shifts, weights)
         y_data.append(current_value)
         # ********************
-        
 
         for t in range(number_of_iterations):   # iterating
 
@@ -66,22 +77,28 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed = destroy('C',current_point,problem)
-            new_point = repair('A', current_point, point_destroyed, problem)
+            point_destroyed = destroy('B',current_point,problem)
 
-            #print(problem.constraints(new_point, patients, surgeons, rooms, theaters, T, shifts))      
+
+            new_point = repair('A', current_point, point_destroyed, problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+
+            if not problem.constraints( new_point, patients, surgeons, rooms, theaters, T, shifts):
+                print(Fore.YELLOW + f"Destroy and repaired have failed" + Style.RESET_ALL)
+                print("")
+                result = problem.constraints( new_point, patients, surgeons, rooms, theaters, T, shifts,True)
+                break
 
             new_value, dic = problem.objective_function(new_point, occupants, surgeons, nurses,  rooms, T, shifts, weights) 
             if new_value <= current_value:
                 #print(" " + str(current_value) + " || " + str(new_value))
-                current_point = new_point
+                current_point = copy.deepcopy(new_point)
                 current_value = new_value
-                ottimal_solution = new_point
                 # ************ for the plot *********
                 y_data.append(new_value)
                 # ************************************
             else:
                 y_data.append(current_value)
+            
 
         return (current_point,x_data,y_data)
 
