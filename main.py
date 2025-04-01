@@ -47,7 +47,7 @@ def main():
 
     #  reading
 
-    filename = 'test01.json'
+    filename = 'test02.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -159,10 +159,6 @@ def main():
 
     final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
 
-    #final_solution = destroy('H', init_solution, problem)
-
-    #final_solution = init_solution
-
     # printing the sol
 
 
@@ -171,7 +167,7 @@ def main():
         print(" ")
         print(" ")
         print("**********************************")
-        print(Fore.RED +"The solution is feasible"+ Style.RESET_ALL)
+        print(Fore.GREEN +"The solution is feasible"+ Style.RESET_ALL)
         print("**********************************")
         tot_cost, cost_dic = problem.objective_function(final_solution, occupants, surgeons, nurses, rooms, time, shifts, weights)
         print("The total cost is: ", tot_cost)
@@ -211,7 +207,6 @@ def main():
     plot_folder = "plots"
     file_number = filename.replace('test', '').replace('.json', '')
 
-'''
     plt.figure(figsize=(8, 5))
     plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-')
 
@@ -225,7 +220,6 @@ def main():
 
     plt.close()
     
-'''
 
 if __name__ == "__main__":
     main()

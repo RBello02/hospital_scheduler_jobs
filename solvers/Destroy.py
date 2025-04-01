@@ -1,7 +1,7 @@
 import random
 import copy
 
-def destroy(CASE_DESTROY ,point, problem):  #main function for the destroy phase
+def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
 
     #nurses = problem.nurses
     #surgeons = problem.surgeons
@@ -14,7 +14,7 @@ def destroy(CASE_DESTROY ,point, problem):  #main function for the destroy phase
 
     tot_room_id = rooms.rooms_id
 
-    current_point = copy.copy(point)
+    current_point = copy.deepcopy(point)
 
     # we have different CASE of destroyers
 

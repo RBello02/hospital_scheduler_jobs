@@ -1,7 +1,8 @@
 import random
+import copy
 
 
-def repair(CASE_REPAIR, current_point, current_destroyed_point,  problem): #main function for the repair phase
+def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  problem): #main function for the repair phase
 
     nurses = problem.nurses
     surgeons = problem.surgeons
@@ -11,6 +12,8 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point,  problem): #main
     theaters = problem.theaters
     T = problem.T
     shifts = problem.shifts
+
+    current_destroyed_point= copy.deepcopy(current_destroyed_point_not_copied)
 
     if CASE_REPAIR == 'A':
 
@@ -237,8 +240,6 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point,  problem): #main
                                                                                              'room': room_id})
 
     
-
-
     return current_destroyed_point
 
 
