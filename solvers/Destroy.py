@@ -41,9 +41,9 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
         random_shift = random.choice(shifts)
         random_day = random.choice(range(Tempo))
 
-        print(random_room)
-        print(random_day)
-        print(random_shift)
+        #print(random_room)
+        #print(random_day)
+        #print(random_shift)
 
         current_point.nurses_schedule[random_day][random_shift][random_room] = []
 

@@ -80,6 +80,8 @@ class Problem :
         if counter != 0 : 
             check = False
                         
+        #print(solution.patient_schedule)
+
 
         # H2 : every patient must stay in their compatible rooms, we'll check also that everyone stay in one and only one room
 
@@ -87,13 +89,9 @@ class Problem :
         for patient in patients:
             compatible_rooms_for_patient = set(patient.compatible_room_ids)
 
-            print(patient.id)
-
             assigned_room = next((entry['room'] for entry in solution.patient_schedule 
-                          if entry['patient'] == patient), None)
+                          if entry['patient'].id == patient.id), None)
             
-            print(assigned_room)
-
             if assigned_room is None and patient.mandatory == 1:  # if a patient that must be in the hospital has no room assigned 
                 if error:
                     print(Fore.YELLOW + f"H2 FAILED: Patient {patient.id} has no assigned room"+ Style.RESET_ALL)

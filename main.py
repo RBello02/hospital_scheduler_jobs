@@ -27,6 +27,7 @@ from solvers.ALNS import ALNS
 from solvers.Destroy import destroy
 from solvers.Destroy_2 import destroy_2
 from solvers.Repair import repair
+from solvers.Repair_2 import repair_2
 
 
 
@@ -49,7 +50,7 @@ def main():
 
     #  reading
 
-    filename = 'test02.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -137,7 +138,13 @@ def main():
 
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
 
+    '''
 
+    for patient in patients:
+        if patient.mandatory == 1:
+            print("patient ", patient.id)
+
+    '''
 
     
 
@@ -157,7 +164,7 @@ def main():
 
     number_of_iterations = 100
 
-    destr = destroy('C', init_solution, problem)
+    #destr = destroy('A', init_solution, problem)
 
     #print(destr.nurses_schedule)
 
@@ -165,22 +172,19 @@ def main():
 
     #print(init_solution.nurses_schedule)
 
-    final_solution = repair('A', init_solution, destr,  problem)
+    #final_solution = repair_2('A', init_solution, destr,  problem)
 
     #print(final_solution.surgeons_operations[3])
 
     #print(final_solution.patient_schedule[3])
-    print(problem.constraints(destr, patients, surgeons, rooms, theaters, time, shifts, True))
+    #print(problem.constraints(final_solution, patients, surgeons, rooms, theaters, time, shifts, True))
 
-    #return 0
+    solver = ALNS(problem, init_solution)
 
-    #solver = ALNS(problem, init_solution)
-
-    #final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
+    final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
 
     # printing the sol
 
-    '''
     if problem.constraints(final_solution, patients, surgeons, rooms, theaters, time, shifts):
         print(" ")
         print(" ")
@@ -210,7 +214,6 @@ def main():
         print("")
         print("**********************************")
 
-    '''
     ######################################## OUTPUT FOR VALIDATION ########################################
 
 
@@ -223,7 +226,6 @@ def main():
 
 
     ######################################## FUNCTION PLOT ########################################
-    '''
 
     plot_folder = "plots"
     file_number = filename.replace('test', '').replace('.json', '')
@@ -240,7 +242,6 @@ def main():
     plt.savefig(output_path, dpi=300, bbox_inches="tight")
 
     plt.close()
-    '''
 
 if __name__ == "__main__":
     main()

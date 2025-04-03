@@ -19,7 +19,6 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
 
         # we have to find the patients that have been destroyed:
 
-        '''
 
         destroyed_mandatory = []
         destroyed_not_mandatory = []
@@ -224,7 +223,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                 rooms.add_patient(room_id, patient, admission_day, T)
             else:
                 continue # if it doesn't fit amen
-                    '''
+                    
 
         for day in range(T):
             for shift in shifts:
