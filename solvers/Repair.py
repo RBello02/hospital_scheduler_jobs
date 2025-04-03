@@ -62,7 +62,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
         #not_mandatory_patients.sort(key=lambda x: x['delay'])
         destroyed_mandatory.sort(key=lambda x: x['delay'])
         #destroyed_not_mandatory.sort(key=lambda x: x['delay'])
-
+        '''
         print("destroyed_mandatory")
         print("")
         if destroyed_mandatory:
@@ -80,7 +80,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
         if not_mandatory_patients_not_in_the_hosp:
             for pat_dic in not_mandatory_patients_not_in_the_hosp:
                 print(pat_dic['patient'].id)
-
+        '''
         # surgeons and theaters workload
 
         surgeons_workload = [[0 for t in range(T)] for surgeon in surgeons]

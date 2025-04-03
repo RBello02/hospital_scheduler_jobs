@@ -1,4 +1,10 @@
 import re
+import matplotlib
+matplotlib.use("Agg")  # Usa un backend non interattivo
+import matplotlib.pyplot as plt
+import os
+import json 
+
 
 def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeons_mapping, nurses_mapping, theaters_mapping ):
     
@@ -118,7 +124,7 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
         else:
             # get the operating theater where the patient is
             for operating in solution.surgeons_operations:
-                if operating['patient'] == patient:
+                if operating['patient'].id == patient.id:
                     if operating['theater'] is not None:
                        theater_id = operating['theater']   # found the theater
             
@@ -170,11 +176,43 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
     else:
         string_cost = ""
 
-                            
-
     # return the json file
 
     return {"patients": patients_solution, "nurses": nurses_solution, "costs": string_cost}
+
+
+def ALNS_plot(x_plot,y_plot,filename):
+
+    plot_folder = "plots"
+    file_number = filename.replace('test', '').replace('.json', '')
+
+    solution_folder = "test_data/solutions"
+    solution_filename = filename.replace('test', 'sol_test')
+
+    with open(solution_folder+'/'+solution_filename, 'r') as file:
+        data = json.load(file)
+
+    cost_string = data["costs"][0]
+    match = re.search(r"Cost:\s*(\d+)", cost_string)
+    if match:
+        real_cost_value = int(match.group(1))
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-',  markersize=2)
+
+    plt.axhline(y=real_cost_value, color='r', linestyle='-', label='optimal value')
+
+    plt.xlabel('Iterations')
+    plt.ylabel('Objective function value')
+    plt.legend()
+    plt.grid()
+
+    output_path = os.path.join(plot_folder, f'plot_test{file_number}.png')
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+
+    plt.close()
+
+    return 0
 
 
 

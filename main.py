@@ -152,8 +152,6 @@ def main():
 
     number_of_iterations = 100
 
-    print(init_solution.patient_schedule[19])
-
     solver = ALNS(problem, init_solution)
 
     final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
@@ -192,7 +190,7 @@ def main():
     ######################################## OUTPUT FOR VALIDATION ########################################
 
 
-    out_sol = postprocess(final_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, weights, tot_cost=0, cost_dic=0)
+    out_sol = postprocess(final_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, weights, tot_cost, cost_dic)
 
     json_object = json.dumps(out_sol, indent=4)
 
@@ -202,21 +200,7 @@ def main():
 
     ######################################## FUNCTION PLOT ########################################
 
-    plot_folder = "plots"
-    file_number = filename.replace('test', '').replace('.json', '')
-
-    plt.figure(figsize=(8, 5))
-    plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-')
-
-    plt.xlabel('Iterations')
-    plt.ylabel('Objective function value')
-    plt.legend()
-    plt.grid()
-
-    output_path = os.path.join(plot_folder, f'plot_test{file_number}.png')
-    plt.savefig(output_path, dpi=300, bbox_inches="tight")
-
-    plt.close()
+    ALNS_plot(x_plot, y_plot, filename)
 
 if __name__ == "__main__":
     main()
