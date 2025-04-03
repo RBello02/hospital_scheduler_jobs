@@ -15,6 +15,7 @@ from solvers import initial_solution
 
 from instances.solution import Solution
 from instances.hospital import Times
+from instances.problem import Problem
 
 class ALNS:
 
@@ -23,7 +24,6 @@ class ALNS:
         self.problem = problem
         self.starting_point = starting_point
 
-        self.solution = problem.solution
         self.nurses = problem.nurses
         self.surgeons = problem.surgeons
         self.patients = problem.patients
@@ -78,7 +78,7 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed = destroy('P',current_point,problem)
+            point_destroyed = destroy('F',current_point,problem)
 
             new_point = repair('A', current_point, point_destroyed, problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
 
@@ -92,7 +92,6 @@ class ALNS:
 
             new_value, dic = problem.objective_function(new_point, occupants, surgeons, nurses,  rooms, T, shifts, weights) 
             if new_value <= current_value:
-                #print(" " + str(current_value) + " || " + str(new_value))
                 current_point = copy.deepcopy(new_point)
                 current_value = new_value
                 # ************ for the plot *********
@@ -100,6 +99,10 @@ class ALNS:
                 # ************************************
             else:
                 y_data.append(current_value)
+
+            #if t == 1:
+                #break
+
             
 
         return (current_point,x_data,y_data)

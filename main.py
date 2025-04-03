@@ -156,32 +156,19 @@ def main():
 
     starting_point = Solution(times, rooms, patients, surgeons, nurses)    # starting point is a solution class
 
-    init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
+    final_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
 
-    problem = Problem(init_solution, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
+    problem = Problem(occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
     # solving the problem
 
     number_of_iterations = 100
 
-    #destr = destroy('A', init_solution, problem)
+    #print(init_solution.patient_schedule[25])
 
-    #print(destr.nurses_schedule)
+    #solver = ALNS(problem, init_solution)
 
-    #print("*******************")
-
-    #print(init_solution.nurses_schedule)
-
-    #final_solution = repair_2('A', init_solution, destr,  problem)
-
-    #print(final_solution.surgeons_operations[3])
-
-    #print(final_solution.patient_schedule[3])
-    #print(problem.constraints(final_solution, patients, surgeons, rooms, theaters, time, shifts, True))
-
-    solver = ALNS(problem, init_solution)
-
-    final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
+    #final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
 
     # printing the sol
 
@@ -217,7 +204,7 @@ def main():
     ######################################## OUTPUT FOR VALIDATION ########################################
 
 
-    out_sol = postprocess(init_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, weights, tot_cost=0, cost_dic=0)
+    out_sol = postprocess(final_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, weights, tot_cost=0, cost_dic=0)
 
     json_object = json.dumps(out_sol, indent=4)
 

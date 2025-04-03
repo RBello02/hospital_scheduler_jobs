@@ -5,7 +5,7 @@ import random
 
 class Problem :
 
-    def __init__(self, solution , occupants, patients, surgeons, nurses, rooms, theaters, T, shifts , weights):
+    def __init__(self, occupants, patients, surgeons, nurses, rooms, theaters, T, shifts , weights):
 
         self.occupants = occupants
         self.patients = patients
@@ -16,7 +16,7 @@ class Problem :
         self.weights = weights
         self.T = T
         self.shifts = shifts
-        self.solution = solution
+        #self.solution = solution
 
     # this methods are ok for returning the attributes 
 
@@ -399,7 +399,7 @@ class Problem :
 
         for day in range(T):
             theaters_per_day = {patient_ops['theater'] for patient_ops in solution.surgeons_operations 
-                                if patient_ops['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day]}
+                                if patient_ops['patient'].id in [p['patient'].id for p in solution.patient_schedule if p['day'] == day]}
             S5 += len(theaters_per_day)
 
         
@@ -410,7 +410,7 @@ class Problem :
         for day in range(T):
             for surgeon in surgeons:
                 theaters_to_surgeon = {patient_ops['theater'] for patient_ops in solution.surgeons_operations     # get the theaters
-                                       if patient_ops['patient'] in [p['patient'] for p in solution.patient_schedule if p['day'] == day] # if there is a patient that is under surgeon on that day
+                                       if patient_ops['patient'].id in [p['patient'].id for p in solution.patient_schedule if p['day'] == day] # if there is a patient that is under surgeon on that day
                                        and patient_ops['theater'] is not None and patient_ops['patient'].surgeon_id == surgeon.id} # if the theater is not None and the patient is operated by that surgeon
                 if len(theaters_to_surgeon) > 0:   
                     S6 += len(theaters_to_surgeon)-1   # I dont have to count it if the surgeon stays in the same theater for all the day, that's because -1
