@@ -90,7 +90,7 @@ def preprocess (data, rooms_mapping, patients_mapping, occupants_mapping ,surgeo
 
 
 
-def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shifts, shift_mapping, filename, tot_cost, cost_dic, weights):
+def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shifts, shift_mapping, filename , weights, tot_cost=0, cost_dic=0):
 
     # this function produces the json file for the validation of the solution
 
@@ -165,7 +165,10 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
 
     # add the costs
 
-    string_cost = ["Costs: "+str(int(tot_cost))+", Unscheduled: "+str(int(cost_dic['S8']/weights['unscheduled_optional']))+",  Delay: " + str(int(cost_dic['S7']/weights['patient_delay'])) + ",  OpenOT: " + str(int(cost_dic['S5']/weights['open_operating_theater'])) + ",  AgeMix: " + str(int(cost_dic['S1']/weights['room_mixed_age'])) + ",  Skill: " + str(int(cost_dic['S2']/weights['room_nurse_skill'])) + ",  Excess: " + str(int(cost_dic['S4']/weights['nurse_eccessive_workload'])) + ",  Continuity: " + str(int(cost_dic['S3']/weights['continuity_of_care'])) + ",  SurgeonTransfer: " + str(int(cost_dic['S6']/weights['surgeon_transfer']))]
+    if not (tot_cost == 0 and cost_dic == 0):
+        string_cost = ["Costs: "+str(int(tot_cost))+", Unscheduled: "+str(int(cost_dic['S8']/weights['unscheduled_optional']))+",  Delay: " + str(int(cost_dic['S7']/weights['patient_delay'])) + ",  OpenOT: " + str(int(cost_dic['S5']/weights['open_operating_theater'])) + ",  AgeMix: " + str(int(cost_dic['S1']/weights['room_mixed_age'])) + ",  Skill: " + str(int(cost_dic['S2']/weights['room_nurse_skill'])) + ",  Excess: " + str(int(cost_dic['S4']/weights['nurse_eccessive_workload'])) + ",  Continuity: " + str(int(cost_dic['S3']/weights['continuity_of_care'])) + ",  SurgeonTransfer: " + str(int(cost_dic['S6']/weights['surgeon_transfer']))]
+    else:
+        string_cost = ""
 
                             
 

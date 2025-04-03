@@ -25,6 +25,8 @@ from solvers.initial_solution import initial_solution
 from solvers.ALNS import ALNS
 
 from solvers.Destroy import destroy
+from solvers.Destroy_2 import destroy_2
+from solvers.Repair import repair
 
 
 
@@ -155,13 +157,30 @@ def main():
 
     number_of_iterations = 100
 
-    solver = ALNS(problem, init_solution)
+    destr = destroy('C', init_solution, problem)
 
-    final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
+    #print(destr.nurses_schedule)
+
+    #print("*******************")
+
+    #print(init_solution.nurses_schedule)
+
+    final_solution = repair('A', init_solution, destr,  problem)
+
+    #print(final_solution.surgeons_operations[3])
+
+    #print(final_solution.patient_schedule[3])
+    print(problem.constraints(destr, patients, surgeons, rooms, theaters, time, shifts, True))
+
+    #return 0
+
+    #solver = ALNS(problem, init_solution)
+
+    #final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
 
     # printing the sol
 
-
+    '''
     if problem.constraints(final_solution, patients, surgeons, rooms, theaters, time, shifts):
         print(" ")
         print(" ")
@@ -191,10 +210,11 @@ def main():
         print("")
         print("**********************************")
 
-
+    '''
     ######################################## OUTPUT FOR VALIDATION ########################################
 
-    out_sol = postprocess(final_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, tot_cost, cost_dic, weights)
+
+    out_sol = postprocess(init_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, weights, tot_cost=0, cost_dic=0)
 
     json_object = json.dumps(out_sol, indent=4)
 
@@ -203,6 +223,7 @@ def main():
 
 
     ######################################## FUNCTION PLOT ########################################
+    '''
 
     plot_folder = "plots"
     file_number = filename.replace('test', '').replace('.json', '')
@@ -219,7 +240,7 @@ def main():
     plt.savefig(output_path, dpi=300, bbox_inches="tight")
 
     plt.close()
-    
+    '''
 
 if __name__ == "__main__":
     main()

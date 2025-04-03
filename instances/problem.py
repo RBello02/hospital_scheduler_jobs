@@ -87,8 +87,12 @@ class Problem :
         for patient in patients:
             compatible_rooms_for_patient = set(patient.compatible_room_ids)
 
+            print(patient.id)
+
             assigned_room = next((entry['room'] for entry in solution.patient_schedule 
                           if entry['patient'] == patient), None)
+            
+            print(assigned_room)
 
             if assigned_room is None and patient.mandatory == 1:  # if a patient that must be in the hospital has no room assigned 
                 if error:

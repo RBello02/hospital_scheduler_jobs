@@ -9,6 +9,7 @@ from colorama import Fore,Style
 import copy
 
 from solvers.Destroy import destroy
+from solvers.Destroy_2 import destroy_2
 from solvers.Repair import repair
 from solvers import initial_solution
 
@@ -77,7 +78,7 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed = destroy('A',current_point,problem)
+            point_destroyed = destroy_2('A',current_point,problem)
 
             new_point = repair('A', current_point, point_destroyed, problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
 
