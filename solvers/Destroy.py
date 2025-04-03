@@ -88,7 +88,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point,  patient_dic['patient'], patient_dic['day'], Tempo)
                         
     if CASE_DESTROY == 'E':
 
@@ -109,7 +109,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'F':
@@ -131,7 +131,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'G':
@@ -162,7 +162,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
 
                         
     if CASE_DESTROY == 'H':
@@ -193,7 +193,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                         
     
     if CASE_DESTROY == 'I':
@@ -225,7 +225,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'L':
@@ -252,7 +252,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                         
     if CASE_DESTROY == 'M':
 
@@ -278,7 +278,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'N':
@@ -306,7 +306,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                         
     
     if CASE_DESTROY == 'O':
@@ -342,7 +342,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                         
                         
     if CASE_DESTROY == 'P':
@@ -378,7 +378,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                     
                         
     if CASE_DESTROY == 'Q':
@@ -415,7 +415,7 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                                                                                         'patient': patient_dic['patient']}
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
-                    rooms.remove_patient(patient_dic['room'], patient_dic['patient'], patient_dic['day'], Tempo)
+                    rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
                     
                                                         
 

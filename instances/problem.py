@@ -62,9 +62,15 @@ class Problem :
         counter = 0
         for room_id in rooms.rooms_id:
             for t in range(T):
+                #print("room ", room_id, " room gender ", rooms.rooms_gender[t][room_id], "count people", rooms.rooms_count_people[t][room_id] ," tempo ", t )
                 patients_in_room_at_time_t = [entry['patient'] for entry in solution.patient_schedule
-                                                if entry['room'] == room_id and entry['day'] == t]
+                                                if entry['room'] == room_id and t >= entry['day'] and t < min(T, entry['day']+ entry['patient'].length_of_stay)]
                 
+                #print("")
+                #for p in patients_in_room_at_time_t:
+                #    print(p," arrival ", solution.patient_schedule[p.id]['day'], "duration", p.length_of_stay)
+                #print("")
+                                
                 if not patients_in_room_at_time_t:   # if the room is empty
                     continue       
                 
@@ -80,8 +86,6 @@ class Problem :
         if counter != 0 : 
             check = False
                         
-        #print(solution.patient_schedule)
-
 
         # H2 : every patient must stay in their compatible rooms, we'll check also that everyone stay in one and only one room
 

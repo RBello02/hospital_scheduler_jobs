@@ -83,7 +83,7 @@ class ALNS:
 
             if not problem.constraints( new_point, patients, surgeons, rooms, theaters, T, shifts):
                 print("")
-                print(Fore.YELLOW + f"Destroy and repaired have failed" + Style.RESET_ALL)
+                print(Fore.YELLOW + f"Destroy and repair have failed" + Style.RESET_ALL)
                 print("")
                 result = problem.constraints( new_point, patients, surgeons, rooms, theaters, T, shifts,True)
                 print("")
