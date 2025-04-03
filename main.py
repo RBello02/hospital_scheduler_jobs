@@ -24,10 +24,7 @@ from utils import *
 from solvers.initial_solution import initial_solution
 from solvers.ALNS import ALNS
 
-from solvers.Destroy import destroy
-from solvers.Destroy_2 import destroy_2
-from solvers.Repair import repair
-from solvers.Repair_2 import repair_2
+
 
 
 

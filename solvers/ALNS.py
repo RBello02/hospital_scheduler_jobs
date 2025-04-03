@@ -9,7 +9,6 @@ from colorama import Fore,Style
 import copy
 
 from solvers.Destroy import destroy
-#from solvers.Destroy_2 import destroy_2
 from solvers.Repair import repair
 from solvers import initial_solution
 
