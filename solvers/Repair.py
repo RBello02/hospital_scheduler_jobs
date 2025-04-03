@@ -164,15 +164,15 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                 if surgeon.id == surgeon_id:
                     break                   # find the surgeon
         
-        # we have to find a room for this patient,
-        # the room must be
-        # 1) compatible
-        # 2) of the same sex of the patient
-        # 3) the there must be capacity for all his stay in the hospital
+            # we have to find a room for this patient,
+            # the room must be
+            # 1) compatible
+            # 2) of the same sex of the patient
+            # 3) the there must be capacity for all his stay in the hospital
 
-        # also check that
-        # 4) there must be a surgeon for the patient in their admission date 
-        # 5) there must be a theater where the patient can be operated
+            # also check that
+            # 4) there must be a surgeon for the patient in their admission date 
+            # 5) there must be a theater where the patient can be operated
 
             compatible_room_ids = patient.compatible_room_ids
             found_solution = False    
@@ -209,7 +209,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                             current_destroyed_point.surgeons_operations[patient.id]  = {'theater': theater_id,
                                                                 'patient': patient}
                     
-                    # add the time to the surgeons and theaters
+                            # add the time to the surgeons and theaters
 
                             surgeons_workload[surgeon_id][admission_day] += patient.surgery_duration
                             theaters_workload[theater_id][admission_day] += patient.surgery_duration
@@ -218,7 +218,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                             break   # close the for that is running over rooms_ids
                     if found_solution:
                         break # close the for that is running over the admission date
-        # now we add the patient to the hospital
+            # now we add the patient to the hospital
             if found_solution:
                 rooms.add_patient(room_id, patient, admission_day, T)
             else:

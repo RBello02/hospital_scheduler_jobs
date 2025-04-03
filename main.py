@@ -137,15 +137,6 @@ def main():
     # creating the nurses
 
     nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
-
-    '''
-
-    for patient in patients:
-        if patient.mandatory == 1:
-            print("patient ", patient.id)
-
-    '''
-
     
 
     ############################### SOLVING PROBLEM ##################################
@@ -156,7 +147,7 @@ def main():
 
     starting_point = Solution(times, rooms, patients, surgeons, nurses)    # starting point is a solution class
 
-    final_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
+    init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
 
     problem = Problem(occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
@@ -164,11 +155,11 @@ def main():
 
     number_of_iterations = 100
 
-    #print(init_solution.patient_schedule[25])
+    print(init_solution.patient_schedule[19])
 
-    #solver = ALNS(problem, init_solution)
+    solver = ALNS(problem, init_solution)
 
-    #final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
+    final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
 
     # printing the sol
 
