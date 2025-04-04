@@ -47,7 +47,7 @@ def main():
 
     #  reading
 
-    filename = 'test07.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -152,7 +152,7 @@ def main():
 
     number_of_iterations = 100
 
-    #problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts)
+    #problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts, True)
 
     solver = ALNS(problem, init_solution)
 

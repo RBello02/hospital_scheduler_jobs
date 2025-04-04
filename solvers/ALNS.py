@@ -77,7 +77,7 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed = destroy('C',current_point,problem)
+            point_destroyed = destroy('E',current_point,problem)
 
             new_point = repair('A', current_point, point_destroyed, problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
 

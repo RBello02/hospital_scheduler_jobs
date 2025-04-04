@@ -198,7 +198,7 @@ def ALNS_plot(x_plot,y_plot,filename):
         real_cost_value = int(match.group(1))
 
     plt.figure(figsize=(8, 5))
-    plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-',  markersize=2)
+    plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-',  markersize=0.5)
 
     plt.axhline(y=real_cost_value, color='r', linestyle='-', label='optimal value')
 
