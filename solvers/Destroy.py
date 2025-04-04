@@ -97,6 +97,14 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
         all_patient_id = [patient.id for patient in patients]
         random_patient_id = random.choice(all_patient_id)
 
+        start = current_point.patient_schedule[random_patient_id]['day']
+        end = min(current_point.patient_schedule[random_patient_id]['day']+current_point.patient_schedule[random_patient_id]['patient'].length_of_stay, Tempo)
+        room_index = current_point.patient_schedule[random_patient_id]['room']
+
+        for t in range(start, end):
+            print("rooms before", rooms.rooms_count_people[t][room_index])
+
+
         for patient_dic in current_point.patient_schedule:
             if patient_dic['patient'].id == random_patient_id:
                 #print(random_patient_id)
@@ -110,6 +118,10 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                 # remove the patient from the hospital:
                 if patient_dic['day'] is not None:
                     rooms.remove_patient(patient_dic['room'], current_point, patient_dic['patient'], patient_dic['day'], Tempo)
+
+        for t in range(start, end):
+            print("rooms after", rooms.rooms_count_people[t][room_index])
+
                         
                         
     if CASE_DESTROY == 'F':
