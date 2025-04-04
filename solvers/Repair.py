@@ -135,7 +135,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                     #for t in range(not_mandatory_patient_in_the_hosp['day'], min(not_mandatory_patient_in_the_hosp['day']+not_mandatory_patient_in_the_hosp['length'], T)):
                     #    print("room", rooms.rooms_count_people[t][old_room])
                     #print("*********")
-                    rooms.remove_patient(old_room, current_destroyed_point, patient_to_delete, not_mandatory_patient_in_the_hosp['day'], T)
+                    rooms.remove_patient(old_room, patient_to_delete, not_mandatory_patient_in_the_hosp['day'], T)
                     #for t in range(not_mandatory_patient_in_the_hosp['day'], min(not_mandatory_patient_in_the_hosp['day']+not_mandatory_patient_in_the_hosp['length'], T)):
                     #    print("room", rooms.rooms_count_people[t][old_room])
                     not_mandatory_patients_not_in_the_hosp.append({'patient'})
