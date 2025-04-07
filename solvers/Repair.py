@@ -2,6 +2,7 @@ import random
 import copy
 
 from solvers.place_patient import place_patient
+from solvers.solution_output import visual_schedule
 
 
 def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  problem): #main function for the repair phase
@@ -102,10 +103,10 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
         
         # surgeons and theaters workload
 
-        print("***********before*************")
+        #print("***********before*************")
 
-        print(rooms.rooms_count_people[19][4])
-        print(rooms.rooms_gender[19][4])
+        #print(rooms.rooms_count_people[19][4])
+        #print(rooms.rooms_gender[19][4])
     
         surgeons_workload = [[0 for t in range(T)] for surgeon in surgeons]
         theaters_workload = [[0 for t in range(T)] for theater_id in theaters.theaters_id]
@@ -167,14 +168,17 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                 continue   # if a not mandatory patient has no place in the hospital, we don't care about him/her
                     
             
-        print("***********after*************")
+        #print("***********after*************")
 
     
-        print(rooms.rooms_count_people[19][4])
-        print(rooms.rooms_gender[19][4])
+        #print(rooms.rooms_count_people[19][4])
+        #print(rooms.rooms_gender[19][4])
 
+        print("***********************")
 
-        for day in range(T): # =^.^= gattino
+        visual_schedule(current_destroyed_point, occupants, rooms, T,True)# =^.^= gattino
+
+        for day in range(T):
             for shift in shifts:
                 nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
                 random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy
