@@ -102,13 +102,11 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
         
         # surgeons and theaters workload
 
-        print("*************")
+        print("***********before*************")
 
         print(rooms.rooms_count_people[19][4])
         print(rooms.rooms_gender[19][4])
-        print(rooms.rooms_count_people[20][4])
-        print(rooms.rooms_gender[20][4])
-
+    
         surgeons_workload = [[0 for t in range(T)] for surgeon in surgeons]
         theaters_workload = [[0 for t in range(T)] for theater_id in theaters.theaters_id]
 
@@ -168,6 +166,13 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
             if not found_solution:
                 continue   # if a not mandatory patient has no place in the hospital, we don't care about him/her
                     
+            
+        print("***********after*************")
+
+    
+        print(rooms.rooms_count_people[19][4])
+        print(rooms.rooms_gender[19][4])
+
 
         for day in range(T): # =^.^= gattino
             for shift in shifts:

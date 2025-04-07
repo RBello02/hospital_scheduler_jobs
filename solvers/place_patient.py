@@ -20,9 +20,14 @@ def place_patient(solution, patient, theaters_workload, surgeons_workload, rooms
       # 5) there must be a theater where the patient can be operated
 
     compatible_room_ids = patient.compatible_room_ids
-    found_solution = False    
+    found_solution = False 
 
-    for admission_day in range(patient.surgery_release_day, T):   # selecting the admission date
+    if patient.mandatory == 0:
+        end = T
+    else:
+        end = patient.surgery_due_day
+
+    for admission_day in range(patient.surgery_release_day, end):   # selecting the admission date
 
         there_is_surgeon = False
         there_is_theater = False
