@@ -23,6 +23,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
 
 
         destroyed_mandatory = []
+        mandatory_in_the_hosp = []
         destroyed_not_mandatory = []
         mandatory_patients = []
         not_mandatory_patients = []
@@ -55,6 +56,14 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                 not_mandatory_patients_in_the_hosp.append({'patient': patient_dic['patient'],
                                                             'length': patient_dic['patient'].length_of_stay,
                                                             'day': patient_dic['day']})
+            if patient_dic['day'] is not None and destroyed_patient_dic['day'] is not None and patient_dic['patient'].mandatory == 1: 
+                mandatory_in_the_hosp.append({'patient': patient_dic['patient'],
+                                                            'length': patient_dic['patient'].length_of_stay,
+                                                            'day': patient_dic['day']})
+            if patient_dic['day'] is None and destroyed_patient_dic['day'] is None and patient_dic['patient'].mandatory == 0:
+                not_mandatory_patients_not_in_the_hosp.append({'patient': patient_dic['patient'],
+                                                                'delay': T-patient_dic['patient'].surgery_release_day})
+
                 
             
         #print(destroyed_mandatory)
@@ -66,7 +75,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
         destroyed_mandatory.sort(key=lambda x: x['delay'])
         #destroyed_not_mandatory.sort(key=lambda x: x['delay'])
         
-        '''
+        
         print("destroyed_mandatory")
         print("")
         if destroyed_mandatory:
@@ -79,13 +88,26 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
             for pat_dic in not_mandatory_patients_in_the_hosp:
                 print(pat_dic['patient'].id)
 
+        print("mandatory patients in the hosp")
+        print("")
+        if mandatory_in_the_hosp:
+            for pat_dic in mandatory_in_the_hosp:
+                print(pat_dic['patient'].id)
+
         print("not_mandatory_patients_not_in_the_hosp")
         print("")
         if not_mandatory_patients_not_in_the_hosp:
             for pat_dic in not_mandatory_patients_not_in_the_hosp:
                 print(pat_dic['patient'].id)
-        '''
+        
         # surgeons and theaters workload
+
+        print("*************")
+
+        print(rooms.rooms_count_people[19][4])
+        print(rooms.rooms_gender[19][4])
+        print(rooms.rooms_count_people[20][4])
+        print(rooms.rooms_gender[20][4])
 
         surgeons_workload = [[0 for t in range(T)] for surgeon in surgeons]
         theaters_workload = [[0 for t in range(T)] for theater_id in theaters.theaters_id]
@@ -147,7 +169,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                 continue   # if a not mandatory patient has no place in the hospital, we don't care about him/her
                     
 
-        for day in range(T):
+        for day in range(T): # =^.^= gattino
             for shift in shifts:
                 nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
                 random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy

@@ -1,6 +1,8 @@
 import numpy as np
 import json 
 import random
+import copy
+
 
 from colorama import Fore,Style
 
@@ -47,7 +49,7 @@ def main():
 
     #  reading
 
-    filename = 'test10.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -145,6 +147,24 @@ def main():
     starting_point = Solution(times, rooms, patients, surgeons, nurses)    # starting point is a solution class
 
     init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
+
+
+    '''
+    a = 16
+    b = 2
+
+    print(rooms.rooms_count_people[a][b])
+    print(rooms.rooms_gender[a][b])
+
+    for patient_schedule in init_solution.patient_schedule:
+        if patient_schedule['day'] is not None:
+            rooms.remove_patient(patient_schedule['room'], patient_schedule['patient'], patient_schedule['day'],time)
+
+    print("**********")
+    print(rooms.rooms_count_people[a][b])
+    print(rooms.rooms_gender[a][b])
+
+    '''
 
     problem = Problem(occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
