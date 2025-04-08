@@ -18,7 +18,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
 
     current_destroyed_point= copy.deepcopy(current_destroyed_point_not_copied)
 
-    if CASE_REPAIR == 'A':
+    if CASE_REPAIR in ['A','B','C']:
 
         # we have to find the patients that have been destroyed:
 
@@ -182,19 +182,61 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
 
         #visual_schedule(current_destroyed_point, occupants, rooms, T,True)# =^.^= gattino
 
-        for day in range(T):
-            for shift in shifts:
-                nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
-                random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy
-                counter = 0
-                for room_id in rooms.rooms_id:
-                    if not current_destroyed_point.nurses_schedule[day][shift][room_id]:  # if the list is empty
-                        # we have to find a nurse that can work in that room
-                        nurse = nurse_that_can_work[counter % len(nurse_that_can_work)]
-                        counter += 1
-                        current_destroyed_point.nurses_schedule[day][shift][room_id].append({'nurse': nurse,
-                                                                                             'room': room_id})
+        if CASE_REPAIR == 'A':
 
+            for day in range(T):
+                for shift in shifts:
+                    nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
+                    random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy
+                    counter = 0
+                    for room_id in rooms.rooms_id:
+                        if not current_destroyed_point.nurses_schedule[day][shift][room_id]:  # if the list is empty
+                            # we have to find a nurse that can work in that room
+                            nurse = nurse_that_can_work[counter % len(nurse_that_can_work)]
+                            counter += 1
+                            current_destroyed_point.nurses_schedule[day][shift][room_id].append({'nurse': nurse,
+                                                                                                'room': room_id})
+
+        if CASE_REPAIR == 'B':
+            
+            for day in range(T):
+                for shift in shifts:
+                    nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
+                    random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy
+                    nurses_still_working = []
+                    for room_id in rooms.rooms_id:
+                        if not current_destroyed_point.nurses_schedule[day][shift][room_id]:  # if the list is empty
+                            
+                            # i want to find the best nurse for that particular room, looking at the skill level
+
+                            # find the maximum skill level of the room
+
+                            tot_skill_for_patients = []
+                            for patient_dic in current_destroyed_point.patient_schedule:
+                                if patient_dic['room'] == room_id and day >= patient_dic['day'] and day < patient_dic['day']+patient_dic['patient'].length_of_stay:
+                                    tot_skill_for_patients.append(patient_dic['patient'].skill_level_required[day-patient_dic['day']][shift])
+
+                            tot_skill_for_occupants = [occupant.skill_level_required[day][shift] for occupant in occupants
+                                                      if occupant.room_id == room_id and day < occupant.length_of_stay]
+
+                            max_skill = max(list(set(tot_skill_for_patients+tot_skill_for_occupants))) if tot_skill_for_patients or tot_skill_for_occupants else 0
+
+                            nurses_skill_dic = []
+                            for nurse in list(set(nurse_that_can_work)-set(nurses_still_working)):    # because i want to find a nurse that is not still working
+                                if nurse.skill_level >= max_skill: 
+                                    nurses_skill_dic.append({'nurse':nurse, 
+                                                             'delay': nurse.skill_level-max_skill})
+                            if not nurses_skill_dic:
+                                for nurse in nurse_that_can_work:    # if I dont find a free nurse, I'll take another one from the one still working
+                                    nurses_skill_dic.append({'nurse':nurse, 
+                                                            'delay': nurse.skill_level-max_skill})
+
+                            nurses_skill_dic.sort(key=lambda x: -x['delay']) # -delay because i want the best one
+                            best_nurse = nurses_skill_dic[0]['nurse']
+
+                            current_destroyed_point.nurses_schedule[day][shift][room_id].append({'nurse': best_nurse,
+                                                                                                 'room': room_id})
+                            nurses_still_working.append(best_nurse)
     
     return current_destroyed_point
 

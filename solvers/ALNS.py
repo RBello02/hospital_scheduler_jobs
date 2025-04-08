@@ -77,11 +77,11 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed,new_rooms = destroy('O',current_point,starting_problem)
+            point_destroyed,new_rooms = destroy('A',current_point,starting_problem)
 
             new_problem = Problem(occupants, patients, surgeons, nurses, new_rooms, theaters, T, shifts, weights)
 
-            new_point = repair('A', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+            new_point = repair('B', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
 
             if not new_problem.constraints( new_point, patients, surgeons, new_rooms, theaters, T, shifts):
                 print("")
@@ -92,6 +92,7 @@ class ALNS:
                 return 0
 
             new_value, dic = new_problem.objective_function(new_point, occupants, surgeons, nurses,  new_rooms, T, shifts, weights) 
+            #print("new_value", new_value, "current_value", current_value)
             if new_value <= current_value:
                 current_point = copy.deepcopy(new_point)
                 starting_problem = copy.deepcopy(new_problem)
