@@ -50,7 +50,7 @@ def main():
 
     #  reading
 
-    filename = 'test04.json'
+    filename = 'test07.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)

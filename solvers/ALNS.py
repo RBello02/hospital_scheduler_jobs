@@ -81,7 +81,7 @@ class ALNS:
 
             new_problem = Problem(occupants, patients, surgeons, nurses, new_rooms, theaters, T, shifts, weights)
 
-            new_point = repair('B', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+            new_point = repair('A', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
 
             if not new_problem.constraints( new_point, patients, surgeons, new_rooms, theaters, T, shifts):
                 print("")
