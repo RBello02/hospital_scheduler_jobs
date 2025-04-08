@@ -25,7 +25,8 @@ def place_patient(solution, patient, theaters_workload, surgeons_workload, rooms
     if patient.mandatory == 0:
         end = T
     else:
-        end = patient.surgery_due_day
+        end = patient.surgery_due_day+1
+
 
     for admission_day in range(patient.surgery_release_day, end):   # selecting the admission date
 

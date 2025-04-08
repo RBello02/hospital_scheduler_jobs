@@ -25,6 +25,7 @@ from utils import *
 
 from solvers.initial_solution import initial_solution
 from solvers.ALNS import ALNS
+from solvers.solution_output import visual_schedule
 
 
 
@@ -49,7 +50,7 @@ def main():
 
     #  reading
 
-    filename = 'test01.json'
+    filename = 'test03.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -148,7 +149,6 @@ def main():
 
     init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
 
-
     '''
     a = 16
     b = 2
@@ -166,13 +166,16 @@ def main():
 
     '''
 
+
     problem = Problem(occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
     # solving the problem
 
     number_of_iterations = 100
 
-    #problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts, True)
+    problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts, True)
+
+    #visual_schedule(init_solution, occupants, rooms, time)
 
     solver = ALNS(problem, init_solution)
 

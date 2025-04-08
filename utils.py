@@ -200,7 +200,7 @@ def ALNS_plot(x_plot,y_plot,filename):
     plt.figure(figsize=(8, 5))
     plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-',  markersize=0.5)
 
-    plt.axhline(y=real_cost_value, color='r', linestyle='-', label='optimal value')
+    #plt.axhline(y=real_cost_value, color='r', linestyle='-', label='optimal value')
 
     plt.xlabel('Iterations')
     plt.ylabel('Objective function value')

@@ -76,7 +76,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
         destroyed_mandatory.sort(key=lambda x: x['delay'])
         #destroyed_not_mandatory.sort(key=lambda x: x['delay'])
         
-        
+        '''
         print("destroyed_mandatory")
         print("")
         if destroyed_mandatory:
@@ -100,7 +100,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
         if not_mandatory_patients_not_in_the_hosp:
             for pat_dic in not_mandatory_patients_not_in_the_hosp:
                 print(pat_dic['patient'].id)
-        
+        '''
         # surgeons and theaters workload
 
         #print("***********before*************")
@@ -144,12 +144,15 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                     print("delete", patient_to_delete.id)
                     for schedule in current_destroyed_point.patient_schedule:
                         if schedule['patient'].id == patient_to_delete.id:
+                            day = schedule['day']
                             old_room = schedule['room']
+                            surgeons_workload[patient_to_delete.surgeon_id][day] -= patient_to_delete.surgery_duration
                             current_destroyed_point.patient_schedule[patient_to_delete.id] = {'patient': patient_to_delete,
                                                                                             'room': None,
                                                                                             'day': None}
                         for theater_dic in current_destroyed_point.surgeons_operations:
                             if theater_dic['patient'].id == patient_to_delete.id:
+                                theaters_workload[theater_dic['theater']][day] -= patient_to_delete.surgery_duration
                                 current_destroyed_point.surgeons_operations[patient_to_delete.id] = {'patient': patient_to_delete,
                                                                                                 'theater': None}
                                 break
@@ -159,7 +162,8 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                     rooms.remove_patient(old_room, patient_to_delete, not_mandatory_patient_in_the_hosp['day'], T)
                     #for t in range(not_mandatory_patient_in_the_hosp['day'], min(not_mandatory_patient_in_the_hosp['day']+not_mandatory_patient_in_the_hosp['length'], T)):
                     #    print("room", rooms.rooms_count_people[t][old_room])
-                    not_mandatory_patients_not_in_the_hosp.append({'patient'})
+                    not_mandatory_patients_not_in_the_hosp.append({'patient': patient_to_delete,
+                                                                   'delay': T-patient_to_delete.surgery_release_day})
 
         for patient_dic in not_mandatory_patients_not_in_the_hosp:   # also for not mandatory patients
             patient = patient_dic['patient']
@@ -174,9 +178,9 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
         #print(rooms.rooms_count_people[19][4])
         #print(rooms.rooms_gender[19][4])
 
-        print("***********************")
+        #print("***********************")
 
-        visual_schedule(current_destroyed_point, occupants, rooms, T,True)# =^.^= gattino
+        #visual_schedule(current_destroyed_point, occupants, rooms, T,True)# =^.^= gattino
 
         for day in range(T):
             for shift in shifts:

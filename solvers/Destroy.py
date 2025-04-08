@@ -7,12 +7,14 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
     #surgeons = problem.surgeons
     patients = problem.patients
     #occupants = problem.occupants
-    rooms = problem.rooms
+    old_rooms = problem.rooms
     #theaters = problem.theaters
     Tempo = problem.T
     shifts = problem.shifts
 
-    tot_room_id = rooms.rooms_id
+    tot_room_id = old_rooms.rooms_id
+
+    rooms = copy.deepcopy(old_rooms)    # we need to copy the rooms because we need to modify the schedule of the rooms
 
     current_point = copy.deepcopy(point)
 
@@ -431,5 +433,5 @@ def destroy(CASE_DESTROY, point, problem):  #main function for the destroy phase
                     
                                                         
 
-    return current_point
+    return current_point,rooms
 

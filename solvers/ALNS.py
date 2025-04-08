@@ -20,7 +20,7 @@ class ALNS:
 
     def __init__ (self, problem, starting_point):
 
-        self.problem = problem
+        self.starting_problem = problem
         self.starting_point = starting_point
 
         self.nurses = problem.nurses
@@ -40,7 +40,7 @@ class ALNS:
         print("Solving with ALNS ...")
 
         current_point = self.starting_point    # this is the starting point
-        problem = self.problem
+        starting_problem = self.starting_problem
         nurses = self.nurses
         surgeons = self.surgeons
         patients = self.patients
@@ -63,7 +63,7 @@ class ALNS:
         x_data, y_data = [], []
 
         x_data.append(0)
-        current_value, dic = problem.objective_function(current_point, occupants, surgeons, nurses,  rooms, T, shifts, weights)
+        current_value, dic = starting_problem.objective_function(current_point, occupants, surgeons, nurses,  rooms, T, shifts, weights)
         y_data.append(current_value)
         # ********************
 
@@ -77,21 +77,24 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed = destroy('D',current_point,problem)
+            point_destroyed,new_rooms = destroy('O',current_point,starting_problem)
 
-            new_point = repair('A', current_point, point_destroyed, problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+            new_problem = Problem(occupants, patients, surgeons, nurses, new_rooms, theaters, T, shifts, weights)
 
-            if not problem.constraints( new_point, patients, surgeons, rooms, theaters, T, shifts):
+            new_point = repair('A', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+
+            if not new_problem.constraints( new_point, patients, surgeons, new_rooms, theaters, T, shifts):
                 print("")
                 print(Fore.YELLOW + f"Destroy and repair have failed" + Style.RESET_ALL)
                 print("")
-                result = problem.constraints( new_point, patients, surgeons, rooms, theaters, T, shifts,True)
+                result = new_problem.constraints( new_point, patients, surgeons, rooms, theaters, T, shifts,True)
                 print("")
                 return 0
 
-            new_value, dic = problem.objective_function(new_point, occupants, surgeons, nurses,  rooms, T, shifts, weights) 
+            new_value, dic = new_problem.objective_function(new_point, occupants, surgeons, nurses,  new_rooms, T, shifts, weights) 
             if new_value <= current_value:
                 current_point = copy.deepcopy(new_point)
+                starting_problem = copy.deepcopy(new_problem)
                 current_value = new_value
                 # ************ for the plot *********
                 y_data.append(new_value)
