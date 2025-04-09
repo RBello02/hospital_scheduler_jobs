@@ -124,6 +124,10 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
             
         # now we MUST find a place in the solution for all the destroyed_mandatory patient 
 
+        #print("################## POINT DESTROYED ####################")
+
+        #visual_schedule(current_destroyed_point, occupants, rooms, T) # =^.^= gattino
+
         for patient_dic in destroyed_mandatory:
             patient = patient_dic['patient']
             found_solution = False
@@ -237,6 +241,10 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                             current_destroyed_point.nurses_schedule[day][shift][room_id].append({'nurse': best_nurse,
                                                                                                  'room': room_id})
                             nurses_still_working.append(best_nurse)
+
+    #print("################## POINT REPAIRED ####################")
+
+    #visual_schedule(current_destroyed_point, occupants, rooms, T) # =^.^= gattino
     
     return current_destroyed_point
 

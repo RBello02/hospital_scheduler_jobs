@@ -11,6 +11,9 @@ matplotlib.use("Agg")  # Usa un backend non interattivo
 import matplotlib.pyplot as plt
 import os
 
+#import sys
+#sys.stdout = open('log_output.txt', 'w')
+
 from instances.hospital import Times
 from instances.hospital import Rooms
 from instances.hospital import Theaters
@@ -50,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test07.json'
+    filename = 'test04.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
