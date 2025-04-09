@@ -34,7 +34,7 @@ class ALNS:
         self.weights = problem.weights
 
 
-    def solve(self, number_of_iterations = 1000):   # main function for the solver
+    def solve(self, number_of_iterations = 1000, Gamma = 1):   # main function for the solver
 
         print(" ")
         print("Solving with ALNS ...")
@@ -71,7 +71,6 @@ class ALNS:
 
             show_progress(p_iteration[t])
             time.sleep(0.0001)
-            #print(t)
 
             # ********** for the plot **********
             x_data.append(t+1)
@@ -92,8 +91,8 @@ class ALNS:
                 return 0
 
             new_value, dic = new_problem.objective_function(new_point, occupants, surgeons, nurses,  new_rooms, T, shifts, weights) 
-            #print("new_value", new_value, "current_value", current_value)
-            if new_value <= current_value:
+            
+            if new_value <= current_value or bernoulli(np.exp(-Gamma*(t+1))):
                 current_point = copy.deepcopy(new_point)
                 starting_problem = copy.deepcopy(new_problem)
                 current_value = new_value
@@ -117,5 +116,12 @@ def show_progress(percent=0, width=30):   # function made only for printing the 
     
     print('\r[', '#' * left, '' * right, ']',
           f' {percent: .0f}%', sep='', end='', flush=True)
+    
+def bernoulli(p):   # function for the bernoulli distribution
+    x = np.random.uniform(0, 1)
+    if x <= p:
+        return True
+    else:
+        return False
 
 

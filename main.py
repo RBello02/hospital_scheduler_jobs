@@ -53,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test07.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -159,13 +159,14 @@ def main():
 
     number_of_iterations = 100
 
-    problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts, True)
+    #problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts, True)
 
     #visual_schedule(init_solution, occupants, rooms, time)
 
     solver = ALNS(problem, init_solution)
+    Gamma = 0.1
 
-    final_solution, final_problem, x_plot, y_plot = solver.solve(number_of_iterations)
+    final_solution, final_problem, x_plot, y_plot = solver.solve(number_of_iterations, Gamma)
 
     #visual_schedule(final_solution, occupants, rooms, time)
     #print("########################################################################")
