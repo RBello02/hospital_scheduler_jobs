@@ -242,9 +242,46 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                                                                                                  'room': room_id})
                             nurses_still_working.append(best_nurse)
 
-    #print("################## POINT REPAIRED ####################")
+        if CASE_REPAIR == 'C':
 
-    #visual_schedule(current_destroyed_point, occupants, rooms, T) # =^.^= gattino
+            for day in range(T):
+                for shift in shifts:
+                    nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
+                    random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy
+                    nurses_still_working = []
+                    for room_id in rooms.rooms_id:
+                        if not current_destroyed_point.nurses_schedule[day][shift][room_id]:  # if the list is empty
+
+                            # i want to find the best nurse for that particular room, looking at the workload
+
+                            # first of all find the workload for that room
+
+                            room_workload = 0
+                            for patient_schedule in current_destroyed_point.patient_schedule: # for patients
+                                if patient_schedule['room'] == room_id and day >=patient_schedule['day'] and day < patient_schedule['day']+patient_schedule['patient'].length_of_stay:
+                                    room_workload += patient_schedule['patient'].workload_produced[day-patient_schedule['day']][shift]
+                            
+                            for occupant in occupants: # for occupants
+                                if occupant.room_id == room_id and day < occupant.length_of_stay:
+                                    room_workload += occupant.workload_produced[day][shift]
+
+                            nurse_workload_dic = [] 
+                            for nurse in list(set(nurse_that_can_work)-set(nurses_still_working)):
+                                if nurse.possible_turns[day][shift] >= room_workload:
+                                    nurse_workload_dic.append({'nurse':nurse, 
+                                                               'delay': nurse.possible_turns[day][shift]-room_workload})
+                            if not nurse_workload_dic:
+                                for nurse in nurse_that_can_work:
+                                    nurse_workload_dic.append({'nurse':nurse, 
+                                                                'delay': nurse.possible_turns[day][shift]-room_workload})
+
+                            nurse_workload_dic.sort(key=lambda x: -x['delay']) # -delay because i want the best one
+                            best_nurse = nurse_workload_dic[0]['nurse']
+
+                            current_destroyed_point.nurses_schedule[day][shift][room_id].append({'nurse': best_nurse,
+                                                                                                    'room': room_id})
+
+
     
     return current_destroyed_point
 
