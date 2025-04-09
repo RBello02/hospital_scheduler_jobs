@@ -160,8 +160,9 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
                     rooms_set = set()   # is the set of the rooms where the nurse is working
                     for room_id in rooms.rooms_id:
                         nurse_list = solution.nurses_schedule[day][shift][room_id]   # get the nurses that work in that particular room
+                        #print(nurse_list)
                         for nurse_dic in nurse_list:
-                            if nurse_dic['nurse'] == nurse:
+                            if nurse_dic['nurse'].id == nurse.id:
                                 rooms_set.add(f"r{room_id:0{num_digits_for_room}d}")
                     
                     rooms_list = list(rooms_set) # rooms_set becomes a list

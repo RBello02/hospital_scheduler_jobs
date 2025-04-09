@@ -53,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test02.json'
+    filename = 'test07.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -167,9 +167,9 @@ def main():
 
     final_solution, final_problem, x_plot, y_plot = solver.solve(number_of_iterations)
 
-    visual_schedule(final_solution, occupants, rooms, time)
-    print("########################################################################")
-    visual_nurses(final_solution, rooms, time, shifts)
+    #visual_schedule(final_solution, occupants, rooms, time)
+    #print("########################################################################")
+    #visual_nurses(final_solution, rooms, time, shifts)
 
     # printing the sol
 
@@ -205,9 +205,11 @@ def main():
     ######################################## OUTPUT FOR VALIDATION ########################################
 
 
-    out_sol = postprocess(final_solution, patients, surgeons, nurses, rooms, theaters, time, shifts, shift_map, filename, weights, tot_cost, cost_dic)
+    out_sol = postprocess(final_solution, patients, surgeons, nurses, final_problem.rooms, theaters, time, shifts, shift_map, filename, weights, tot_cost, cost_dic)
 
     json_object = json.dumps(out_sol, indent=4)
+
+    #print(final_solution.nurses_schedule)
 
     with open('output_for_validation/'+"out_"+filename, 'w') as file:
         file.write(json_object)
