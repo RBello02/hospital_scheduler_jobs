@@ -53,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test07.json'
+    filename = 'test01.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -215,9 +215,11 @@ def main():
         file.write(json_object)
 
 
-    ######################################## FUNCTION PLOT ########################################
+    ######################################## FUNCTION PLOT ######################################
+    
+    plot_optimal = True
 
-    ALNS_plot(x_plot, y_plot, filename)
+    ALNS_plot(x_plot, y_plot, filename, plot_optimal)
 
 if __name__ == "__main__":
     main()

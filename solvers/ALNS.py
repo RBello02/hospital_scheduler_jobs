@@ -77,7 +77,7 @@ class ALNS:
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed,new_rooms = destroy('H',current_point,starting_problem)
+            point_destroyed,new_rooms = destroy('Q',current_point,starting_problem)
 
             new_problem = Problem(occupants, patients, surgeons, nurses, new_rooms, theaters, T, shifts, weights)
 
