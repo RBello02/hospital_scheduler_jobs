@@ -28,7 +28,7 @@ from utils import *
 
 from solvers.initial_solution import initial_solution
 from solvers.ALNS import ALNS
-from solvers.solution_output import visual_schedule
+from solvers.solution_output import *
 
 
 
@@ -53,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test04.json'
+    filename = 'test02.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -165,18 +165,22 @@ def main():
 
     solver = ALNS(problem, init_solution)
 
-    final_solution,x_plot, y_plot = solver.solve(number_of_iterations)
+    final_solution, final_problem, x_plot, y_plot = solver.solve(number_of_iterations)
+
+    visual_schedule(final_solution, occupants, rooms, time)
+    print("########################################################################")
+    visual_nurses(final_solution, rooms, time, shifts)
 
     # printing the sol
 
-    if problem.constraints(final_solution, patients, surgeons, rooms, theaters, time, shifts):
+    if final_problem.constraints(final_solution, patients, surgeons, final_problem.rooms, theaters, time, shifts):
         print(" ")
         print(" ")
         print(" ")
         print("**********************************")
         print(Fore.GREEN +"The solution is feasible"+ Style.RESET_ALL)
         print("**********************************")
-        tot_cost, cost_dic = problem.objective_function(final_solution, occupants, surgeons, nurses, rooms, time, shifts, weights)
+        tot_cost, cost_dic = final_problem.objective_function(final_solution, occupants, surgeons, nurses, final_problem.rooms, time, shifts, weights)
         print("The total cost is: ", tot_cost)
         print("**********************************") 
         print("The cost of each part is")
@@ -192,7 +196,7 @@ def main():
         print(" ")
         print(" ")
         print(" ")
-        result = problem.constraints(final_solution, patients, surgeons, rooms, theaters, time, shifts, True)
+        result = final_problem.constraints(final_solution, patients, surgeons, final_problem.rooms, theaters, time, shifts, True)
         print("")
         print("")
         print("")

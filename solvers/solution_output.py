@@ -58,3 +58,16 @@ def visual_schedule(solution, occupants,  rooms, T, flag = False):
 `---'    `----'   ;      /    \,.,,,/
                    `----`              ⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ''')
+        
+
+def visual_nurses(solution, rooms, T, shifts):
+    for t in range(T):
+        print(f"************Day {t}*************")
+        for shift in shifts:
+            print(f"\t#### Shift {shift} #### ")
+            for room_id in rooms.rooms_id:
+                nurse_dic = solution.nurses_schedule[t][shift][room_id] 
+                print(f"\t\troom {room_id}, nurses: ", end = " ")
+                for nurse in nurse_dic:
+                    print(f" NID {nurse['nurse'].id} ", end = " ")  
+                print("")

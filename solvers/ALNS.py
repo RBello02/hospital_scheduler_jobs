@@ -70,18 +70,18 @@ class ALNS:
         for t in range(number_of_iterations):   # iterating
 
             show_progress(p_iteration[t])
-            time.sleep(0.001)
-
+            time.sleep(0.0001)
+            #print(t)
 
             # ********** for the plot **********
             x_data.append(t+1)
             # **********************************
 
-            point_destroyed,new_rooms = destroy('A',current_point,starting_problem)
+            point_destroyed,new_rooms = destroy('H',current_point,starting_problem)
 
             new_problem = Problem(occupants, patients, surgeons, nurses, new_rooms, theaters, T, shifts, weights)
 
-            new_point = repair('A', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+            new_point = repair('B', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
 
             if not new_problem.constraints( new_point, patients, surgeons, new_rooms, theaters, T, shifts):
                 print("")
@@ -108,7 +108,7 @@ class ALNS:
 
             
 
-        return (current_point,x_data,y_data)
+        return (current_point, starting_problem, x_data,y_data)
 
 
 def show_progress(percent=0, width=30):   # function made only for printing the progress bar
