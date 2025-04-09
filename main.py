@@ -164,7 +164,7 @@ def main():
     #visual_schedule(init_solution, occupants, rooms, time)
 
     solver = ALNS(problem, init_solution)
-    Gamma = 0.1
+    Gamma = 0.5
 
     final_solution, final_problem, x_plot, y_plot = solver.solve(number_of_iterations, Gamma)
 
