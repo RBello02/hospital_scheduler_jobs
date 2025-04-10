@@ -18,7 +18,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
 
     current_destroyed_point= copy.deepcopy(current_destroyed_point_not_copied)
 
-    if CASE_REPAIR in ['A','B','C']:
+    if CASE_REPAIR in ['A','B','C', 'D']:
 
         # we have to find the patients that have been destroyed:
 
@@ -44,11 +44,9 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                                                 'delay': T-patient_dic['patient'].surgery_release_day})
 
             if patient_dic['day'] is not None and destroyed_patient_dic['day'] is None:
-                #print(patient_dic['patient'].id)
                 if patient_dic['patient'].mandatory == 1:
                     destroyed_mandatory.append({'patient': patient_dic['patient'],
                                                 'delay': patient_dic['patient'].surgery_due_day-patient_dic['patient'].surgery_release_day})
-                    #print(patient_dic['patient'].id)
                 else:
                     not_mandatory_patients_not_in_the_hosp.append({'patient': patient_dic['patient'],
                                                                    'delay': T-patient_dic['patient'].surgery_release_day})
@@ -66,15 +64,7 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                                                                 'delay': T-patient_dic['patient'].surgery_release_day})
 
                 
-            
-        #print(destroyed_mandatory)
-        #print(current_destroyed_point.patient_schedule[19])
-
-        
-        #mandatory_patients.sort(key=lambda x: x['delay']) # sort over delay
-        #not_mandatory_patients.sort(key=lambda x: x['delay'])
         destroyed_mandatory.sort(key=lambda x: x['delay'])
-        #destroyed_not_mandatory.sort(key=lambda x: x['delay'])
         
         '''
         print("destroyed_mandatory")
@@ -101,12 +91,6 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
             for pat_dic in not_mandatory_patients_not_in_the_hosp:
                 print(pat_dic['patient'].id)
         '''
-        # surgeons and theaters workload
-
-        #print("***********before*************")
-
-        #print(rooms.rooms_count_people[19][4])
-        #print(rooms.rooms_gender[19][4])
     
         surgeons_workload = [[0 for t in range(T)] for surgeon in surgeons]
         theaters_workload = [[0 for t in range(T)] for theater_id in theaters.theaters_id]
@@ -160,12 +144,9 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                                 current_destroyed_point.surgeons_operations[patient_to_delete.id] = {'patient': patient_to_delete,
                                                                                                 'theater': None}
                                 break
-                    #for t in range(not_mandatory_patient_in_the_hosp['day'], min(not_mandatory_patient_in_the_hosp['day']+not_mandatory_patient_in_the_hosp['length'], T)):
-                    #    print("room", rooms.rooms_count_people[t][old_room])
-                    #print("*********")
+
                     rooms.remove_patient(old_room, patient_to_delete, not_mandatory_patient_in_the_hosp['day'], T)
-                    #for t in range(not_mandatory_patient_in_the_hosp['day'], min(not_mandatory_patient_in_the_hosp['day']+not_mandatory_patient_in_the_hosp['length'], T)):
-                    #    print("room", rooms.rooms_count_people[t][old_room])
+ 
                     not_mandatory_patients_not_in_the_hosp.append({'patient': patient_to_delete,
                                                                    'delay': T-patient_to_delete.surgery_release_day})
 
@@ -174,15 +155,6 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
             found_solution = place_patient(current_destroyed_point, patient, theaters_workload, surgeons_workload, rooms, theaters, surgeons, T)
             if not found_solution:
                 continue   # if a not mandatory patient has no place in the hospital, we don't care about him/her
-                    
-            
-        #print("***********after*************")
-
-    
-        #print(rooms.rooms_count_people[19][4])
-        #print(rooms.rooms_gender[19][4])
-
-        #print("***********************")
 
         #visual_schedule(current_destroyed_point, occupants, rooms, T,True)# =^.^= gattino
 
@@ -281,6 +253,57 @@ def repair(CASE_REPAIR, current_point, current_destroyed_point_not_copied,  prob
                             current_destroyed_point.nurses_schedule[day][shift][room_id].append({'nurse': best_nurse,
                                                                                                     'room': room_id})
 
+        if CASE_REPAIR == 'D':
+            
+            for day in range(T):
+                for shift in shifts:
+                    nurse_that_can_work = [nurse for nurse in nurses if nurse.possible_turns[day][shift] > 0]
+                    random.shuffle(nurse_that_can_work)  # shuffle it to make it spicy
+                    nurses_still_working = []
+                    for room_id in rooms.rooms_id:
+                        if not current_destroyed_point.nurses_schedule[day][shift][room_id]:  # if the list is empty
+                            
+                            # i want to find the best nurse for that particular room, looking at the skill level and the workload
+
+                            # find the maximum skill level of the room
+
+                            tot_skill_for_patients = []
+                            for patient_dic in current_destroyed_point.patient_schedule:
+                                if patient_dic['room'] == room_id and day >= patient_dic['day'] and day < patient_dic['day']+patient_dic['patient'].length_of_stay:
+                                    tot_skill_for_patients.append(patient_dic['patient'].skill_level_required[day-patient_dic['day']][shift])
+
+                            tot_skill_for_occupants = [occupant.skill_level_required[day][shift] for occupant in occupants
+                                                      if occupant.room_id == room_id and day < occupant.length_of_stay]
+
+                            max_skill = max(list(set(tot_skill_for_patients+tot_skill_for_occupants))) if tot_skill_for_patients or tot_skill_for_occupants else 0
+
+                            # find the workload of a room
+
+                            room_workload = 0
+                            for patient_schedule in current_destroyed_point.patient_schedule: # for patients
+                                if patient_schedule['room'] == room_id and day >=patient_schedule['day'] and day < patient_schedule['day']+patient_schedule['patient'].length_of_stay:
+                                    room_workload += patient_schedule['patient'].workload_produced[day-patient_schedule['day']][shift]
+                            
+                            for occupant in occupants: # for occupants
+                                if occupant.room_id == room_id and day < occupant.length_of_stay:
+                                    room_workload += occupant.workload_produced[day][shift]
+
+                            nurses_skill_dic = []
+                            for nurse in list(set(nurse_that_can_work)-set(nurses_still_working)):    # because i want to find a nurse that is not still working
+                                if nurse.skill_level >= max_skill and nurse.possible_turns[day][shift] >= room_workload: 
+                                    nurses_skill_dic.append({'nurse':nurse, 
+                                                             'delay': abs(nurse.skill_level-max_skill) + abs(nurse.possible_turns[day][shift]-room_workload)})
+                            if not nurses_skill_dic:
+                                for nurse in nurse_that_can_work:    # if I dont find a free nurse, I'll take another one from the one still working
+                                    nurses_skill_dic.append({'nurse':nurse, 
+                                                            'delay': abs(nurse.skill_level-max_skill) + abs(nurse.possible_turns[day][shift]-room_workload)})
+
+                            nurses_skill_dic.sort(key=lambda x: -x['delay']) # -delay because i want the best one
+                            best_nurse = nurses_skill_dic[0]['nurse']
+
+                            current_destroyed_point.nurses_schedule[day][shift][room_id].append({'nurse': best_nurse,
+                                                                                                 'room': room_id})
+                            nurses_still_working.append(best_nurse)
 
     
     return current_destroyed_point

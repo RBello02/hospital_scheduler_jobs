@@ -69,7 +69,7 @@ class ALNS:
 
         # *************** defining the weights for the destroy and repair
         destroy_weights = [1]*15
-        repair_weights = [1]*3
+        repair_weights = [1]*4
 
         destroy_probabilities = [weights/sum(destroy_weights) for weights in destroy_weights]
         repair_probabilities = [weights/sum(repair_weights) for weights in repair_weights]
@@ -80,7 +80,7 @@ class ALNS:
                             'L': destroy_probabilities[9], 'M': destroy_probabilities[10], 'N': destroy_probabilities[11], 
                             'O': destroy_probabilities[12], 'P': destroy_probabilities[13], 'Q': destroy_probabilities[14]}
         
-        repair_prob_dic = {'A': repair_probabilities[0], 'B': repair_probabilities[1], 'C': repair_probabilities[2]}
+        repair_prob_dic = {'A': repair_probabilities[0], 'B': repair_probabilities[1], 'C': repair_probabilities[2], 'D': repair_probabilities[3]}
         # ********************
 
         for t in range(number_of_iterations):   # iterating
@@ -94,16 +94,13 @@ class ALNS:
 
             # sampling the destroy and repair
             sampled_destroy = random.choices(list(destroy_prob_dic.keys()), weights=destroy_probabilities, k=1)[0]
-            sampled_repair = random.choices(list(repair_prob_dic.keys()), weights=repair_probabilities, k=1)[0]
-
-            print(sampled_destroy, sampled_repair)
-
+            #sampled_repair = random.choices(list(repair_prob_dic.keys()), weights=repair_probabilities, k=1)[0]
 
             point_destroyed,new_rooms = destroy(sampled_destroy,current_point,starting_problem)
 
             new_problem = Problem(occupants, patients, surgeons, nurses, new_rooms, theaters, T, shifts, weights)
 
-            new_point = repair(sampled_repair, current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+            new_point = repair('D', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
 
             if not new_problem.constraints( new_point, patients, surgeons, new_rooms, theaters, T, shifts):
                 print("")

@@ -53,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test01.json'
+    filename = 'test02.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -151,7 +151,6 @@ def main():
     starting_point = Solution(times, rooms, patients, surgeons, nurses)    # starting point is a solution class
 
     init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
-
 
     problem = Problem(occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
 
