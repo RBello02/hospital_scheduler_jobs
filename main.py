@@ -156,22 +156,18 @@ def main():
 
     # solving the problem
 
-    number_of_iterations = 100
+    number_of_iterations = 1000
 
     #problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts, True)
 
     #visual_schedule(init_solution, occupants, rooms, time)
 
     solver = ALNS(problem, init_solution)
-    Gamma = 0.5
+    Gamma = 0.1
     rho = 0.3
     Delta = [1.3,1.2,1.1,1]   # vector of increasing the weights of the destroy and repair
 
-    final_solution, final_problem, x_plot, y_plot = solver.solve(number_of_iterations, Gamma, rho, Delta)
-
-    #visual_schedule(final_solution, occupants, rooms, time)
-    #print("########################################################################")
-    #visual_nurses(final_solution, rooms, time, shifts)
+    final_solution, final_problem, x_plot, y_plot, destroy_prob_vec, repair_prob_vec = solver.solve(number_of_iterations, Gamma, rho, Delta)
 
     # printing the sol
 
@@ -221,7 +217,7 @@ def main():
     
     plot_optimal =False
 
-    ALNS_plot(x_plot, y_plot, filename, plot_optimal)
+    ALNS_plot(x_plot, y_plot, filename, destroy_prob_vec, repair_prob_vec, number_of_iterations, plot_optimal)
 
 if __name__ == "__main__":
     main()

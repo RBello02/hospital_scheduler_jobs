@@ -61,7 +61,7 @@ class ALNS:
 
         # **************** things for the plot
         x_data, y_data = [], []
-
+        repair_prob_vec, destroy_prob_vec = [], []
         x_data.append(0)
         current_value, dic = starting_problem.objective_function(current_point, occupants, surgeons, nurses,  rooms, T, shifts, weights)
         y_data.append(current_value)
@@ -88,7 +88,11 @@ class ALNS:
                             'L': destroy_probabilities[9], 'M': destroy_probabilities[10], 'N': destroy_probabilities[11], 
                             'O': destroy_probabilities[12], 'P': destroy_probabilities[13], 'Q': destroy_probabilities[14]}
         
+        destroy_prob_vec.append(destroy_prob_dic)
+        
         repair_prob_dic = {'A': repair_probabilities[0], 'B': repair_probabilities[1], 'C': repair_probabilities[2], 'D': repair_probabilities[3]}
+
+        repair_prob_vec.append(repair_prob_dic)
 
         used_destroy = {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'G': 0, 
                         'H': 0, 'I': 0, 'L': 0, 'M': 0, 'N': 0, 'O': 0, 'P': 0, 'Q': 0}   # it is a dic containing the number of times each destroy method is used
@@ -159,7 +163,10 @@ class ALNS:
             destroy_weights, destroy_probabilities, repair_weights, repair_probabilities, destroy_prob_dic, repair_prob_dic, destroy_weights_dic, repair_weights_dic, used_destroy, used_repair, success_destroy, success_repair=adjust_weights(used_destroy, used_repair, success_destroy, success_repair, destroy_weights, destroy_weights_dic,
                                                                                                                                                                                                                                                 destroy_probabilities, repair_weights,repair_weights_dic, repair_probabilities, destroy_prob_dic, 
                                                                                                                                                                                                                                                 repair_prob_dic, sampled_destroy, sampled_repair, What_happened, Delta, rho)
-        return (current_point, starting_problem, x_data,y_data)
+            destroy_prob_vec.append(destroy_prob_dic)
+            repair_prob_vec.append(repair_prob_dic)
+            
+        return (current_point, starting_problem, x_data,y_data, destroy_prob_vec, repair_prob_vec)   # returning the final solution and the plot data
 
 
 def show_progress(percent=0, width=30):   # function made only for printing the progress bar

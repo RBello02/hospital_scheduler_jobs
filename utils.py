@@ -182,7 +182,7 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
     return {"patients": patients_solution, "nurses": nurses_solution, "costs": string_cost}
 
 
-def ALNS_plot(x_plot,y_plot,filename, flag):
+def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [], iter = 1000,  flag = False):
 
     plot_folder = "plots"
     file_number = filename.replace('test', '').replace('.json', '')
@@ -199,7 +199,7 @@ def ALNS_plot(x_plot,y_plot,filename, flag):
         real_cost_value = int(match.group(1))
 
     plt.figure(figsize=(8, 5))
-    plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS', marker='o', linestyle='-',  markersize=0.5)
+    plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS, total of '+ str(iter)+ ' iterations', marker='o', linestyle='-',  markersize=0.5)
 
     if flag:
         plt.axhline(y=real_cost_value, color='r', linestyle='-', label='optimal value')
@@ -214,6 +214,51 @@ def ALNS_plot(x_plot,y_plot,filename, flag):
 
     plt.close()
 
+    if destroy_prob_vec and repair_prob_vec:
+
+        # create a vector for each destroy and repair method
+        destroy_methods = [method for method in destroy_prob_vec[0].keys()]
+        repair_methods = [method for method in repair_prob_vec[0].keys()]
+
+        destroy_dic = {}
+        for method in destroy_methods:
+            destroy_dic[method] = []
+            for prob in destroy_prob_vec:
+                destroy_dic[method].append(prob[method])
+
+        repair_dic = {}
+        for method in repair_methods:
+            repair_dic[method] = []
+            for prob in repair_prob_vec:
+                repair_dic[method].append(prob[method])
+            
+        plt.figure(figsize=(12, 6))
+        for label, values in destroy_dic.items():
+            plt.plot(values, label=label)
+
+        plt.xlabel('Iterations')
+        plt.ylabel('Destroy probability')   
+        plt.title('plot of Destroy probabilities for test ' + str(file_number) + ' vs ALNS iterations, total of '+ str(iter)+ ' iterations')
+        plt.legend(loc='upper right', bbox_to_anchor=(1.15, 1))
+        plt.grid(True)
+        plt.tight_layout()
+
+        output_path = os.path.join(plot_folder, f'Destroy_plot_test{file_number}.png')
+        plt.savefig(output_path, dpi=300, bbox_inches="tight")
+
+        plt.figure(figsize=(12, 6))
+        for label, values in repair_dic.items():
+            plt.plot(values, label=label)
+
+        plt.xlabel('Iterations')
+        plt.ylabel('Repair probability')   
+        plt.title('plot of Repair probabilities for test ' + str(file_number) + ' vs ALNS iterations, total of '+ str(iter)+ ' iterations')
+        plt.legend(loc='upper right', bbox_to_anchor=(1.15, 1))
+        plt.grid(True)
+        plt.tight_layout()
+
+        output_path = os.path.join(plot_folder, f'Repair_plot_test{file_number}.png')
+        plt.savefig(output_path, dpi=300, bbox_inches="tight")
     return 0
 
 
