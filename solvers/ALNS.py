@@ -34,7 +34,7 @@ class ALNS:
         self.weights = problem.weights
 
 
-    def solve(self, number_of_iterations = 1000, Gamma = 1):   # main function for the solver
+    def solve(self, number_of_iterations = 1000, Gamma = 1, rho = 1, Delta = [4,3,2,1]):   # main function for the solver
 
         print(" ")
         print("Solving with ALNS ...")
@@ -71,6 +71,14 @@ class ALNS:
         destroy_weights = [1]*15
         repair_weights = [1]*4
 
+        destroy_weights_dic = {'A': destroy_weights[0], 'B': destroy_weights[1], 'C': destroy_weights[2], 
+                               'D': destroy_weights[3], 'E': destroy_weights[4], 'F': destroy_weights[5], 
+                               'G': destroy_weights[6], 'H': destroy_weights[7], 'I': destroy_weights[8], 
+                               'L': destroy_weights[9], 'M': destroy_weights[10], 'N': destroy_weights[11], 
+                               'O': destroy_weights[12], 'P': destroy_weights[13], 'Q': destroy_weights[14]}
+
+        repair_weights_dic = {'A': repair_weights[0], 'B': repair_weights[1], 'C': repair_weights[2], 'D': repair_weights[3]}
+
         destroy_probabilities = [weights/sum(destroy_weights) for weights in destroy_weights]
         repair_probabilities = [weights/sum(repair_weights) for weights in repair_weights]
 
@@ -81,12 +89,26 @@ class ALNS:
                             'O': destroy_probabilities[12], 'P': destroy_probabilities[13], 'Q': destroy_probabilities[14]}
         
         repair_prob_dic = {'A': repair_probabilities[0], 'B': repair_probabilities[1], 'C': repair_probabilities[2], 'D': repair_probabilities[3]}
+
+        used_destroy = {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'G': 0, 
+                        'H': 0, 'I': 0, 'L': 0, 'M': 0, 'N': 0, 'O': 0, 'P': 0, 'Q': 0}   # it is a dic containing the number of times each destroy method is used
+        used_repair = {'A': 0, 'B': 0, 'C': 0, 'D': 0}   # it is a dic containing the number of times each repair me
+        
+        success_destroy = {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'G': 0,
+                            'H': 0, 'I': 0, 'L': 0, 'M': 0, 'N': 0, 'O': 0, 'P': 0, 'Q': 0}   # it is a dic containing the number of times each destroy method is used successfully
+        success_repair = {'A': 0, 'B': 0, 'C': 0, 'D': 0}   # it is a dic containing the number of times each repair method is used successfully
         # ********************
+
+        
 
         for t in range(number_of_iterations):   # iterating
 
             show_progress(p_iteration[t])
             time.sleep(0.0001)
+
+            #********************* init*********
+            What_happened= [False, False, False, False]   # in this vector we save the result of the destroy and repair methods (its the delta at slide 34)
+            #************************************
 
             # ********** for the plot **********
             x_data.append(t+1)
@@ -94,13 +116,13 @@ class ALNS:
 
             # sampling the destroy and repair
             sampled_destroy = random.choices(list(destroy_prob_dic.keys()), weights=destroy_probabilities, k=1)[0]
-            #sampled_repair = random.choices(list(repair_prob_dic.keys()), weights=repair_probabilities, k=1)[0]
+            sampled_repair = random.choices(list(repair_prob_dic.keys()), weights=repair_probabilities, k=1)[0]
 
             point_destroyed,new_rooms = destroy(sampled_destroy,current_point,starting_problem)
 
             new_problem = Problem(occupants, patients, surgeons, nurses, new_rooms, theaters, T, shifts, weights)
 
-            new_point = repair('D', current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+            new_point = repair(sampled_repair, current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
 
             if not new_problem.constraints( new_point, patients, surgeons, new_rooms, theaters, T, shifts):
                 print("")
@@ -113,20 +135,30 @@ class ALNS:
             new_value, dic = new_problem.objective_function(new_point, occupants, surgeons, nurses,  new_rooms, T, shifts, weights) 
             
             if new_value <= current_value or bernoulli(np.exp(-Gamma*(t+1))):
+
                 current_point = copy.deepcopy(new_point)
                 starting_problem = copy.deepcopy(new_problem)
                 current_value = new_value
+
+                # ************ find what happened *********
+                if new_value < min(y_data): # if the new value is the best one so far
+                    What_happened[0] = True
+                elif new_value <= current_value and not What_happened[0]:   # if we improve the current solution but not the best one so far
+                    What_happened[1] = True
+                else: # in this case the bernoulli is true
+                    What_happened[2] = True
+
                 # ************ for the plot *********
                 y_data.append(new_value)
                 # ************************************
+
             else:
                 y_data.append(current_value)
+                What_happened[3] = True
 
-            #if t == 1:
-                #break
-
-            
-
+            destroy_weights, destroy_probabilities, repair_weights, repair_probabilities, destroy_prob_dic, repair_prob_dic, destroy_weights_dic, repair_weights_dic, used_destroy, used_repair, success_destroy, success_repair=adjust_weights(used_destroy, used_repair, success_destroy, success_repair, destroy_weights, destroy_weights_dic,
+                                                                                                                                                                                                                                                destroy_probabilities, repair_weights,repair_weights_dic, repair_probabilities, destroy_prob_dic, 
+                                                                                                                                                                                                                                                repair_prob_dic, sampled_destroy, sampled_repair, What_happened, Delta, rho)
         return (current_point, starting_problem, x_data,y_data)
 
 
@@ -144,4 +176,52 @@ def bernoulli(p):   # function for the bernoulli distribution
     else:
         return False
 
+def adjust_weights(used_destroy, used_repair, success_destroy, success_repair, old_destroy_weights, destroy_weights_dic,
+                    destroy_probabilities, old_repair_weights, repair_weights_dic, repair_probabilities, destroy_prob_dic, 
+                    repair_prob_dic, destroy_called, repair_called, what_happened, Delta, rho):
+    
+    # adjust the used destroy and repair 
+    used_destroy[destroy_called] += 1
+    used_repair[repair_called] += 1
 
+    for i in range(4):
+        if what_happened[i]:
+            result = i
+            break
+
+    win = Delta[result] # increasing value for the successful destroy and repair     
+
+    # adjust the success destroy and repair
+
+    success_destroy[destroy_called] += win
+    success_repair[repair_called] += win
+
+    # adjust the destroy weights:
+
+    for i,weight_key in enumerate(destroy_weights_dic.keys()):
+        if used_destroy[weight_key] == 0:
+            old_destroy_weights[i] = (1-rho)*old_destroy_weights[i]
+            destroy_weights_dic[weight_key] = (1-rho)*destroy_weights_dic[weight_key]
+        else:
+            old_destroy_weights[i] = (1-rho)*old_destroy_weights[i] + (rho*success_destroy[weight_key])/used_destroy[weight_key]
+            destroy_weights_dic[weight_key] = (1-rho)*destroy_weights_dic[weight_key] + (rho*success_destroy[weight_key])/used_destroy[weight_key]
+
+    # adjust the repair weights:
+
+    for i,weight_key in enumerate(repair_weights_dic.keys()):
+        if used_repair[weight_key] == 0:
+            old_repair_weights[i] = (1-rho)*old_repair_weights[i]
+            repair_weights_dic[weight_key] = (1-rho)*repair_weights_dic[weight_key]
+        else:
+            old_repair_weights[i] = (1-rho)*old_repair_weights[i] + (rho*success_repair[weight_key])/used_repair[weight_key]
+            repair_weights_dic[weight_key] = (1-rho)*repair_weights_dic[weight_key] + (rho*success_repair[weight_key])/used_repair[weight_key]
+
+    # adjust the probabilities:
+    destroy_probabilities = [weights/sum(old_destroy_weights) for weights in old_destroy_weights]
+    repair_probabilities = [weights/sum(old_repair_weights) for weights in old_repair_weights]
+
+    # creating the new dic of probabilities:
+    destroy_prob_dic = {key: destroy_probabilities[i] for i, key in enumerate(destroy_prob_dic.keys())}
+    repair_prob_dic = {key: repair_probabilities[i] for i, key in enumerate(repair_prob_dic.keys())}
+
+    return old_destroy_weights, destroy_probabilities, old_repair_weights, repair_probabilities, destroy_prob_dic, repair_prob_dic, destroy_weights_dic, repair_weights_dic, used_destroy, used_repair, success_destroy, success_repair  

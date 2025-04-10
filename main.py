@@ -53,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test02.json'
+    filename = 'test07.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -164,8 +164,10 @@ def main():
 
     solver = ALNS(problem, init_solution)
     Gamma = 0.5
+    rho = 0.3
+    Delta = [1.3,1.2,1.1,1]   # vector of increasing the weights of the destroy and repair
 
-    final_solution, final_problem, x_plot, y_plot = solver.solve(number_of_iterations, Gamma)
+    final_solution, final_problem, x_plot, y_plot = solver.solve(number_of_iterations, Gamma, rho, Delta)
 
     #visual_schedule(final_solution, occupants, rooms, time)
     #print("########################################################################")
