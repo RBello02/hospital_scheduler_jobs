@@ -106,8 +106,20 @@ class ALNS:
         success_repair = {'A': 0, 'B': 0, 'C': 0, 'D': 0}   # it is a dic containing the number of times each repair method is used successfully
         # ********************
 
+        if rho < 0 or rho > 1:
+            print(Fore.RED + "Rho must be between 0 and 1" + Style.RESET_ALL)
+            return 0
         
+        if Gamma < 0:
+            print(Fore.RED + "Gamma must be positive" + Style.RESET_ALL)
+            return 0
+        
+        # ************** init the time ***************
+        time_repair = 0
+        time_destroy = 0
+        # ********************************************
 
+        
         for t in range(number_of_iterations):   # iterating
 
             show_progress(p_iteration[t])
@@ -125,11 +137,23 @@ class ALNS:
             sampled_destroy = random.choices(list(destroy_prob_dic.keys()), weights=destroy_probabilities, k=1)[0]
             sampled_repair = random.choices(list(repair_prob_dic.keys()), weights=repair_probabilities, k=1)[0]
 
+            start = time.time()
+
             point_destroyed,new_rooms = destroy(sampled_destroy,current_point,starting_problem)
+
+            end = time.time()   
+
+            time_destroy += end - start
 
             new_problem = Problem(occupants, patients, surgeons, nurses, new_rooms, theaters, T, shifts, weights)
 
+            start1 = time.time()
+
             new_point = repair(sampled_repair, current_point, point_destroyed, new_problem)    # in this case point_destroyed and new_point HAVE THE SAME POINTER
+
+            end1 = time.time()
+
+            time_repair += end1 - start1
 
             if not new_problem.constraints( new_point, patients, surgeons, new_rooms, theaters, T, shifts):
                 print("")
@@ -174,7 +198,7 @@ class ALNS:
             destroy_prob_vec.append(destroy_prob_dic)
             repair_prob_vec.append(repair_prob_dic)
             
-        return (best_point, best_problem, x_data,y_data, destroy_prob_vec, repair_prob_vec)   # returning the final solution and the plot data
+        return (best_point, best_problem, x_data,y_data, destroy_prob_vec, repair_prob_vec, time_destroy, time_repair)   # returning the final solution and the plot data
 
 
 def show_progress(percent=0, width=30):   # function made only for printing the progress bar

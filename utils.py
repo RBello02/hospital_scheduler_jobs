@@ -182,7 +182,7 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
     return {"patients": patients_solution, "nurses": nurses_solution, "costs": string_cost}
 
 
-def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [], iter = 1000,  flag = False):
+def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [], iter = 1000,  flag = False, Gamma=1, rho=1, Delta=[4,3,2,1], time_destroy=None, time_repair=None):
 
     plot_folder = "plots"
     file_number = filename.replace('test', '').replace('.json', '')
@@ -259,6 +259,32 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
 
         output_path = os.path.join(plot_folder, f'Repair_plot_test{file_number}.png')
         plt.savefig(output_path, dpi=300, bbox_inches="tight")
+
+    text_folder = "text_output"
+    with open(f'{text_folder}/test_{file_number}.txt', 'w') as file:
+
+        file.write("\n")
+        file.write("ALNS iterations: " + str(iter) + "\n")
+        print("\n")
+        print("\n")
+        file.write("rho: " + str(rho) + "\n")
+        file.write("Gamma: " + str(Gamma) + "\n")
+        file.write("Delta: " + str(Delta) + "\n")
+        file.write("Delta: " + str(Delta) + "\n")
+        print("\n")
+
+        if time_destroy is not None and time_repair is not None:
+
+            file.write("Optimal value found by ALNS: {:.2f}\n".format(min(y_plot)))
+            file.write("Real optimal value: {:.2f}\n".format(real_cost_value))
+            file.write("\n")
+            file.write("Time for optimization: {:.2f}\n".format(time_destroy + time_repair))
+            file.write("Time for destroy: {:.2f}, {:.2f}% of the total time\n".format(time_destroy, 100 * time_destroy / (time_destroy + time_repair)))
+            file.write("Time for repair: {:.2f}, {:.2f}% of the total time\n".format(time_repair, 100 * time_repair / (time_destroy + time_repair)))
+
+    file.close()  
+
+
     return 0
 
 

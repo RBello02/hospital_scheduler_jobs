@@ -1,0 +1,12 @@
+
+ALNS iterations: 10000
+rho: 0.1
+Gamma: 0.3
+Delta: [3, 1.5, 1, 0]
+Delta: [3, 1.5, 1, 0]
+Optimal value found by ALNS: 17141.00
+Real optimal value: 15713.00
+
+Time for optimization: 488.28
+Time for destroy: 244.45, 50.06% of the total time
+Time for repair: 243.83, 49.94% of the total time

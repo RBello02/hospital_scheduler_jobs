@@ -53,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test01.json'
+    filename = 'test08.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -100,7 +100,7 @@ def main():
                                   nurses_mapping=nurses_mapping,
                                   theaters_mapping=theaters_mapping)
     
-    time = transformed_data['T']
+    elap_time = transformed_data['T']
     t_occupants = transformed_data['occupants']
     t_patients = transformed_data['patients']
     t_surgeons = transformed_data['surgeons']
@@ -121,7 +121,7 @@ def main():
 
     # creating the hospital
 
-    times = Times(time, shifts)
+    times = Times(elap_time, shifts)
     rooms = Rooms(t_rooms, times)
     theaters = Theaters(t_theaters)
 
@@ -139,46 +139,42 @@ def main():
 
     # creating the nurses
 
-    nurses = [Nurse(t_nurse,time,shift_map) for t_nurse in t_nurses]
+    nurses = [Nurse(t_nurse,elap_time,shift_map) for t_nurse in t_nurses]
     
 
     ############################### SOLVING PROBLEM ##################################
 
     # initial solution
 
-    #solution = Solution(times, rooms, patients, surgeons, nurses)    # initializing the class solution
-
     starting_point = Solution(times, rooms, patients, surgeons, nurses)    # starting point is a solution class
 
-    init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, time, shifts)
+    init_solution = initial_solution(starting_point, occupants, patients, surgeons, nurses, rooms, theaters, elap_time, shifts)
 
-    problem = Problem(occupants, patients, surgeons, nurses, rooms, theaters, time, shifts , weights)
+    problem = Problem(occupants, patients, surgeons, nurses, rooms, theaters, elap_time, shifts , weights)
 
     # solving the problem
 
-    number_of_iterations = 100
-
-    #problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts, True)
-
-    #visual_schedule(init_solution, occupants, rooms, time)
+    number_of_iterations = 10000
 
     solver = ALNS(problem, init_solution)
-    Gamma = 0.1
-    rho = 0.3
-    Delta = [1.3,1.2,1.1,1]   # vector of increasing the weights of the destroy and repair
 
-    final_solution, final_problem, x_plot, y_plot, destroy_prob_vec, repair_prob_vec = solver.solve(number_of_iterations, Gamma, rho, Delta)
+
+    Gamma = 0.3
+    rho = 0.1
+    Delta = [3,1.5,1,0]   # vector of increasing the weights of the destroy and repair
+
+    final_solution, final_problem, x_plot, y_plot, destroy_prob_vec, repair_prob_vec, time_destroy, time_repair = solver.solve(number_of_iterations, Gamma, rho, Delta)
 
     # printing the sol
 
-    if final_problem.constraints(final_solution, patients, surgeons, final_problem.rooms, theaters, time, shifts):
+    if final_problem.constraints(final_solution, patients, surgeons, final_problem.rooms, theaters, elap_time, shifts):
         print(" ")
         print(" ")
         print(" ")
         print("**********************************")
         print(Fore.GREEN +"The solution is feasible"+ Style.RESET_ALL)
         print("**********************************")
-        tot_cost, cost_dic = final_problem.objective_function(final_solution, occupants, surgeons, nurses, final_problem.rooms, time, shifts, weights)
+        tot_cost, cost_dic = final_problem.objective_function(final_solution, occupants, surgeons, nurses, final_problem.rooms, elap_time, shifts, weights)
         print("The total cost is: ", tot_cost)
         print("**********************************") 
         print("The cost of each part is")
@@ -194,7 +190,7 @@ def main():
         print(" ")
         print(" ")
         print(" ")
-        result = final_problem.constraints(final_solution, patients, surgeons, final_problem.rooms, theaters, time, shifts, True)
+        result = final_problem.constraints(final_solution, patients, surgeons, final_problem.rooms, theaters, elap_time, shifts, True)
         print("")
         print("")
         print("")
@@ -203,7 +199,7 @@ def main():
     ######################################## OUTPUT FOR VALIDATION ########################################
 
 
-    out_sol = postprocess(final_solution, patients, surgeons, nurses, final_problem.rooms, theaters, time, shifts, shift_map, filename, weights, tot_cost, cost_dic)
+    out_sol = postprocess(final_solution, patients, surgeons, nurses, final_problem.rooms, theaters, elap_time, shifts, shift_map, filename, weights, tot_cost, cost_dic)
 
     json_object = json.dumps(out_sol, indent=4)
 
@@ -217,7 +213,8 @@ def main():
     
     plot_optimal =False
 
-    ALNS_plot(x_plot, y_plot, filename, destroy_prob_vec, repair_prob_vec, number_of_iterations, plot_optimal)
+    ALNS_plot(x_plot, y_plot, filename, destroy_prob_vec, repair_prob_vec, number_of_iterations, plot_optimal, Gamma, rho, Delta, time_destroy, time_repair)
+
 
 if __name__ == "__main__":
     main()
