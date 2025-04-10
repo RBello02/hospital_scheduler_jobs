@@ -156,7 +156,7 @@ def main():
 
     # solving the problem
 
-    number_of_iterations = 1000
+    number_of_iterations = 100
 
     #problem.constraints(init_solution, patients, surgeons, rooms, theaters, time, shifts, True)
 

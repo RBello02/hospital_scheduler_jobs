@@ -65,6 +65,9 @@ class ALNS:
         x_data.append(0)
         current_value, dic = starting_problem.objective_function(current_point, occupants, surgeons, nurses,  rooms, T, shifts, weights)
         y_data.append(current_value)
+        best_point = copy.deepcopy(current_point)
+        best_value = current_value
+        best_problem = copy.deepcopy(starting_problem)
         # ********************
 
         # *************** defining the weights for the destroy and repair
@@ -144,6 +147,11 @@ class ALNS:
                 starting_problem = copy.deepcopy(new_problem)
                 current_value = new_value
 
+                if new_value < best_value:   # if the new value is the best one so far
+                    best_point = copy.deepcopy(new_point)
+                    best_value = new_value
+                    best_problem = copy.deepcopy(new_problem)
+
                 # ************ find what happened *********
                 if new_value < min(y_data): # if the new value is the best one so far
                     What_happened[0] = True
@@ -166,7 +174,7 @@ class ALNS:
             destroy_prob_vec.append(destroy_prob_dic)
             repair_prob_vec.append(repair_prob_dic)
             
-        return (current_point, starting_problem, x_data,y_data, destroy_prob_vec, repair_prob_vec)   # returning the final solution and the plot data
+        return (best_point, best_problem, x_data,y_data, destroy_prob_vec, repair_prob_vec)   # returning the final solution and the plot data
 
 
 def show_progress(percent=0, width=30):   # function made only for printing the progress bar
