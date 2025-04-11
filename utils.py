@@ -270,7 +270,6 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
         file.write("rho: " + str(rho) + "\n")
         file.write("Gamma: " + str(Gamma) + "\n")
         file.write("Delta: " + str(Delta) + "\n")
-        file.write("Delta: " + str(Delta) + "\n")
         print("\n")
 
         if time_destroy is not None and time_repair is not None:
