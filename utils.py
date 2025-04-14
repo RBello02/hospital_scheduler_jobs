@@ -184,8 +184,11 @@ def postprocess (solution, patients, surgeons, nurses, rooms, theaters, T, shift
 
 def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [], iter = 1000,  flag = False, Gamma=1, rho=1, Delta=[4,3,2,1], time_destroy=None, time_repair=None):
 
+    
+
     plot_folder = "plots"
     file_number = filename.replace('test', '').replace('.json', '')
+
 
     solution_folder = "test_data/solutions"
     solution_filename = filename.replace('test', 'sol_test')
@@ -197,6 +200,14 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
     match = re.search(r"Cost:\s*(\d+)", cost_string)
     if match:
         real_cost_value = int(match.group(1))
+
+    # find the cost of my solution
+
+    with open('output_for_validation/'+"out_"+filename, 'r') as file:
+        data = json.load(file)
+    cost_string = data["costs"]
+    print(cost_string)
+    value_cost = int(cost_string[0].split("Costs:")[1].split(",")[0].strip())
 
     plt.figure(figsize=(8, 5))
     plt.plot(x_plot, y_plot, label='OBJECTIVE FUNCTION FOR TEST ' +str(file_number)+  ' VS ALNS ITERATIONS, total of '+ str(iter)+ ' iterations', marker='o', linestyle='-',  markersize=0.5)
@@ -211,6 +222,18 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
 
     output_path = os.path.join(plot_folder, f'plot_test{file_number}.png')
     plt.savefig(output_path, dpi=300, bbox_inches="tight")
+
+        # open the folder to see if this run is the best one or not
+
+    best_run = "best_results/runs/test_" + str(file_number) + ".txt"
+    with open(best_run, "r+") as file_1:
+        old_runs = [int(line.strip()) for line in file_1]
+        file_1.close()
+
+
+    if value_cost < min(old_runs): # if we have a best run we save it in the folder best_results
+        output_path_1 = os.path.join('best_results/best_plots', f'plot_test{file_number}.png')
+        plt.savefig(output_path_1, dpi=300, bbox_inches="tight")
 
     plt.close()
 
@@ -246,6 +269,10 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
         output_path = os.path.join(plot_folder, f'Destroy_plot_test{file_number}.png')
         plt.savefig(output_path, dpi=300, bbox_inches="tight")
 
+        if value_cost < min(old_runs): # if we have a best run we save it in the folder best_results
+            output_path_1 = os.path.join('best_results/best_plots', f'Destroy_plot_test{file_number}.png')
+            plt.savefig(output_path_1, dpi=300, bbox_inches="tight")
+
         plt.figure(figsize=(12, 6))
         for label, values in repair_dic.items():
             plt.plot(values, label=label)
@@ -259,6 +286,10 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
 
         output_path = os.path.join(plot_folder, f'Repair_plot_test{file_number}.png')
         plt.savefig(output_path, dpi=300, bbox_inches="tight")
+
+        if value_cost < min(old_runs): # if we have a best run we save it in the folder best_results
+            output_path_1 = os.path.join('best_results/best_plots', f'Repair_plot_test{file_number}.png')
+            plt.savefig(output_path_1, dpi=300, bbox_inches="tight")
 
     text_folder = "text_output"
     with open(f'{text_folder}/test_{file_number}.txt', 'w') as file:
@@ -283,7 +314,33 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
 
     file.close()  
 
+    if value_cost< min(old_runs): # if we have a best run we save it in the folder best_results
 
+        with open(f'best_results/best_test_output/test_{file_number}.txt', 'w') as file:
+
+            file.write("\n")
+            file.write("ALNS iterations: " + str(iter) + "\n")
+            print("\n")
+            print("\n")
+            file.write("rho: " + str(rho) + "\n")
+            file.write("Gamma: " + str(Gamma) + "\n")
+            file.write("Delta: " + str(Delta) + "\n")
+            print("\n")
+
+            if time_destroy is not None and time_repair is not None:
+
+                file.write("Optimal value found by ALNS: {:.2f}\n".format(min(y_plot)))
+                file.write("Real optimal value: {:.2f}\n".format(real_cost_value))
+                file.write("\n")
+                file.write("Time for optimization: {:.2f}\n".format(time_destroy + time_repair))
+                file.write("Time for destroy: {:.2f}, {:.2f}% of the total time\n".format(time_destroy, 100 * time_destroy / (time_destroy + time_repair)))
+                file.write("Time for repair: {:.2f}, {:.2f}% of the total time\n".format(time_repair, 100 * time_repair / (time_destroy + time_repair)))
+
+        file.close()  
+    best_run = "best_results/runs/test_" + str(file_number) + ".txt"
+    with open(best_run, "r+") as file_1:
+        file_1.write(str(value_cost) + "\n")
+        file_1.close()
     return 0
 
 
