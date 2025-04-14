@@ -206,7 +206,7 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
     with open('output_for_validation/'+"out_"+filename, 'r') as file:
         data = json.load(file)
     cost_string = data["costs"]
-    print(cost_string)
+    #print(cost_string)
     value_cost = int(cost_string[0].split("Costs:")[1].split(",")[0].strip())
 
     plt.figure(figsize=(8, 5))
@@ -338,8 +338,8 @@ def ALNS_plot(x_plot,y_plot,filename, destroy_prob_vec = [], repair_prob_vec = [
 
         file.close()  
     best_run = "best_results/runs/test_" + str(file_number) + ".txt"
-    with open(best_run, "r+") as file_1:
-        file_1.write(str(value_cost) + "\n")
+    with open(best_run, "a") as file_1:
+        file_1.write( str(value_cost) + "\n")
         file_1.close()
     return 0
 
