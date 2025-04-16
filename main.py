@@ -154,14 +154,14 @@ def main():
 
     # solving the problem
 
-    number_of_iterations = 1000
+    number_of_iterations = 40000
 
     solver = ALNS(problem, init_solution)
 
 
-    Gamma = 2
-    rho = 0.1
-    Delta = [15,7,1,0.5]   # vector of increasing the weights of the destroy and repair
+    Gamma = 0.9
+    rho = 0.001
+    Delta = [8,5,1.5,0.5]   # vector of increasing the weights of the destroy and repair
 
     final_solution, final_problem, x_plot, y_plot, destroy_prob_vec, repair_prob_vec, time_destroy, time_repair = solver.solve(number_of_iterations, Gamma, rho, Delta)
 
