@@ -62,9 +62,7 @@
         },
         {
             "id": "p012",
-            "admission_day": 19,
-            "room": "r0",
-            "operating_theater": "t0"
+            "admission_day": "none"
         },
         {
             "id": "p013",
@@ -274,9 +272,7 @@
         },
         {
             "id": "p054",
-            "admission_day": 19,
-            "room": "r0",
-            "operating_theater": "t1"
+            "admission_day": "none"
         },
         {
             "id": "p055",
@@ -562,7 +558,9 @@
         },
         {
             "id": "p113",
-            "admission_day": "none"
+            "admission_day": 19,
+            "room": "r3",
+            "operating_theater": "t1"
         },
         {
             "id": "p114",
@@ -864,114 +862,99 @@
                     "day": 2,
                     "shift": "late",
                     "rooms": [
-                        "r3"
+                        "r8"
                     ]
                 },
                 {
                     "day": 3,
                     "shift": "late",
-                    "rooms": [
-                        "r8"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 4,
                     "shift": "night",
                     "rooms": [
-                        "r0",
                         "r4",
-                        "r8"
+                        "r7"
                     ]
                 },
                 {
                     "day": 5,
                     "shift": "night",
                     "rooms": [
-                        "r0",
-                        "r4",
-                        "r8"
-                    ]
-                },
-                {
-                    "day": 7,
-                    "shift": "early",
-                    "rooms": [
-                        "r5"
-                    ]
-                },
-                {
-                    "day": 9,
-                    "shift": "late",
-                    "rooms": [
-                        "r2"
-                    ]
-                },
-                {
-                    "day": 10,
-                    "shift": "late",
-                    "rooms": [
+                        "r2",
                         "r4",
                         "r6"
                     ]
                 },
                 {
+                    "day": 7,
+                    "shift": "early",
+                    "rooms": []
+                },
+                {
+                    "day": 9,
+                    "shift": "late",
+                    "rooms": []
+                },
+                {
+                    "day": 10,
+                    "shift": "late",
+                    "rooms": []
+                },
+                {
                     "day": 11,
                     "shift": "late",
                     "rooms": [
-                        "r5"
+                        "r6"
                     ]
                 },
                 {
                     "day": 12,
                     "shift": "night",
                     "rooms": [
-                        "r0",
                         "r4",
-                        "r8"
+                        "r7"
                     ]
                 },
                 {
                     "day": 13,
                     "shift": "night",
                     "rooms": [
-                        "r0",
                         "r4",
-                        "r8"
+                        "r7"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r8"
                     ]
                 },
                 {
                     "day": 16,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r7"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "early",
                     "rooms": [
-                        "r3"
+                        "r0"
                     ]
                 },
                 {
                     "day": 18,
                     "shift": "early",
-                    "rooms": [
-                        "r7"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 19,
                     "shift": "early",
                     "rooms": [
-                        "r4",
                         "r5"
                     ]
                 },
@@ -979,7 +962,7 @@
                     "day": 20,
                     "shift": "late",
                     "rooms": [
-                        "r2"
+                        "r7"
                     ]
                 }
             ]
@@ -991,44 +974,61 @@
                     "day": 0,
                     "shift": "late",
                     "rooms": [
-                        "r1"
+                        "r1",
+                        "r4",
+                        "r6",
+                        "r7"
                     ]
                 },
                 {
                     "day": 1,
                     "shift": "late",
                     "rooms": [
-                        "r1"
+                        "r2",
+                        "r3",
+                        "r6",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 2,
                     "shift": "late",
                     "rooms": [
-                        "r1"
+                        "r1",
+                        "r4",
+                        "r5",
+                        "r7"
                     ]
                 },
                 {
                     "day": 3,
                     "shift": "late",
                     "rooms": [
-                        "r1"
+                        "r1",
+                        "r4",
+                        "r5",
+                        "r6",
+                        "r7"
                     ]
                 },
                 {
                     "day": 4,
                     "shift": "night",
                     "rooms": [
+                        "r0",
                         "r1",
-                        "r5"
+                        "r8"
                     ]
                 },
                 {
                     "day": 5,
                     "shift": "night",
                     "rooms": [
+                        "r0",
                         "r1",
-                        "r5"
+                        "r5",
+                        "r8"
                     ]
                 },
                 {
@@ -1036,6 +1036,7 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
                         "r8"
                     ]
@@ -1045,39 +1046,42 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
-                        "r8"
+                        "r5"
                     ]
                 },
                 {
                     "day": 9,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r3",
-                        "r6",
-                        "r7",
-                        "r8"
+                        "r1"
                     ]
                 },
                 {
                     "day": 10,
                     "shift": "early",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r2",
+                        "r4",
+                        "r5",
+                        "r8"
                     ]
                 },
                 {
                     "day": 11,
                     "shift": "late",
                     "rooms": [
-                        "r1"
+                        "r1",
+                        "r2"
                     ]
                 },
                 {
                     "day": 12,
                     "shift": "night",
                     "rooms": [
+                        "r0",
                         "r1",
                         "r5"
                     ]
@@ -1086,8 +1090,10 @@
                     "day": 13,
                     "shift": "night",
                     "rooms": [
+                        "r0",
                         "r1",
-                        "r5"
+                        "r5",
+                        "r8"
                     ]
                 },
                 {
@@ -1095,7 +1101,9 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
+                        "r5",
                         "r8"
                     ]
                 },
@@ -1103,21 +1111,14 @@
                     "day": 16,
                     "shift": "early",
                     "rooms": [
-                        "r0",
-                        "r3",
-                        "r4",
-                        "r5",
-                        "r8"
+                        "r0"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "late",
                     "rooms": [
-                        "r1",
-                        "r3",
-                        "r5",
-                        "r8"
+                        "r1"
                     ]
                 },
                 {
@@ -1125,8 +1126,7 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
-                        "r4",
-                        "r8"
+                        "r4"
                     ]
                 },
                 {
@@ -1134,7 +1134,9 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
+                        "r5",
                         "r8"
                     ]
                 },
@@ -1143,7 +1145,9 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
+                        "r5",
                         "r8"
                     ]
                 }
@@ -1157,7 +1161,9 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
+                        "r5",
                         "r8"
                     ]
                 },
@@ -1166,7 +1172,9 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
+                        "r5",
                         "r8"
                     ]
                 },
@@ -1175,7 +1183,9 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
+                        "r5",
                         "r8"
                     ]
                 },
@@ -1183,99 +1193,104 @@
                     "day": 5,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r4"
+                        "r1"
                     ]
                 },
                 {
                     "day": 6,
                     "shift": "late",
                     "rooms": [
-                        "r1"
+                        "r1",
+                        "r4",
+                        "r5",
+                        "r6",
+                        "r8"
                     ]
                 },
                 {
                     "day": 7,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r3",
+                        "r8"
                     ]
                 },
                 {
                     "day": 9,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r3",
+                        "r4",
+                        "r6",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 10,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r4",
-                        "r5",
-                        "r7",
-                        "r8"
+                        "r1"
                     ]
                 },
                 {
                     "day": 11,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r3",
-                        "r4",
-                        "r7",
-                        "r8"
+                        "r3"
                     ]
                 },
                 {
                     "day": 12,
                     "shift": "early",
                     "rooms": [
-                        "r0",
-                        "r4"
+                        "r1",
+                        "r3",
+                        "r4",
+                        "r6",
+                        "r7"
                     ]
                 },
                 {
                     "day": 13,
                     "shift": "early",
                     "rooms": [
-                        "r1"
+                        "r1",
+                        "r3",
+                        "r4",
+                        "r8"
                     ]
                 },
                 {
                     "day": 14,
                     "shift": "late",
                     "rooms": [
-                        "r1"
+                        "r2",
+                        "r3"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "late",
                     "rooms": [
-                        "r2"
+                        "r2",
+                        "r3"
                     ]
                 },
                 {
                     "day": 16,
                     "shift": "late",
                     "rooms": [
-                        "r1"
+                        "r1",
+                        "r5",
+                        "r8"
                     ]
                 },
                 {
                     "day": 18,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r2",
-                        "r3",
-                        "r5",
-                        "r6"
+                        "r1"
                     ]
                 },
                 {
@@ -1294,16 +1309,14 @@
                     "day": 0,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r3"
                     ]
                 },
                 {
                     "day": 1,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r3"
                     ]
                 },
                 {
@@ -1319,8 +1332,7 @@
                     "day": 3,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r6"
                     ]
                 },
                 {
@@ -1335,16 +1347,15 @@
                     "day": 5,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r3"
                     ]
                 },
                 {
                     "day": 6,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
@@ -1360,28 +1371,28 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
-                        "r5"
+                        "r1"
                     ]
                 },
                 {
                     "day": 10,
                     "shift": "early",
                     "rooms": [
-                        "r3"
+                        "r6"
                     ]
                 },
                 {
                     "day": 11,
                     "shift": "early",
                     "rooms": [
-                        "r6"
+                        "r4"
                     ]
                 },
                 {
                     "day": 12,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r5"
                     ]
                 },
                 {
@@ -1394,17 +1405,22 @@
                 {
                     "day": 14,
                     "shift": "early",
-                    "rooms": []
+                    "rooms": [
+                        "r6"
+                    ]
                 },
                 {
                     "day": 15,
                     "shift": "early",
-                    "rooms": []
+                    "rooms": [
+                        "r6"
+                    ]
                 },
                 {
                     "day": 16,
                     "shift": "early",
                     "rooms": [
+                        "r2",
                         "r6"
                     ]
                 },
@@ -1412,22 +1428,22 @@
                     "day": 18,
                     "shift": "early",
                     "rooms": [
-                        "r8"
+                        "r7"
                     ]
                 },
                 {
                     "day": 19,
                     "shift": "late",
                     "rooms": [
-                        "r8"
+                        "r6"
                     ]
                 },
                 {
                     "day": 20,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r2",
+                        "r6"
                     ]
                 }
             ]
@@ -1439,7 +1455,8 @@
                     "day": 0,
                     "shift": "late",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r8"
                     ]
                 },
                 {
@@ -1454,15 +1471,14 @@
                     "shift": "late",
                     "rooms": [
                         "r0",
-                        "r4"
+                        "r2"
                     ]
                 },
                 {
                     "day": 3,
                     "shift": "late",
                     "rooms": [
-                        "r0",
-                        "r4"
+                        "r0"
                     ]
                 },
                 {
@@ -1470,7 +1486,7 @@
                     "shift": "night",
                     "rooms": [
                         "r3",
-                        "r7"
+                        "r5"
                     ]
                 },
                 {
@@ -1478,8 +1494,9 @@
                     "shift": "early",
                     "rooms": [
                         "r0",
-                        "r6",
-                        "r8"
+                        "r2",
+                        "r4",
+                        "r6"
                     ]
                 },
                 {
@@ -1487,26 +1504,27 @@
                     "shift": "late",
                     "rooms": [
                         "r0",
-                        "r4"
+                        "r2",
+                        "r3",
+                        "r4",
+                        "r6",
+                        "r7"
                     ]
                 },
                 {
                     "day": 8,
                     "shift": "late",
                     "rooms": [
-                        "r0",
-                        "r2",
-                        "r5",
-                        "r8"
+                        "r0"
                     ]
                 },
                 {
                     "day": 9,
                     "shift": "night",
                     "rooms": [
-                        "r0",
+                        "r3",
                         "r4",
-                        "r8"
+                        "r5"
                     ]
                 },
                 {
@@ -1514,8 +1532,9 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
-                        "r8"
+                        "r5"
                     ]
                 },
                 {
@@ -1523,7 +1542,9 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
+                        "r1",
                         "r4",
+                        "r5",
                         "r8"
                     ]
                 },
@@ -1531,32 +1552,43 @@
                     "day": 14,
                     "shift": "early",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r2",
+                        "r3",
+                        "r4",
+                        "r5",
+                        "r7"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "late",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r6",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "early",
                     "rooms": [
-                        "r0",
                         "r1",
                         "r2",
+                        "r3",
                         "r4",
-                        "r5"
+                        "r6",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 19,
                     "shift": "early",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r2"
                     ]
                 },
                 {
@@ -1588,32 +1620,36 @@
                 {
                     "day": 3,
                     "shift": "late",
-                    "rooms": []
+                    "rooms": [
+                        "r8"
+                    ]
                 },
                 {
                     "day": 5,
                     "shift": "early",
                     "rooms": [
-                        "r8"
+                        "r7"
                     ]
                 },
                 {
                     "day": 6,
                     "shift": "early",
                     "rooms": [
-                        "r7"
+                        "r5"
                     ]
                 },
                 {
                     "day": 7,
                     "shift": "early",
-                    "rooms": []
+                    "rooms": [
+                        "r8"
+                    ]
                 },
                 {
                     "day": 8,
                     "shift": "late",
                     "rooms": [
-                        "r7"
+                        "r6"
                     ]
                 },
                 {
@@ -1625,7 +1661,7 @@
                     "day": 11,
                     "shift": "late",
                     "rooms": [
-                        "r8"
+                        "r5"
                     ]
                 },
                 {
@@ -1648,8 +1684,7 @@
                     "day": 14,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r3"
                     ]
                 },
                 {
@@ -1657,7 +1692,7 @@
                     "shift": "night",
                     "rooms": [
                         "r0",
-                        "r5"
+                        "r1"
                     ]
                 },
                 {
@@ -1668,19 +1703,22 @@
                 {
                     "day": 18,
                     "shift": "early",
-                    "rooms": []
+                    "rooms": [
+                        "r8"
+                    ]
                 },
                 {
                     "day": 19,
                     "shift": "late",
-                    "rooms": []
+                    "rooms": [
+                        "r7"
+                    ]
                 },
                 {
                     "day": 20,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r7"
                     ]
                 }
             ]
@@ -1693,27 +1731,21 @@
                     "shift": "late",
                     "rooms": [
                         "r2",
-                        "r4",
-                        "r6",
-                        "r7",
-                        "r8"
+                        "r3"
                     ]
                 },
                 {
                     "day": 1,
                     "shift": "late",
                     "rooms": [
-                        "r3"
+                        "r4"
                     ]
                 },
                 {
                     "day": 2,
                     "shift": "late",
                     "rooms": [
-                        "r2",
-                        "r5",
-                        "r7",
-                        "r8"
+                        "r3"
                     ]
                 },
                 {
@@ -1721,10 +1753,7 @@
                     "shift": "late",
                     "rooms": [
                         "r2",
-                        "r3",
-                        "r5",
-                        "r6",
-                        "r7"
+                        "r3"
                     ]
                 },
                 {
@@ -1734,6 +1763,7 @@
                         "r0",
                         "r2",
                         "r3",
+                        "r4",
                         "r6"
                     ]
                 },
@@ -1742,7 +1772,7 @@
                     "shift": "late",
                     "rooms": [
                         "r2",
-                        "r4"
+                        "r3"
                     ]
                 },
                 {
@@ -1750,31 +1780,34 @@
                     "shift": "late",
                     "rooms": [
                         "r1",
-                        "r4"
+                        "r2",
+                        "r4",
+                        "r5",
+                        "r8"
                     ]
                 },
                 {
                     "day": 9,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r2",
+                        "r6",
+                        "r8"
                     ]
                 },
                 {
                     "day": 10,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r3",
+                        "r8"
                     ]
                 },
                 {
                     "day": 11,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r3"
                     ]
                 },
                 {
@@ -1782,26 +1815,21 @@
                     "shift": "night",
                     "rooms": [
                         "r3",
-                        "r7"
+                        "r8"
                     ]
                 },
                 {
                     "day": 14,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r2",
-                        "r3",
-                        "r4",
-                        "r5",
-                        "r7"
+                        "r1"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "late",
                     "rooms": [
-                        "r3"
+                        "r4"
                     ]
                 },
                 {
@@ -1809,9 +1837,7 @@
                     "shift": "late",
                     "rooms": [
                         "r0",
-                        "r3",
-                        "r5",
-                        "r8"
+                        "r4"
                     ]
                 },
                 {
@@ -1819,14 +1845,18 @@
                     "shift": "early",
                     "rooms": [
                         "r0",
-                        "r4"
+                        "r2",
+                        "r3",
+                        "r4",
+                        "r5",
+                        "r6"
                     ]
                 },
                 {
                     "day": 20,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r3"
                     ]
                 }
             ]
@@ -1843,7 +1873,6 @@
                     "day": 2,
                     "shift": "early",
                     "rooms": [
-                        "r4",
                         "r6"
                     ]
                 },
@@ -1852,7 +1881,7 @@
                     "shift": "night",
                     "rooms": [
                         "r2",
-                        "r6"
+                        "r3"
                     ]
                 },
                 {
@@ -1866,7 +1895,7 @@
                     "day": 6,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r3"
                     ]
                 },
                 {
@@ -1887,6 +1916,7 @@
                     "day": 9,
                     "shift": "late",
                     "rooms": [
+                        "r2",
                         "r3"
                     ]
                 },
@@ -1894,6 +1924,7 @@
                     "day": 11,
                     "shift": "early",
                     "rooms": [
+                        "r2",
                         "r5"
                     ]
                 },
@@ -1901,30 +1932,27 @@
                     "day": 12,
                     "shift": "late",
                     "rooms": [
-                        "r3"
+                        "r5"
                     ]
                 },
                 {
                     "day": 13,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r3"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "early",
                     "rooms": [
-                        "r4",
-                        "r6"
+                        "r4"
                     ]
                 },
                 {
                     "day": 16,
                     "shift": "late",
                     "rooms": [
-                        "r4",
                         "r6"
                     ]
                 },
@@ -1946,16 +1974,14 @@
                     "day": 19,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r3"
                     ]
                 },
                 {
                     "day": 20,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r3"
                     ]
                 }
             ]
@@ -1966,15 +1992,12 @@
                 {
                     "day": 0,
                     "shift": "late",
-                    "rooms": [
-                        "r3"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 1,
                     "shift": "late",
                     "rooms": [
-                        "r4",
                         "r5"
                     ]
                 },
@@ -1982,7 +2005,6 @@
                     "day": 3,
                     "shift": "night",
                     "rooms": [
-                        "r3",
                         "r7"
                     ]
                 },
@@ -1990,26 +2012,29 @@
                     "day": 5,
                     "shift": "early",
                     "rooms": [
-                        "r7"
+                        "r8"
                     ]
                 },
                 {
                     "day": 6,
                     "shift": "early",
                     "rooms": [
-                        "r5"
+                        "r8"
                     ]
                 },
                 {
                     "day": 7,
                     "shift": "early",
-                    "rooms": []
+                    "rooms": [
+                        "r2",
+                        "r5"
+                    ]
                 },
                 {
                     "day": 8,
                     "shift": "late",
                     "rooms": [
-                        "r6"
+                        "r7"
                     ]
                 },
                 {
@@ -2020,28 +2045,26 @@
                 {
                     "day": 10,
                     "shift": "late",
-                    "rooms": []
-                },
-                {
-                    "day": 11,
-                    "shift": "night",
-                    "rooms": [
-                        "r2",
-                        "r6"
-                    ]
-                },
-                {
-                    "day": 14,
-                    "shift": "early",
                     "rooms": [
                         "r8"
                     ]
                 },
                 {
+                    "day": 11,
+                    "shift": "night",
+                    "rooms": [
+                        "r7"
+                    ]
+                },
+                {
+                    "day": 14,
+                    "shift": "early",
+                    "rooms": []
+                },
+                {
                     "day": 15,
                     "shift": "late",
                     "rooms": [
-                        "r4",
                         "r5"
                     ]
                 },
@@ -2049,9 +2072,8 @@
                     "day": 16,
                     "shift": "night",
                     "rooms": [
-                        "r0",
                         "r4",
-                        "r8"
+                        "r7"
                     ]
                 },
                 {
@@ -2065,8 +2087,7 @@
                     "day": 19,
                     "shift": "late",
                     "rooms": [
-                        "r4",
-                        "r5"
+                        "r4"
                     ]
                 },
                 {
@@ -2085,8 +2106,7 @@
                     "day": 0,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r7"
                     ]
                 },
                 {
@@ -2110,16 +2130,14 @@
                     "day": 6,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r7"
                     ]
                 },
                 {
                     "day": 8,
                     "shift": "early",
                     "rooms": [
-                        "r4",
-                        "r5"
+                        "r4"
                     ]
                 },
                 {
@@ -2133,36 +2151,34 @@
                     "day": 10,
                     "shift": "late",
                     "rooms": [
-                        "r8"
+                        "r4"
                     ]
                 },
                 {
                     "day": 11,
                     "shift": "late",
                     "rooms": [
-                        "r6"
+                        "r8"
                     ]
                 },
                 {
                     "day": 13,
                     "shift": "early",
                     "rooms": [
-                        "r5"
+                        "r7"
                     ]
                 },
                 {
                     "day": 14,
                     "shift": "early",
                     "rooms": [
-                        "r6"
+                        "r8"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "early",
-                    "rooms": [
-                        "r8"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 16,
@@ -2180,15 +2196,15 @@
                     "day": 19,
                     "shift": "late",
                     "rooms": [
-                        "r7"
+                        "r8"
                     ]
                 },
                 {
                     "day": 20,
                     "shift": "late",
                     "rooms": [
-                        "r4",
-                        "r7"
+                        "r2",
+                        "r4"
                     ]
                 }
             ]
@@ -2200,15 +2216,16 @@
                     "day": 0,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
                     "day": 2,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r2",
+                        "r4"
                     ]
                 },
                 {
@@ -2250,54 +2267,51 @@
                     "day": 8,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r6"
+                        "r3"
                     ]
                 },
                 {
                     "day": 10,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r3"
                     ]
                 },
                 {
                     "day": 11,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
                     "day": 13,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r5"
                     ]
                 },
                 {
                     "day": 14,
                     "shift": "late",
                     "rooms": [
-                        "r4",
-                        "r6"
+                        "r4"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r6"
+                        "r3"
                     ]
                 },
                 {
                     "day": 16,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
@@ -2311,7 +2325,7 @@
                     "day": 19,
                     "shift": "late",
                     "rooms": [
-                        "r6"
+                        "r5"
                     ]
                 }
             ]
@@ -2330,24 +2344,14 @@
                     "day": 1,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r2",
-                        "r3",
-                        "r4",
-                        "r5",
-                        "r6",
-                        "r7",
-                        "r8"
+                        "r1"
                     ]
                 },
                 {
                     "day": 2,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r3",
-                        "r5",
-                        "r7"
+                        "r1"
                     ]
                 },
                 {
@@ -2355,7 +2359,7 @@
                     "shift": "early",
                     "rooms": [
                         "r0",
-                        "r4"
+                        "r2"
                     ]
                 },
                 {
@@ -2363,15 +2367,14 @@
                     "shift": "late",
                     "rooms": [
                         "r2",
-                        "r4"
+                        "r3"
                     ]
                 },
                 {
                     "day": 5,
                     "shift": "late",
                     "rooms": [
-                        "r1",
-                        "r4"
+                        "r1"
                     ]
                 },
                 {
@@ -2379,14 +2382,13 @@
                     "shift": "night",
                     "rooms": [
                         "r3",
-                        "r7"
+                        "r5"
                     ]
                 },
                 {
                     "day": 8,
                     "shift": "early",
                     "rooms": [
-                        "r2",
                         "r3",
                         "r6",
                         "r7",
@@ -2397,12 +2399,7 @@
                     "day": 9,
                     "shift": "late",
                     "rooms": [
-                        "r1",
-                        "r4",
-                        "r5",
-                        "r6",
-                        "r7",
-                        "r8"
+                        "r1"
                     ]
                 },
                 {
@@ -2410,20 +2407,15 @@
                     "shift": "late",
                     "rooms": [
                         "r1",
-                        "r2",
-                        "r3",
-                        "r5",
-                        "r7"
+                        "r2"
                     ]
                 },
                 {
                     "day": 12,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r3",
-                        "r6",
-                        "r7"
+                        "r0",
+                        "r2"
                     ]
                 },
                 {
@@ -2431,37 +2423,29 @@
                     "shift": "early",
                     "rooms": [
                         "r0",
-                        "r3",
-                        "r4",
-                        "r7",
-                        "r8"
+                        "r2"
                     ]
                 },
                 {
                     "day": 14,
                     "shift": "late",
                     "rooms": [
-                        "r2",
-                        "r3",
-                        "r5",
-                        "r7"
+                        "r1"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "late",
                     "rooms": [
-                        "r1",
-                        "r6",
-                        "r7",
-                        "r8"
+                        "r1"
                     ]
                 },
                 {
                     "day": 16,
                     "shift": "late",
                     "rooms": [
-                        "r2"
+                        "r2",
+                        "r3"
                     ]
                 },
                 {
@@ -2469,7 +2453,9 @@
                     "shift": "late",
                     "rooms": [
                         "r0",
-                        "r4"
+                        "r3",
+                        "r5",
+                        "r8"
                     ]
                 },
                 {
@@ -2551,69 +2537,61 @@
                     "day": 8,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r7"
+                        "r5",
+                        "r8"
                     ]
                 },
                 {
                     "day": 9,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r7"
                     ]
                 },
                 {
                     "day": 10,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r7"
                     ]
                 },
                 {
                     "day": 12,
                     "shift": "early",
-                    "rooms": [
-                        "r8"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 13,
                     "shift": "late",
-                    "rooms": [
-                        "r6"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 14,
                     "shift": "late",
                     "rooms": [
-                        "r8"
+                        "r6"
                     ]
                 },
                 {
                     "day": 16,
                     "shift": "early",
                     "rooms": [
-                        "r7"
+                        "r8"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "night",
                     "rooms": [
-                        "r0",
                         "r4",
-                        "r8"
+                        "r7"
                     ]
                 },
                 {
                     "day": 19,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r7"
                     ]
                 }
             ]
@@ -2637,10 +2615,7 @@
                     "day": 1,
                     "shift": "late",
                     "rooms": [
-                        "r2",
-                        "r6",
-                        "r7",
-                        "r8"
+                        "r1"
                     ]
                 },
                 {
@@ -2672,6 +2647,7 @@
                         "r0",
                         "r2",
                         "r3",
+                        "r4",
                         "r6",
                         "r7",
                         "r8"
@@ -2681,32 +2657,38 @@
                     "day": 6,
                     "shift": "late",
                     "rooms": [
-                        "r0",
-                        "r3",
-                        "r5",
-                        "r6",
-                        "r8"
+                        "r0"
                     ]
                 },
                 {
                     "day": 8,
                     "shift": "early",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r2"
                     ]
                 },
                 {
                     "day": 9,
                     "shift": "late",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r4",
+                        "r5",
+                        "r6",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 10,
                     "shift": "late",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r3",
+                        "r5",
+                        "r6",
+                        "r7"
                     ]
                 },
                 {
@@ -2714,7 +2696,6 @@
                     "shift": "late",
                     "rooms": [
                         "r0",
-                        "r2",
                         "r3",
                         "r4",
                         "r7"
@@ -2731,31 +2712,38 @@
                     "day": 13,
                     "shift": "late",
                     "rooms": [
-                        "r0",
-                        "r4"
+                        "r1",
+                        "r3",
+                        "r4",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 14,
                     "shift": "late",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r5",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 16,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r1",
+                        "r8"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "night",
                     "rooms": [
-                        "r1",
-                        "r5"
+                        "r0",
+                        "r6",
+                        "r8"
                     ]
                 },
                 {
@@ -2763,14 +2751,21 @@
                     "shift": "night",
                     "rooms": [
                         "r1",
-                        "r5"
+                        "r5",
+                        "r6",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 20,
                     "shift": "early",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r2",
+                        "r6",
+                        "r7",
+                        "r8"
                     ]
                 }
             ]
@@ -2789,8 +2784,7 @@
                     "day": 1,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r7"
                     ]
                 },
                 {
@@ -2807,21 +2801,20 @@
                     "day": 5,
                     "shift": "night",
                     "rooms": [
-                        "r3",
                         "r7"
                     ]
                 },
                 {
                     "day": 7,
                     "shift": "early",
-                    "rooms": [
-                        "r8"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 8,
                     "shift": "early",
-                    "rooms": []
+                    "rooms": [
+                        "r5"
+                    ]
                 },
                 {
                     "day": 9,
@@ -2832,37 +2825,37 @@
                     "day": 10,
                     "shift": "early",
                     "rooms": [
-                        "r6"
+                        "r7"
                     ]
                 },
                 {
                     "day": 12,
                     "shift": "early",
                     "rooms": [
-                        "r5"
+                        "r8"
                     ]
                 },
                 {
                     "day": 13,
                     "shift": "late",
                     "rooms": [
-                        "r2"
+                        "r2",
+                        "r5"
                     ]
                 },
                 {
                     "day": 14,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r7"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r7"
+                        "r5",
+                        "r8"
                     ]
                 },
                 {
@@ -2881,8 +2874,8 @@
                     "day": 19,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r2",
+                        "r6"
                     ]
                 }
             ]
@@ -2901,8 +2894,8 @@
                     "day": 1,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
@@ -2922,14 +2915,13 @@
                     "day": 6,
                     "shift": "early",
                     "rooms": [
-                        "r3"
+                        "r7"
                     ]
                 },
                 {
                     "day": 7,
                     "shift": "night",
                     "rooms": [
-                        "r3",
                         "r7"
                     ]
                 },
@@ -2937,54 +2929,51 @@
                     "day": 8,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r8"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
                     "day": 10,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
                     "day": 12,
                     "shift": "late",
                     "rooms": [
-                        "r5"
+                        "r6"
                     ]
                 },
                 {
                     "day": 14,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r8"
+                        "r2",
+                        "r6"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "early",
-                    "rooms": [
-                        "r7"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 18,
                     "shift": "night",
                     "rooms": [
-                        "r2",
-                        "r6"
+                        "r2"
                     ]
                 }
             ]
@@ -2996,80 +2985,18 @@
                     "day": 1,
                     "shift": "early",
                     "rooms": [
-                        "r0"
+                        "r0",
+                        "r2",
+                        "r3",
+                        "r4",
+                        "r5",
+                        "r6",
+                        "r7",
+                        "r8"
                     ]
                 },
                 {
                     "day": 2,
-                    "shift": "early",
-                    "rooms": [
-                        "r0"
-                    ]
-                },
-                {
-                    "day": 4,
-                    "shift": "late",
-                    "rooms": [
-                        "r0"
-                    ]
-                },
-                {
-                    "day": 6,
-                    "shift": "early",
-                    "rooms": [
-                        "r1",
-                        "r4"
-                    ]
-                },
-                {
-                    "day": 7,
-                    "shift": "late",
-                    "rooms": [
-                        "r1",
-                        "r2",
-                        "r3",
-                        "r6",
-                        "r7"
-                    ]
-                },
-                {
-                    "day": 9,
-                    "shift": "early",
-                    "rooms": [
-                        "r0",
-                        "r4"
-                    ]
-                },
-                {
-                    "day": 11,
-                    "shift": "early",
-                    "rooms": [
-                        "r0"
-                    ]
-                },
-                {
-                    "day": 12,
-                    "shift": "late",
-                    "rooms": [
-                        "r2",
-                        "r4",
-                        "r6",
-                        "r7",
-                        "r8"
-                    ]
-                },
-                {
-                    "day": 13,
-                    "shift": "late",
-                    "rooms": [
-                        "r1",
-                        "r3",
-                        "r7",
-                        "r8"
-                    ]
-                },
-                {
-                    "day": 15,
                     "shift": "early",
                     "rooms": [
                         "r0",
@@ -3079,26 +3006,100 @@
                     ]
                 },
                 {
+                    "day": 4,
+                    "shift": "late",
+                    "rooms": [
+                        "r0",
+                        "r4",
+                        "r5",
+                        "r6",
+                        "r7"
+                    ]
+                },
+                {
+                    "day": 6,
+                    "shift": "early",
+                    "rooms": [
+                        "r1"
+                    ]
+                },
+                {
+                    "day": 7,
+                    "shift": "late",
+                    "rooms": [
+                        "r1"
+                    ]
+                },
+                {
+                    "day": 9,
+                    "shift": "early",
+                    "rooms": [
+                        "r0",
+                        "r2"
+                    ]
+                },
+                {
+                    "day": 11,
+                    "shift": "early",
+                    "rooms": [
+                        "r0",
+                        "r6",
+                        "r7",
+                        "r8"
+                    ]
+                },
+                {
+                    "day": 12,
+                    "shift": "late",
+                    "rooms": [
+                        "r2",
+                        "r3",
+                        "r4",
+                        "r7",
+                        "r8"
+                    ]
+                },
+                {
+                    "day": 13,
+                    "shift": "late",
+                    "rooms": [
+                        "r0"
+                    ]
+                },
+                {
+                    "day": 15,
+                    "shift": "early",
+                    "rooms": [
+                        "r0",
+                        "r2",
+                        "r3",
+                        "r5",
+                        "r7"
+                    ]
+                },
+                {
                     "day": 16,
                     "shift": "night",
                     "rooms": [
+                        "r0",
                         "r3",
-                        "r7"
+                        "r5"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "night",
                     "rooms": [
+                        "r1",
                         "r2",
-                        "r6"
+                        "r5"
                     ]
                 },
                 {
                     "day": 19,
                     "shift": "early",
                     "rooms": [
-                        "r3",
+                        "r4",
                         "r6",
                         "r7",
                         "r8"
@@ -3114,7 +3115,7 @@
                     "shift": "early",
                     "rooms": [
                         "r1",
-                        "r2",
+                        "r4",
                         "r5",
                         "r6",
                         "r7"
@@ -3124,11 +3125,7 @@
                     "day": 4,
                     "shift": "late",
                     "rooms": [
-                        "r1",
-                        "r3",
-                        "r5",
-                        "r6",
-                        "r7"
+                        "r1"
                     ]
                 },
                 {
@@ -3137,7 +3134,6 @@
                     "rooms": [
                         "r0",
                         "r1",
-                        "r2",
                         "r3",
                         "r4",
                         "r6",
@@ -3155,15 +3151,15 @@
                     "day": 9,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r0",
+                        "r1"
                     ]
                 },
                 {
                     "day": 11,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r1"
                     ]
                 },
                 {
@@ -3184,32 +3180,31 @@
                     "day": 16,
                     "shift": "early",
                     "rooms": [
-                        "r1"
+                        "r1",
+                        "r3",
+                        "r4",
+                        "r5"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r3"
                     ]
                 },
                 {
                     "day": 19,
                     "shift": "early",
                     "rooms": [
-                        "r2"
+                        "r3"
                     ]
                 },
                 {
                     "day": 20,
                     "shift": "early",
                     "rooms": [
-                        "r1",
-                        "r3",
-                        "r6",
-                        "r8"
+                        "r1"
                     ]
                 }
             ]
@@ -3238,43 +3233,42 @@
                     "day": 8,
                     "shift": "night",
                     "rooms": [
-                        "r4"
+                        "r4",
+                        "r7"
                     ]
                 },
                 {
                     "day": 13,
                     "shift": "late",
                     "rooms": [
-                        "r5"
+                        "r6"
                     ]
                 },
                 {
                     "day": 15,
                     "shift": "night",
                     "rooms": [
-                        "r4"
+                        "r4",
+                        "r7"
                     ]
                 },
                 {
                     "day": 17,
                     "shift": "early",
-                    "rooms": [
-                        "r8"
-                    ]
+                    "rooms": []
                 },
                 {
                     "day": 18,
                     "shift": "night",
                     "rooms": [
-                        "r3",
-                        "r7"
+                        "r3"
                     ]
                 },
                 {
                     "day": 20,
                     "shift": "early",
                     "rooms": [
-                        "r7"
+                        "r5"
                     ]
                 }
             ]
@@ -3293,15 +3287,14 @@
                     "day": 17,
                     "shift": "early",
                     "rooms": [
-                        "r6"
+                        "r5"
                     ]
                 },
                 {
                     "day": 20,
                     "shift": "early",
                     "rooms": [
-                        "r4",
-                        "r5"
+                        "r4"
                     ]
                 }
             ]
@@ -3313,13 +3306,14 @@
                     "day": 17,
                     "shift": "late",
                     "rooms": [
-                        "r2"
+                        "r2",
+                        "r4"
                     ]
                 }
             ]
         }
     ],
     "costs": [
-        "Costs: 27014, Unscheduled: 94,  Delay: 119,  OpenOT: 24,  AgeMix: 89,  Skill: 0,  Excess: 496,  Continuity: 770,  SurgeonTransfer: 9"
+        "Costs: 27119, Unscheduled: 95,  Delay: 97,  OpenOT: 24,  AgeMix: 87,  Skill: 9,  Excess: 526,  Continuity: 772,  SurgeonTransfer: 9"
     ]
 }
