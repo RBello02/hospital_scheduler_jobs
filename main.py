@@ -53,7 +53,7 @@ def main():
 
     #  reading
 
-    filename = 'test09.json'
+    filename = 'test02.json'
 
     with open('test_data/'+filename, 'r') as file:
         data = json.load(file)
@@ -154,7 +154,7 @@ def main():
 
     # solving the problem
 
-    number_of_iterations = 35000
+    number_of_iterations = 100000
 
     solver = ALNS(problem, init_solution)
 
