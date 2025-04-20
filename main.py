@@ -154,7 +154,7 @@ def main():
 
     # solving the problem
 
-    number_of_iterations = 1000
+    number_of_iterations = 250000
 
     solver = ALNS(problem, init_solution)
 
