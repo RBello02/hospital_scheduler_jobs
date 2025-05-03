@@ -5,7 +5,7 @@ For running the validator open git bush on this folder and run this code
 
 without verbose
 
-./IHTP_Validator.exe ../test_data/test03.json ../output_for_validation/out_test03.json 
+./IHTP_Validator.exe ../test_data/test04.json ../output_for_validation/out_test04.json 
 
 
 
