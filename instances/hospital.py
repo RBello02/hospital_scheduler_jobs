@@ -13,8 +13,8 @@ class Times :
         # For the shifts
         self.shifts = shifts
 
-        def __str__(self):
-            return f"Time: {self.T} Shifts: {self.shifts}"
+    def __str__(self):
+        return f"Time: {self.T} Shifts: {self.shifts}"
 
         
 
