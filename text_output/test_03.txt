@@ -6,6 +6,6 @@ Delta: [8, 5, 1.5, 0]
 Optimal value found by ALNS: 11122.00
 Real optimal value: 10184.00
 
-Time for optimization: 2.29
-Time for destroy: 1.13, 49.45% of the total time
-Time for repair: 1.16, 50.55% of the total time
+Time for optimization: 2.59
+Time for destroy: 1.30, 50.38% of the total time
+Time for repair: 1.28, 49.62% of the total time
